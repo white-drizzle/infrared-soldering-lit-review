@@ -1,0 +1,13 @@
+# Temporary scripts
+html2md.py
+gen_matrix.py
+fix_latex.py
+_fix_skill*.py
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Editor files
+*.swp
+*~

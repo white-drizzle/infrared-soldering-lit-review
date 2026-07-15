@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>核心解读 · 可变辐照掩模在聚焦红外光焊接系统中的作用</title>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$'], ['\\[','\\]']], tags: 'ams' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root{
+  --text:#1a1a1a; --text-secondary:#5a5a5a; --bg:#fdfcfa; --surface:#ffffff;
+  --border:#e0dcd4; --accent:#8b3a3a; --highlight-box:#faf6ef; --highlight-border:#d4a843;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:"Noto Serif SC","Songti SC",Georgia,serif;
+  font-size:16.5px; line-height:1.85;
+}
+.layout{display:flex; max-width:1200px; margin:0 auto; gap:24px; padding:0 24px;}
+.toc-sidebar{
+  position:sticky; top:0; align-self:flex-start; width:230px; flex-shrink:0;
+  max-height:100vh; overflow-y:auto; padding:28px 12px 28px 0; font-size:14px;
+}
+.toc-sidebar h3{font-size:13px; letter-spacing:1px; color:var(--accent); text-transform:uppercase; margin:0 0 12px;}
+.toc-sidebar a{display:block; color:var(--text-secondary); text-decoration:none; padding:4px 8px; border-left:2px solid transparent; line-height:1.4;}
+.toc-sidebar a:hover{color:var(--accent); border-left-color:var(--highlight-border); background:var(--highlight-box);}
+.toc-sidebar a.sub{padding-left:20px; font-size:13px;}
+main{flex:1; min-width:0; max-width:860px; padding:36px 0 80px;}
+header.page-head{border-bottom:3px double var(--accent); padding-bottom:20px; margin-bottom:8px;}
+header.page-head .kicker{color:var(--accent); font-size:13px; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;}
+header.page-head h1{font-size:1.9rem; line-height:1.35; margin:0 0 12px;}
+header.page-head .meta{font-size:14px; color:var(--text-secondary); line-height:1.6;}
+header.page-head .meta strong{color:var(--text);}
+header.page-header{border-bottom:2px solid var(--accent); padding-bottom:18px; margin-bottom:32px;}
+header.page-header h1{font-size:1.65rem; color:var(--accent); line-height:1.3;}
+header.page-header .sub{font-size:.87rem; color:var(--text-secondary); margin-top:6px;}
+header.page-header .cite{font-size:.8rem; color:#999; margin-top:4px;}
+header.page-header .journal-info{font-size:.8rem; margin-top:4px;}
+header.page-header .journal-info .badge{display:inline-block; padding:1px 8px; border-radius:3px; font-size:.75rem; font-weight:600; margin-right:4px;}
+header.page-header .journal-info .badge-scie{background:#e8f0fe; color:#1a56c4;}
+header.page-header .journal-info .badge-esci{background:#fef3e8; color:#c47a1a;}
+header.page-header .journal-info .badge-ei{background:#e8f8ee; color:#2a8c3e;}
+header.page-header .journal-info .badge-delisted{background:#fde8e8; color:#c41a1a;}
+header.page-header .journal-info .if-val{color:var(--accent); font-weight:600;}
+header.page-header .meta{font-size:.78rem; color:#aaa; margin-top:2px; font-family:monospace; word-break:break-all;}
+header.page-header .meta a{color:#aaa; text-decoration:none;}
+header.page-header .meta a:hover{color:var(--accent); text-decoration:underline;}
+header.page-header .keywords{font-size:.82rem; color:var(--text-secondary); margin-top:6px;}
+header.page-header .keywords strong{color:var(--accent);}
+h2{font-size:1.5rem; color:var(--accent); margin:44px 0 16px; padding-bottom:8px; border-bottom:1px solid var(--border);}
+h3{font-size:1.2rem; margin:32px 0 12px;}
+h4{font-size:1.05rem; margin:20px 0 10px;}
+p{margin:12px 0;}
+figure{margin:24px 0; text-align:center;}
+figure img{max-width:100%; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:zoom-in; box-shadow:0 2px 10px rgba(0,0,0,.06);}
+figcaption{font-size:13.5px; color:var(--text-secondary); margin-top:8px; line-height:1.55; text-align:center;}
+.figure-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:end;}
+.figure-row figure{margin:8px 0;}
+.insight{background:var(--highlight-box); border-left:4px solid var(--highlight-border); border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0;}
+.insight .label{display:inline-block; font-family:Georgia,serif; font-size:12px; font-weight:bold; letter-spacing:1.5px; color:var(--accent); text-transform:uppercase; margin-bottom:6px;}
+.insight p{margin:6px 0;}
+.key-term{color:var(--accent); font-weight:600;}
+.math-block{overflow-x:auto; padding:8px 0;}
+.math-note{background:#f6f4ef; border-radius:6px; padding:10px 14px; font-size:14.5px; color:var(--text-secondary); margin:8px 0 18px;}
+.math-note strong{color:var(--accent);}
+.summary-table{margin:26px 0; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:6px 18px 14px;}
+.summary-table h4{color:var(--accent); margin:12px 0;}
+table{border-collapse:collapse; width:100%; font-size:14.5px; margin:8px 0;}
+th,td{border:1px solid var(--border); padding:8px 12px; text-align:left; vertical-align:top;}
+th{background:var(--accent); color:#fff; font-weight:600;}
+tbody tr:nth-child(even){background:#f7f4ef;}
+.data-table caption{caption-side:top; font-weight:600; color:var(--accent); margin-bottom:6px; text-align:left;}
+.takeaway{background:var(--surface); border:2px solid var(--accent); border-radius:10px; padding:8px 26px 20px; margin:40px 0;}
+.takeaway h2{border:none; color:var(--accent);}
+.takeaway ol{padding-left:22px;}
+.takeaway li{margin:10px 0;}
+.refs{font-size:13px; color:var(--text-secondary); margin-top:36px; border-top:1px solid var(--border); padding-top:16px;}
+.refs h2{font-size:1.2rem;}
+.refs ol{padding-left:20px;}
+.refs li{margin:5px 0; line-height:1.5;}
+.lightbox{display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.88); cursor:zoom-out; justify-content:center; align-items:center; padding:24px;}
+.lightbox.active{display:flex;}
+.lightbox img{max-width:95vw; max-height:95vh; object-fit:contain;}
+.lightbox-close{position:absolute; top:16px; right:24px; color:#fff; font-size:2rem; cursor:pointer; opacity:.6;}
+.lightbox-close:hover{opacity:1;}
+.back-to-top{position:fixed; bottom:28px; right:28px; background:var(--accent); color:#fff; width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:20px; box-shadow:0 3px 12px rgba(0,0,0,.25); opacity:.85;}
+.back-to-top:hover{opacity:1;}
+@media (max-width:900px){.toc-sidebar{display:none;} .layout{padding:0 16px;}}
+@media (max-width:640px){body{font-size:15px;} main{padding:24px 0 60px;} .figure-row{grid-template-columns:1fr;} header.page-head h1{font-size:1.5rem;}}
+@media print{.lightbox,.back-to-top,.toc-sidebar{display:none;} body{max-width:100%;} main{max-width:100%;} .insight{border:1px solid #ccc; box-shadow:none;}}
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="toc-sidebar">
+    <h3>目录</h3>
+    <a href="#abstract">摘要与研究定位</a>
+    <a href="#s1">1. 引言：为什么需要新焊接法</a>
+    <a href="#s1-1" class="sub">1.1 提出的方法（VIM+FILSS）</a>
+    <a href="#s2">2. SMT 组件热分布理论</a>
+    <a href="#s2-rad" class="sub">辐射传热 (Eq.1)</a>
+    <a href="#s2-cond" class="sub">传导传热 (Eq.2)</a>
+    <a href="#s2-diff" class="sub">直边衍射 (Eq.3)</a>
+    <a href="#s2-total" class="sub">总传热 (Eq.4-5)</a>
+    <a href="#s3">3. 仿真与实验方法</a>
+    <a href="#s4">4. 结果与分析</a>
+    <a href="#s4-irr" class="sub">辐照度分布 (Fig.6/表1)</a>
+    <a href="#s4-therm" class="sub">热分布 (Fig.7/表2)</a>
+    <a href="#s5">5. 结论</a>
+    <a href="#takeaway">核心要点总结</a>
+  </nav>
+
+  <main>
+    <header class="page-header">
+      <h1>可变辐照掩模（VIM）对电子元件聚焦红外光焊接系统的影响</h1>
+      <p class="sub">The effect of variable irradiation mask in Focused Infrared Light Soldering Systems for electronic components</p>
+      <p class="cite">Citlalli Anguiano, Kiyoshi Natzu, Marco Félix, et al. - <em>Optik</em> 2021, 242: 167298, Universidad Autónoma de Baja California / CICESE</p>
+      <p class="journal-info"><span class="badge badge-ei">EI</span></p>
+      <p class="meta"><a href="https://doi.org/10.1016/j.ijleo.2021.167298" target="_blank">DOI: 10.1016/j.ijleo.2021.167298</a> | 出版: 2021-05-24</p>
+      <p class="keywords"><strong>关键词：</strong>聚焦红外光（Focused Infrared Light）; 可变辐照掩模（Variable Irradiation Mask）; 焊接系统（Soldering System）; 表面贴装技术（SMT）; 非相干光（Incoherent Light）</p>
+    </header>
+
+    <section id="abstract">
+      <h2>摘要与研究定位</h2>
+      <p>表面贴装技术（<span class="key-term">SMT（Surface Mount Technology）</span>）让印刷电路板（<span class="key-term">PCB（Printed Circuit Board）</span>）能够容纳更多形状、尺寸各异的电子元件，并且开始把光学模块（滤波器、光电探测器、光纤等）集成进来——这就是所谓的<span class="key-term">板上光学（Optics on Board）</span>。这类新型光子元件对焊接过程更敏感，需要一种<strong>非接触、面积可控、且不损伤元件</strong>的焊接方法。</p>
+      <p>本文在一套<span class="key-term">聚焦红外光焊接系统（FILSS，Focused Infrared Light Soldering System）</span>的输出端插入一块<span class="key-term">可变辐照掩模（VIM，Variable Irradiation Mask）</span>，以获得一个<strong>特定尺寸与形状</strong>的光分布，并将仿真得到的辐照度分布与实验测得的热分布做对照，被测对象是一种典型封装——<span class="key-term">球栅阵列（BGA，Ball Grid Array）</span>。</p>
+      <div class="insight">
+        <div class="label">Note</div>
+        <p>论文的核心发现只有一句话，但很关键：<strong>在 VIM 遮挡边界处，得到的强度恰好约为最大热分布强度的 50%</strong>。这个"50%"不是巧合，而是<strong>不相干光（incoherent light）在直边（straight edge）处衍射</strong>的固有物理结果——边界处光强总是从"全亮"到"全暗"经过一个 50% 的过渡点。作者正是把这一衍射规律当作可预测的"设计工具"来使用：光强分布 → 视场因子 → 传热量 → 温度，四者一一对应，从而让焊接热场变得<strong>可仿真、可预测</strong>。</p>
+      </div>
+    </section>
+
+    <section id="s1">
+      <h2>1. 引言：为什么需要新焊接法</h2>
+      <p>电子工业的趋势是把光学模块、滤波器、光电探测器和光纤集成进电子元件，以提升集成电路（IC）内部的数据传输速度、增大系统带宽。技术演进路线可以概括为：</p>
+      <div class="summary-table">
+        <h4>封装技术演进对比</h4>
+        <table>
+          <tr><th>技术</th><th>放置方式</th><th>特点与局限</th></tr>
+          <tr><td><span class="key-term">THT（通孔技术）</span></td><td>元件引脚穿过 PCB 打孔插装</td><td>系统笨重、只能用板的一面、引脚数受限、传输速率低</td></tr>
+          <tr><td><span class="key-term">SMT（表面贴装）</span></td><td>元件直接贴装在 PCB 表面</td><td>两面均可用、引脚数量大增、系统紧凑、处理速率高</td></tr>
+          <tr><td><span class="key-term">BGA（球栅阵列）</span></td><td>引脚（焊球）分布在 IC 底部</td><td>SMT 中最流行的封装之一，广泛用于 FPGA、微处理器、DSP</td></tr>
+          <tr><td><span class="key-term">板上光学</span></td><td>在 PCB 内集成光子元件</td><td>用"光"提速，带宽更高，但对焊接热损伤更敏感</td></tr>
+        </table>
+      </div>
+
+      <figure>
+        <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-08/dae43373-dd75-42f4-84e0-875ab376673c/b4d186674747f30e7837ade79d71302271beda2a0f18cd51cce598490117f7ba.jpg" alt="Fig 1 不同 BGA 元件" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+        <figcaption>图 1 &mdash; 采用光子与半导体材料的不同形状、不同焊盘分布的 BGA 元件（Different BGA components with photonic and semiconductor materials）</figcaption>
+      </figure>
+
+      <p>由于光子与半导体材料的组合，新元件沿集成电路的<strong>热分布可能不再均匀</strong>。这正是问题所在：焊接必须遵循<span class="key-term">回流焊工艺（reflow soldering）</span>，它包含四个阶段——预热（pre-heat）、浸润（soak）、回流（reflow）、冷却（cooling）。</p>
+      <div class="insight">
+        <div class="label">Note</div>
+        <p>回流焊的温度窗口是理解全文的关键标尺：</p>
+        <ul>
+          <li><strong>预热 + 浸润阶段：</strong>温度须保持 $\mathrm{T} < 217\,^{\circ}\mathrm{C}$，目的是避免元件遭受<strong>热冲击（thermal shock）</strong>。</li>
+          <li><strong>回流阶段：</strong>温度落在 $217\,^{\circ}\mathrm{C} \le \mathrm{T} \le 260\,^{\circ}\mathrm{C}$，这个区间才能让<strong>无铅焊膏</strong>发生固→液相变，形成真正的焊点。</li>
+        </ul>
+        <p>记住这两个数字：只有把温度推到 217 °C 以上，焊接才真正"发生"。后文会看到，本文单靠 VIM+FILSS 只能达到约 163–170 °C（仍在预热区），需要加镀增透膜才能进入回流区。</p>
+      </div>
+
+      <h3 id="s1-1">1.1 提出的方法（VIM + FILSS）</h3>
+      <p>所提方法是在 <span class="key-term">FILSS</span> 与待焊目标之间放置一块 <span class="key-term">VIM</span>，从而在光子 SMT 元件上得到一个<strong>特定面积</strong>的光与热分布（见图 2）。FILSS 使用带椭圆金反射镜的<span class="key-term">石英钨卤灯（QTH lamp）</span>作为红外源，波长覆盖从紫外到红外的宽谱段；其光路基于一套<strong>成像匀光（imaging homogenizer）</strong>系统。</p>
+
+      <figure>
+        <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-08/dae43373-dd75-42f4-84e0-875ab376673c/b88532bd720738433d47a2e62051b88db600258f99afcfbf973ec46eda6241bf.jpg" alt="Fig 2 提出的焊接方法" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+        <figcaption>图 2 &mdash; 焊接光子 SMT 元件的所提方法示意（The proposed method to solder photonic SMT components）</figcaption>
+      </figure>
+
+      <p>由于 SMT 元件靠<strong>热传导</strong>焊接，且不能被任何方向的力挤压（否则会导致元件错位 misalignment），VIM 不能接触元件。为此作者分析了两种放置情形：</p>
+      <ul>
+        <li><strong>情形一（近距离 Dz1）：</strong>VIM 靠近目标但不接触，x 轴需相应偏移 Dx1；</li>
+        <li><strong>情形二（远距离 Dz2）：</strong>VIM 远离目标，x 轴偏移 Dx2。</li>
+      </ul>
+
+      <figure>
+        <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-08/dae43373-dd75-42f4-84e0-875ab376673c/b8214fed6c95006a7151d2eaa2d534313424a3fce628713629a43a1b1c13660d.jpg" alt="Fig 3 光线追迹" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+        <figcaption>图 3 &mdash; (a) 所提方法的光线追迹；(b) VIM 置于近距离；(c) VIM 置于远距离（Ray trace for the proposed method; VIM at short / long distance）</figcaption>
+      </figure>
+    </section>
+
+    <section id="s2">
+      <h2>2. SMT 组件热分布理论</h2>
+      <p>错位与冷焊（cold solder）会损害整个系统的功能，因此焊接系统产生的温度与传热必须<strong>均匀</strong>，并达到合金熔点才能形成良好焊点。分析这类系统（如 FILSS）的三条途径是：<strong>热传递、红外辐射、热传导</strong>。</p>
+
+      <h3 id="s2-rad">辐射传热 &mdash; 式 (1)</h3>
+      <p>对 FILSS，辐射传热由下式给出：</p>
+      <div class="math-block">
+      $$Q_{IR} = V \cdot \varepsilon_{s} \cdot \Gamma_{i} \cdot \Gamma_{OE} \cdot \alpha_{SMT} \cdot \sigma \cdot (T_{S}^{4} - T_{SMT}^{4}) \tag{1}$$
+      </div>
+      <p class="math-note"><strong>解读：</strong>这是<span class="key-term">斯特藩–玻尔兹曼定律（Stefan–Boltzmann law）</span>的工程化写法。核心是 $(T_S^4 - T_{SMT}^4)$：辐射传热正比于灯源温度与元件温度的<strong>四次方之差</strong>——所以温度稍有提升，辐射量急剧增大。前面一串系数（$V,\varepsilon_s,\Gamma_i,\Gamma_{OE},\alpha_{SMT}$）都是 0–1 之间的"打折因子"，逐级衰减真正到达元件的能量。</p>
+      <div class="summary-table">
+        <h4>式 (1) 各符号含义</h4>
+        <table>
+          <tr><th>符号</th><th>含义</th><th>取值/单位</th></tr>
+          <tr><td>$Q_{IR}$</td><td>辐射传热量</td><td>W/cm²</td></tr>
+          <tr><td>$V$</td><td>系统几何视场因子（geometric view factor）</td><td>0–1</td></tr>
+          <tr><td>$\varepsilon_s$</td><td>红外源发射率（emissivity）</td><td>0–1</td></tr>
+          <tr><td>$\Gamma_i$</td><td>光学元件内部透射率</td><td>0–1</td></tr>
+          <tr><td>$\Gamma_{OE}$</td><td>各玻璃-空气界面累积透射系数</td><td>0–1</td></tr>
+          <tr><td>$\alpha_{SMT}$</td><td>SMT 元件吸收率（absorptivity）</td><td>0–1</td></tr>
+          <tr><td>$\sigma$</td><td>斯特藩–玻尔兹曼常数</td><td>$5.67\times10^{-12}$ W/cm²/K⁴</td></tr>
+          <tr><td>$T_S,\ T_{SMT}$</td><td>灯源、SMT 元件温度</td><td>K</td></tr>
+        </table>
+      </div>
+      <div class="insight">
+        <div class="label">Note</div>
+        <p>为什么作者要把 VIM 的衍射效应"塞进"视场因子 $V$？因为 $V$ 是唯一一个描述"有多少辐射几何上能到达目标"的因子。VIM 遮挡了一部分光路，在边界处衍射使强度降到 50%，等价于把该处的 $V$ 从 1 打折到 0.5。这样无需重写整个物理模型，只要替换 $V$，式 (1) 就能预测 VIM 边界的传热量——这是本文把<strong>光学衍射与热学传热连接起来</strong>的桥梁。</p>
+      </div>
+
+      <figure>
+        <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-08/dae43373-dd75-42f4-84e0-875ab376673c/d6285faefb5871619b66b1e4663cfc8dd4d5e64908d347ba672ab27f62b615a8.jpg" alt="Fig 4 传热示意" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+        <figcaption>图 4 &mdash; 所提 FILSS 方法中的传热过程（Heat transfer in the proposed method for FILSS）</figcaption>
+      </figure>
+
+      <h3 id="s2-cond">传导传热 &mdash; 式 (2)</h3>
+      <div class="math-block">
+      $$Q_{C} = K \cdot A \frac{(T_{1} - T_{2})}{\Delta x} \tag{2}$$
+      </div>
+      <p class="math-note"><strong>解读：</strong>这是<span class="key-term">傅里叶导热定律（Fourier's law）</span>。热量在元件<strong>厚度方向</strong>上传导：$T_1$（顶面）与 $T_2$（底面）的温差越大、材料越薄（$\Delta x$ 小）、导热系数 $K$ 越高、截面积 $A$ 越大，传导的热量 $Q_C$ 就越多。物理链条是：红外辐射先打到元件顶面（式 1），再靠传导（式 2）把热量送到底部焊球把焊料熔化。</p>
+      <div class="summary-table">
+        <h4>式 (2) 各符号含义</h4>
+        <table>
+          <tr><th>符号</th><th>含义</th><th>单位</th></tr>
+          <tr><td>$Q_C$</td><td>传导传热量</td><td>W</td></tr>
+          <tr><td>$K$</td><td>热导率（thermal conductivity）</td><td>W/cm-°C</td></tr>
+          <tr><td>$A$</td><td>横截面积</td><td>cm²</td></tr>
+          <tr><td>$T_1,\ T_2$</td><td>元件顶面、底面温度</td><td>°C</td></tr>
+          <tr><td>$\Delta x$</td><td>体材料厚度</td><td>cm</td></tr>
+        </table>
+      </div>
+
+      <h3 id="s2-diff">直边衍射 &mdash; 式 (3)（全文核心）</h3>
+      <p>由于使用白炽灯作为红外源，且 VIM 采用<strong>直边（straight edge）</strong>设计，因此需要分析<strong>不相干光在直边处的衍射</strong>。此时波的叠加产生衍射图样，一些光线以不同角度混乱地进入 VIM 所限定的区域。直边不相干光衍射的强度由下式给出：</p>
+      <div class="math-block">
+      $$I_{(r)} = \frac{1}{2} + \frac{1}{\pi} Si_{(r)} - \frac{(1 - \cos(r))}{r} \tag{3}$$
+      </div>
+      <p class="math-note"><strong>解读：</strong>其中 $r = 2a\pi y /[(1+m)\lambda f]$，$a$ 是入瞳（有效孔径）直径，$m$ 是光学系统放大率，$\lambda$ 是波长，$f$ 是焦距，$y$ 是直边位置，$Si(r)$ 是<strong>正弦积分函数</strong>。关键在于：当 $y=0$（正好在直边边界）时，$Si(0)=0$、$\cos(0)=1$，公式退化为 $I=\tfrac{1}{2}$——<strong>边界处强度恰好是总强度的 50%</strong>。这就是全文那个"50%"的数学来源。</p>
+      <div class="insight">
+        <div class="label">Note</div>
+        <p>这里必须区分两种衍射：<strong>相干光（如激光）</strong>在直边处会产生明暗相间的振荡条纹（菲涅耳条纹）；而本文用的是<strong>不相干白炽光</strong>，各波长、各相位随机叠加，振荡被"抹平"，只留下一条<strong>平滑的 S 形过渡曲线</strong>——强度从边界外的 0 平滑爬升到边界内的 100%，正中间穿过 50%。正因为这条曲线平滑且可预测，作者才能把"边界 = 50% 强度"当作一条可靠的工程设计规则。</p>
+      </div>
+
+      <figure>
+        <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-08/dae43373-dd75-42f4-84e0-875ab376673c/cd9bb5e8149ec1815ce0506141294224303a64b584c85fa3f8ec5a31aa8ecc58.jpg" alt="Fig 5 直边衍射强度分布" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+        <figcaption>图 5 &mdash; 直边不相干光衍射强度分布图；直边零位处约为总强度的 50%（Diffraction intensity distribution in straight edge with incoherent light）</figcaption>
+      </figure>
+
+      <h3 id="s2-total">总传热 &mdash; 式 (4) 与 (5)</h3>
+      <p>由于直边衍射造成 50% 的强度衰减，进而造成辐射传热减少。把式 (3) 得到的强度当作视场因子 $V$ 代入式 (1)，得到总辐射传热：</p>
+      <div class="math-block">
+      $$Q_{TIR} = \Sigma Q_{DIR} + Q_{IR} \tag{4}$$
+      </div>
+      <p class="math-note"><strong>解读：</strong>$Q_{TIR}$ 是到达外表面的总辐射传热；$Q_{DIR}$ 是 VIM 衍射造成的辐射传热"累积衰减量"；$Q_{IR}$ 是来自 FILSS 的直接辐射（式 1）。直观理解：<strong>总热量 = 直接辐射 + 被衍射削弱的那部分</strong>，后者正是 VIM 用来"雕刻"边界热场的部分。</p>
+      <div class="math-block">
+      $$Q_{TC} = \Sigma Q_{DC} + Q_{C} \tag{5}$$
+      </div>
+      <p class="math-note"><strong>解读：</strong>传导侧的对应关系。$Q_{TC}$ 是总传导传热；$Q_{DC}$ 是 VIM 衍射带来的传导传热衰减量；$Q_C$ 是 FILSS 的直接传导（式 2）。本分析<strong>忽略了元件四周环境的传热</strong>——这是一个简化假设，读文献时需留意其适用边界。</p>
+      <div class="summary-table">
+        <h4>本节要点速查</h4>
+        <table>
+          <tr><th>公式</th><th>一句话解释</th></tr>
+          <tr><td>式 (1) 辐射</td><td>灯源以 $T^4$ 律辐射，经一串 0–1 系数衰减后到达元件顶面</td></tr>
+          <tr><td>式 (2) 传导</td><td>热量按傅里叶定律穿过元件厚度传到底部焊球</td></tr>
+          <tr><td>式 (3) 衍射</td><td>不相干光在直边处平滑过渡，边界强度恒为 50%（全文核心）</td></tr>
+          <tr><td>式 (4)(5) 总量</td><td>总传热 = 直接项 + VIM 衍射造成的衰减项</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="s3">
+      <h2>3. 仿真与实验方法</h2>
+      <p>辐照度仿真在 <span class="key-term">Zemax</span> 软件中用<strong>非序列模式（non-sequential mode）</strong>完成。光源建模为椭圆反射镜 + 灯丝，光功率 <strong>69.8 W</strong>。光学元件的透镜采用<span class="key-term">紫外熔石英（UV Fused Silica）</span>与 <span class="key-term">B270 玻璃</span>——因其热膨胀系数低、光学质量优良，且在紫外到近红外区有良好透过窗口。VIM 作为"挡光元件"放在 FILSS 与目标（探测器）之间，以获得特定面积的光分布。</p>
+      <div class="insight">
+        <div class="label">Note</div>
+        <p><strong>非序列模式</strong>是 Zemax 处理这类系统的关键：普通"序列模式"假设光线按固定顺序穿过每个面，适合成像镜头；但本系统里光线会被 VIM 遮挡、散射、以任意角度乱窜，顺序不确定，因此必须用非序列模式做<strong>蒙特卡洛式光线追迹</strong>，才能真实统计到达目标面的辐照度分布。</p>
+      </div>
+      <p>实验方面：FILSS 架设在光学平台上，光源为发射谱覆盖紫外到红外的<strong>钨卤灯</strong>；用<span class="key-term">热成像相机（thermography camera）</span>测量目标处的热分布，VIM 置于末级透镜与目标之间。</p>
+      <p><strong>一条重要的几何标定关系：</strong>为在 x 轴维持特定工作区，挡光块需随元件间距重定位——在 z 轴距目标 <strong>10 mm</strong> 时，x 轴需从光轴偏移约 <strong>2 mm</strong>；该关系适用于目标尺寸 20–30 mm 的范围。</p>
+    </section>
+
+    <section id="s4">
+      <h2>4. 结果与分析</h2>
+      <p>带成像匀光系统的 FILSS 在<strong>整个目标</strong>上产生均匀辐照；一旦插入 VIM，就在输出端得到<strong>特定面积</strong>的光/热分布。作者分析两种情形：VIM 距目标 20 mm（近）与 30 mm（远）。</p>
+
+      <h3 id="s4-irr">4.1 辐照度分布（图 6 与表 1）</h3>
+      <p>图 6 给出 Zemax 仿真的光斑与辐照度分布。(a)(b) 为光斑分布，(c)(d) 为对应的辐照度曲线；近距离得到<strong>强度更高、面积更集中</strong>的分布，远距离则得到更展宽的分布。</p>
+
+      <div class="figure-row">
+        <figure>
+          <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-08/dae43373-dd75-42f4-84e0-875ab376673c/31aafbdd74f283595268ae083dee385b2c38114d780a66250882afd419d2c4c2.jpg" alt="Fig 6a 光斑近距离" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+          <figcaption>(a) 近距离光斑分布</figcaption>
+        </figure>
+        <figure>
+          <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-08/dae43373-dd75-42f4-84e0-875ab376673c/86809461aa0f9f03ee1a3e54106ba53630887372257b4c3bb9848e0e1240b09a.jpg" alt="Fig 6b 光斑远距离" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+          <figcaption>(b) 远距离光斑分布</figcaption>
+        </figure>
+      </div>
+      <div class="figure-row">
+        <figure>
+          <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-08/dae43373-dd75-42f4-84e0-875ab376673c/027f4d58c9026f2482a07b1acb9f64bd725cd18eaa34d442a29efffa4d5315b3.jpg" alt="Fig 6c 辐照度近距离" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+          <figcaption>(c) 近距离辐照度曲线（横轴：距离 mm）</figcaption>
+        </figure>
+        <figure>
+          <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-08/dae43373-dd75-42f4-84e0-875ab376673c/7fb669b4c69b1710ad91a6d48f307683d54d8f08d418ef0689e9a12396b991c3.jpg" alt="Fig 6d 辐照度远距离" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+          <figcaption>(d) 远距离辐照度曲线（横轴：距离 mm）</figcaption>
+        </figure>
+      </div>
+      <figcaption style="text-align:center; margin:-6px 0 22px; font-size:13.5px; color:var(--text-secondary);">图 6 &mdash; Zemax 仿真在探测器处得到的光斑与辐照度分布：(a) 近距离光斑、(b) 远距离光斑、(c) 近距离辐照度、(d) 远距离辐照度。</figcaption>
+
+      <table class="data-table">
+        <caption>表 1 &mdash; Zemax 中 FILSS+VIM 的测量（目标 35×35 mm）</caption>
+        <tr><th></th><th>VIM 近距离（20 mm）</th><th>VIM 远距离（30 mm）</th></tr>
+        <tr><td>峰值辐照度（Peak irradiance）</td><td>24.46 mW/mm²</td><td>24.39 mW/mm²</td></tr>
+        <tr><td>顶宽 Wt（Top Width）</td><td>3.375 mm</td><td>3.4 mm</td></tr>
+        <tr><td>底宽 Wb（Bottom Width）</td><td>6.375 mm</td><td>8.625 mm</td></tr>
+        <tr><td>底部辐照度（Bottom irradiance）</td><td>11.08 mW/mm²</td><td>10.75 mW/mm²</td></tr>
+      </table>
+      <div class="insight">
+        <div class="label">Note</div>
+        <p>表 1 揭示了两个关键点：<strong>(1) 峰值辐照度几乎不变</strong>（24.46 vs 24.39）——远近距离峰值都在同一量级，顶宽 Wt 都约占 35×35 mm 目标的 9.64%。真正的区别在<strong>底宽 Wb</strong>：近距离 6.375 mm（比 Wt 增 8.27%，占面积 18.21%），远距离展宽到 8.625 mm（占面积 24.64%）。<strong>(2) 底部辐照度（约 11 mW/mm²）恰好约为峰值（约 24.5 mW/mm²）的一半</strong>——这就是式 (3) 预言的"边界 50%"在数据上的直接印证。VIM 距离越远，光斑边缘越"散"（Wb 越大），但中心强度不变。</p>
+      </div>
+
+      <h3 id="s4-therm">4.2 热分布（图 7 与表 2）</h3>
+      <p>热成像给出 BGA（35×35 mm）上的温度分布。图 7(a) 为 VIM 近距离（20 mm），(b) 为远距离（30 mm）。热分布表现出与辐照度分布<strong>相同的行为</strong>——这正是全文要验证的"光→热"一致性。</p>
+
+      <div class="figure-row">
+        <figure>
+          <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-08/dae43373-dd75-42f4-84e0-875ab376673c/17fce6e86ac07e4ac07519571f0d2a8a953ebeb021721cfd00b8d7947bdd328f.jpg" alt="Fig 7a 热分布近距离" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+          <figcaption>(a) VIM 近距离（20 mm）热分布</figcaption>
+        </figure>
+        <figure>
+          <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-08/dae43373-dd75-42f4-84e0-875ab376673c/2931658e9ce3f1cd11b7fcec0d8f898943d92161ef84e1e0a6980f0f41f795ab.jpg" alt="Fig 7b 热分布远距离" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+          <figcaption>(b) VIM 远距离（30 mm）热分布</figcaption>
+        </figure>
+      </div>
+      <figcaption style="text-align:center; margin:-6px 0 22px; font-size:13.5px; color:var(--text-secondary);">图 7 &mdash; 热成像相机测得的热分布：(a) VIM 近距离、(b) VIM 远距离。</figcaption>
+
+      <table class="data-table">
+        <caption>表 2 &mdash; FILSS+VIM 在 BGA 上的测量</caption>
+        <tr><th></th><th>VIM 近距离（20 mm）</th><th>VIM 远距离（30 mm）</th></tr>
+        <tr><td>峰值温度（Peak temperature）</td><td>163 °C</td><td>170.11 °C</td></tr>
+        <tr><td>顶宽 Wt（Top Width）</td><td>6 mm</td><td>6 mm</td></tr>
+        <tr><td>底宽 Wb（Bottom Width）</td><td>13.75 mm</td><td>15.5 mm</td></tr>
+        <tr><td>底部温度（Bottom temperature）</td><td>142.5 °C</td><td>143.78 °C</td></tr>
+      </table>
+      <div class="insight">
+        <div class="label">Note</div>
+        <p>热分布与辐照度分布的<strong>形状</strong>相同，但要注意一个关键区别——<strong>对比度并不相同</strong>：</p>
+        <ul>
+          <li><strong>辐照度（表 1）</strong>：底部/峰值 = 11.08/24.46 ≈ <strong>45%</strong>，10.75/24.39 ≈ <strong>44%</strong> → 确实约为一半，严格印证直边衍射的"50% 边界"规律。</li>
+          <li><strong>温度（表 2）</strong>：底部/峰值 = 142.5/163 ≈ <strong>87%</strong>，143.78/170.11 ≈ <strong>85%</strong> → <strong>并非一半</strong>。</li>
+        </ul>
+        <p>这两种百分比并非矛盾，而是斯特藩-玻尔兹曼定律 T⁴ 关系的必然体现：辐照度降为 50% → 表面在辐射平衡下 $(0.5)^{1/4} \approx 0.84$，温度自然降到峰值的 ~84%。实测 85–87% 略高，多余的几个百分点来自<strong>横向热传导</strong>（中心热量流向边缘）。反向验证亦然：<strong>$0.85^4 \approx 0.52$</strong>——VIM 边界向空间净辐射的热量 ≈ 50%，与入射辐照度严格平衡。原文直接称温度也是"50%"表述不够清晰（省略了 T⁴ 推导），但<strong>数据背后物理完整自洽</strong>。远距离峰值略高（170 &gt; 163 °C），作者解释为远距离时更多光线抵达被遮挡区域。</p>
+      </div>
+
+      <div class="insight">
+        <div class="label">Note</div>
+        <p><strong>致命短板与解决方案：</strong>本系统峰值温度只有 163–170 °C，落在<strong>预回流区（pre-reflow zone）</strong>，达不到 217 °C 的熔焊门槛。作者的对策是给 FILSS 每个光学界面镀<span class="key-term">增透膜（AR coating，Anti-Reflection coating）</span>——减少界面反射损失可让温度提升多达 40%，达到 <strong>228.2–238.1 °C</strong>，从而真正进入回流区、完成焊接。但要注意：即便镀了 AR 膜，<strong>VIM 边界位置（50% 强度处）的温度仍只有约 200 °C</strong>，仍属预热/浸润区——这意味着 VIM 遮挡边缘天然不会被焊上，恰好起到"保护非焊接区"的作用。</p>
+      </div>
+    </section>
+
+    <section id="s5">
+      <h2>5. 结论</h2>
+      <p>作者分析了 VIM 置于 BGA 光子 SMT 元件近距离与远距离时，FILSS 输出光束的热与辐照度分布，主要结论：</p>
+      <ol>
+        <li>Zemax 仿真的辐照度分布与实验测得的热分布<strong>吻合良好</strong>，证明"光分布可预测热分布"。</li>
+        <li>近/远距离（20/30 mm）的<strong>峰值辐照度与顶宽相近</strong>，主要差别在<strong>底宽</strong>：远距离底宽更大（光斑更展宽）。</li>
+        <li>远距离时遮挡区温度更高（更多射线到达），近距离时射线密度与温度更低。</li>
+        <li>峰值温度：近距离 163 °C，远距离 170.11 °C；VIM 位置底部温度 142.5 / 143.78 °C（为峰值的 ~85–87%）。入射辐照度降为 50% 后经 T⁴ 转化 → 温度自然降到 ~84%，实测一致；<strong>$0.85^4 \approx 0.52$</strong> 证实辐射平衡吻合。</li>
+        <li>需给光学元件镀 <strong>AR 膜</strong>把温度提升到 228.2–238.1 °C，才足以进入回流阶段完成良好焊接。</li>
+      </ol>
+      <p>VIM 带来 50% 的强度/热量效应"显著地"影响了光子元件所能达到的温度，进而直接决定能否正确焊接。本工作揭示了<strong>辐照度与热分布之间的定量关系</strong>，可为开发采用 VIM、并考虑光路中不同位置及不相干衍射效应的新型焊接系统提供参考。</p>
+    </section>
+
+    <section id="takeaway" class="takeaway">
+      <h2>核心要点总结</h2>
+      <ol>
+        <li><strong>问题：</strong>板上光学时代，光子 SMT 元件需要"非接触 + 面积可控 + 不损伤"的定向焊接。</li>
+        <li><strong>方法：</strong>在聚焦红外焊接系统（FILSS）输出端插入可变辐照掩模（VIM），雕刻出特定面积的光/热场。</li>
+        <li><strong>核心物理：</strong>不相干光在直边处衍射 → 边界强度平滑过渡且恒为 <strong>50%</strong>（式 3），把它当作视场因子 $V$ 代入斯特藩–玻尔兹曼式，就打通了"光学 → 传热"。</li>
+        <li><strong>验证与物理自洽：</strong>Zemax 仿真辐照度与热成像实验的分布形状高度一致。辐照度降为 50% → 经 T⁴ 转化 → 温度自然降为 ~84%，实测 ~85–87% 与之吻合；<strong>$0.85^4 \approx 0.52$</strong> 证实辐射平衡闭环。原文直接将温度也表述为 50% 不够清晰，但数据无矛盾。</li>
+        <li><strong>距离效应：</strong>近/远距离峰值相近，差别在底宽（远距离光斑更展宽、遮挡区温度略高）。</li>
+        <li><strong>局限与出路：</strong>裸系统仅 163–170 °C（预回流区），需镀 AR 膜提温至约 228–238 °C 才能真正回流焊接。</li>
+      </ol>
+    </section>
+
+    <section class="refs">
+      <h2>参考文献（节选）</h2>
+      <ol>
+        <li>C. Doerr 等, "Silicon Photonics Coherent Transceiver in a Ball-Grid Array Package," OFC, 2017.</li>
+        <li>R. Strauss, <em>SMT Soldering Handbook</em>, Newnes, 1998. [13]</li>
+        <li>C. Anguiano 等, "Study of heating capacity of focused IR light soldering systems," Opt. Express 21(20), 23851–23865, 2013. [19]</li>
+        <li>P.S. Considine, "Effects of coherence on imaging systems," J. Opt. Soc. Am. 56(8), 1001–1009, 1966. [21]</li>
+        <li>J.W. Goodman, <em>Introduction to Fourier Optics</em>, 154–160, 1996. [24]</li>
+        <li>M. Felix 等, "QTH lamp optical output power analysis for SMT components' infrared light soldering systems," IECON, 2014. [25]</li>
+      </ol>
+      <p style="margin-top:10px;">完整 25 条参考文献见原文 References 部分。</p>
+    </section>
+  </main>
+</div>
+
+<a href="#" class="back-to-top" title="返回顶部">&uarr;</a>
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('active')">
+  <span class="lightbox-close">&times;</span>
+  <img id="lb-img" src="">
+</div>
+<script>
+document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ document.getElementById('lightbox').classList.remove('active'); }});
+</script>
+</body>
+</html>

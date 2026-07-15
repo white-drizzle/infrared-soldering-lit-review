@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>核心解读 · 红外热源在电子模块贴装/拆卸中的对比效能</title>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$'], ['\\[','\\]']], tags: 'ams' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root{
+  --text:#1a1a1a; --text-secondary:#5a5a5a; --bg:#fdfcfa; --surface:#ffffff;
+  --border:#e0dcd4; --accent:#8b3a3a; --highlight-box:#faf6ef; --highlight-border:#d4a843;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:"Noto Serif SC","Songti SC",Georgia,serif;
+  font-size:16.5px; line-height:1.85;
+}
+.layout{display:flex; max-width:1200px; margin:0 auto; gap:24px; padding:0 24px;}
+.toc-sidebar{
+  position:sticky; top:0; align-self:flex-start; width:240px; flex-shrink:0;
+  max-height:100vh; overflow-y:auto; padding:28px 12px 28px 0; font-size:14px;
+}
+.toc-sidebar h3{font-size:13px; letter-spacing:1px; color:var(--accent); text-transform:uppercase; margin:0 0 12px;}
+.toc-sidebar a{display:block; color:var(--text-secondary); text-decoration:none; padding:4px 8px; border-left:2px solid transparent; line-height:1.4;}
+.toc-sidebar a:hover{color:var(--accent); border-left-color:var(--highlight-border); background:var(--highlight-box);}
+.toc-sidebar a.sub{padding-left:20px; font-size:13px;}
+main{flex:1; min-width:0; max-width:860px; padding:36px 0 80px;}
+header.page-head{border-bottom:3px double var(--accent); padding-bottom:20px; margin-bottom:8px;}
+header.page-head .kicker{color:var(--accent); font-size:13px; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;}
+header.page-head h1{font-size:1.85rem; line-height:1.35; margin:0 0 12px;}
+header.page-head .meta{font-size:14px; color:var(--text-secondary); line-height:1.6;}
+header.page-head .meta strong{color:var(--text);}
+header.page-header{border-bottom:2px solid var(--accent); padding-bottom:18px; margin-bottom:32px;}
+header.page-header h1{font-size:1.65rem; color:var(--accent); line-height:1.3;}
+header.page-header .sub{font-size:.87rem; color:var(--text-secondary); margin-top:6px;}
+header.page-header .cite{font-size:.8rem; color:#999; margin-top:4px;}
+header.page-header .journal-info{font-size:.8rem; margin-top:4px;}
+header.page-header .journal-info .badge{display:inline-block; padding:1px 8px; border-radius:3px; font-size:.75rem; font-weight:600; margin-right:4px;}
+header.page-header .journal-info .badge-scie{background:#e8f0fe; color:#1a56c4;}
+header.page-header .journal-info .badge-esci{background:#fef3e8; color:#c47a1a;}
+header.page-header .journal-info .badge-ei{background:#e8f8ee; color:#2a8c3e;}
+header.page-header .journal-info .badge-delisted{background:#fde8e8; color:#c41a1a;}
+header.page-header .journal-info .if-val{color:var(--accent); font-weight:600;}
+header.page-header .meta{font-size:.78rem; color:#aaa; margin-top:2px; font-family:monospace; word-break:break-all;}
+header.page-header .meta a{color:#aaa; text-decoration:none;}
+header.page-header .meta a:hover{color:var(--accent); text-decoration:underline;}
+header.page-header .keywords{font-size:.82rem; color:var(--text-secondary); margin-top:6px;}
+header.page-header .keywords strong{color:var(--accent);}
+h2{font-size:1.5rem; color:var(--accent); margin:44px 0 16px; padding-bottom:8px; border-bottom:1px solid var(--border);}
+h3{font-size:1.2rem; margin:32px 0 12px;}
+h4{font-size:1.05rem; margin:20px 0 10px;}
+p{margin:12px 0;}
+figure{margin:24px 0; text-align:center;}
+figure img{max-width:100%; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:zoom-in; box-shadow:0 2px 10px rgba(0,0,0,.06);}
+figcaption{font-size:13.5px; color:var(--text-secondary); margin-top:8px; line-height:1.55; text-align:center;}
+.figure-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:end;}
+.figure-row figure{margin:8px 0;}
+.insight{background:var(--highlight-box); border-left:4px solid var(--highlight-border); border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0;}
+.insight .label{display:inline-block; font-family:Georgia,serif; font-size:12px; font-weight:bold; letter-spacing:1.5px; color:var(--accent); text-transform:uppercase; margin-bottom:6px;}
+.insight p{margin:6px 0;}
+.insight ul{margin:6px 0;}
+.key-term{color:var(--accent); font-weight:600;}
+.math-block{overflow-x:auto; padding:8px 0;}
+.math-note{background:#f6f4ef; border-radius:6px; padding:10px 14px; font-size:14.5px; color:var(--text-secondary); margin:8px 0 18px;}
+.math-note strong{color:var(--accent);}
+.summary-table{margin:26px 0; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:6px 18px 14px;}
+.summary-table h4{color:var(--accent); margin:12px 0;}
+table{border-collapse:collapse; width:100%; font-size:14.5px; margin:8px 0;}
+th,td{border:1px solid var(--border); padding:8px 12px; text-align:left; vertical-align:top;}
+th{background:var(--accent); color:#fff; font-weight:600;}
+tbody tr:nth-child(even){background:#f7f4ef;}
+.data-table caption{caption-side:top; font-weight:600; color:var(--accent); margin-bottom:6px; text-align:left;}
+.takeaway{background:var(--surface); border:2px solid var(--accent); border-radius:10px; padding:8px 26px 20px; margin:40px 0;}
+.takeaway h2{border:none; color:var(--accent);}
+.takeaway ol{padding-left:22px;}
+.takeaway li{margin:10px 0;}
+.refs{font-size:13px; color:var(--text-secondary); margin-top:36px; border-top:1px solid var(--border); padding-top:16px;}
+.refs h2{font-size:1.2rem;}
+.refs ol{padding-left:20px;}
+.refs li{margin:5px 0; line-height:1.5;}
+.lightbox{display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.88); cursor:zoom-out; justify-content:center; align-items:center; padding:24px;}
+.lightbox.active{display:flex;}
+.lightbox img{max-width:95vw; max-height:95vh; object-fit:contain;}
+.lightbox-close{position:absolute; top:16px; right:24px; color:#fff; font-size:2rem; cursor:pointer; opacity:.6;}
+.lightbox-close:hover{opacity:1;}
+.back-to-top{position:fixed; bottom:28px; right:28px; background:var(--accent); color:#fff; width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:20px; box-shadow:0 3px 12px rgba(0,0,0,.25); opacity:.85;}
+.back-to-top:hover{opacity:1;}
+@media (max-width:900px){.toc-sidebar{display:none;} .layout{padding:0 16px;}}
+@media (max-width:640px){body{font-size:15px;} main{padding:24px 0 60px;} .figure-row{grid-template-columns:1fr;} header.page-head h1{font-size:1.5rem;}}
+@media print{.lightbox,.back-to-top,.toc-sidebar{display:none;} body{max-width:100%;} main{max-width:100%;} .insight{border:1px solid #ccc; box-shadow:none;}}
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="toc-sidebar">
+    <h3>目录</h3>
+    <a href="#abstract">摘要与研究定位</a>
+    <a href="#s1">1. 引言：局部红外加热的意义</a>
+    <a href="#s2">2. 红外热源热场仿真</a>
+    <a href="#s2-planck" class="sub">普朗克谱辐射 (Eq.1)</a>
+    <a href="#s2-wien" class="sub">维恩位移定律 (Eq.2-3)</a>
+    <a href="#s2-sb" class="sub">斯特藩-玻尔兹曼 (Eq.4)</a>
+    <a href="#s2-sim" class="sub">有限元仿真结果</a>
+    <a href="#s3">3. 实验装置</a>
+    <a href="#s4">4. 结果与讨论</a>
+    <a href="#s4-profile" class="sub">焊接热曲线 (图6/7)</a>
+    <a href="#s4-rate" class="sub">加热速率热场 (图8)</a>
+    <a href="#s4-quality" class="sub">焊点质量 (图9)</a>
+    <a href="#s5">5. 结论</a>
+    <a href="#takeaway">核心要点总结</a>
+  </nav>
+
+  <main>
+    <header class="page-header">
+      <h1>红外热源在电子模块贴装与拆卸中的对比效能</h1>
+      <p class="sub">Comparative Effectiveness of Infrared Heat Sources for Mounting and Dismounting Electronic Modules</p>
+      <p class="cite">V. L. Lanin, A. I. Lappo - <em>Surface Engineering and Applied Electrochemistry</em> 2017, 53(4), Belarusian State University of Informatics and Radioelectronics</p>
+      <p class="journal-info"><span class="badge badge-scie">SCIE Q4</span> IF=<span class="if-val">0.7</span> <span class="badge badge-ei">EI</span></p>
+      <p class="meta"><a href="https://doi.org/10.3103/S106837551704010X" target="_blank">DOI: 10.3103/S106837551704010X</a> | 收稿: 2015-07-09 | 接收: 2015-09-18</p>
+      <p class="keywords"><strong>关键词：</strong>红外辐射（Infrared Radiation）; 热源（Heat Sources）; 贴装（Mounting）; 拆卸（Dismounting）; 电子模块（Electronic Modules）</p>
+    </header>
+
+    <section id="abstract">
+      <h2>摘要与研究定位</h2>
+      <p>本文评估用于电子模块贴装（mounting）与拆卸（dismounting）的<strong>短波</strong>与<strong>中波</strong>红外热源的效能。热场模型分析表明：</p>
+      <div class="summary-table">
+        <h4>两种热源核心指标对比（摘要数据）</h4>
+        <table>
+          <tr><th>指标</th><th>KGM 30/300 卤素灯（短波近红外）</th><th>Elstein SHTS/4 陶瓷加热器（中波）</th></tr>
+          <tr><td>PCB 加热不均匀性</td><td>45–55 °C（差异大）</td><td>8–13 °C（很均匀）</td></tr>
+          <tr><td>元件外壳温差</td><td>90–100 °C</td><td>BGA 28–32；QFP 24–26；SMD 5–20 °C</td></tr>
+          <tr><td>加热速率</td><td>快（峰值 20–22 °C/s）</td><td>慢（3–4 °C/s，低 5–7 倍）</td></tr>
+        </table>
+      </div>
+      <div class="insight">
+        <div class="label">Note</div>
+        <p>全文的核心张力就是一个<strong>不可兼得的权衡（trade-off）</strong>：卤素灯波长短、能量密度高、加热快，但热量高度集中在中心，导致 PCB 与元件严重受热不均；陶瓷加热器波长长、加热柔和且对称均匀，但速度慢。中波陶瓷源能在工作区获得更高的加热均匀性、并保证贴装/拆卸时的最优温度曲线——这正是它在<strong>返修（repair）</strong>场景中的价值所在。</p>
+      </div>
+      <p><strong>关键词：</strong>红外辐射、热源、贴装、拆卸、电子模块。</p>
+    </section>
+
+    <section id="s1">
+      <h2>1. 引言：局部红外加热的意义</h2>
+      <p>使用红外源可以实现电子模块贴装时的<strong>局部加热（local heating）</strong>，缩短工件加热时间，降低损伤电子元件的风险。红外加热的优势取决于热源的正确选择与加热装置结构。目前工艺中广泛使用两类红外加热：</p>
+      <ul>
+        <li><span class="key-term">局部聚焦式（local focused）</span>——把红外光束聚焦到焊点区域；</li>
+        <li><span class="key-term">精密漫射式（precise diffused）</span>——用不同几何的反射镜在加热区形成均匀热场。</li>
+      </ul>
+      <p>红外钎焊（IR brazing）具有加热速率高、选择性作用强、热曲线可控等优势。要正确选择热源，须分析被加热体的热场，并评估<strong>加热器与 PCB 之间间距</strong>对加热均匀性和速率的影响。</p>
+      <div class="insight">
+        <div class="label">Note</div>
+        <p>为什么强调"焊接时必须给 PCB 底部预热"？因为局部聚焦红外只加热焊点区，若 PCB 其余部分是冷的，剧烈的局部温差会使板产生<strong>热变形与热应力</strong>，甚至开裂。陶瓷加热器"高温 + 慢响应"的特性对<strong>无铅钎焊（leadless brazing）</strong>尤为重要——无铅焊料熔点更高（约 217 °C 以上），需要稳定持续的高温而非骤热骤冷。</p>
+      </div>
+      <p><strong>研究目标：</strong>评估短波与中波红外热源用于贴装/拆卸电子模块的效能，并优化表面贴装元件的加热温度曲线。</p>
+    </section>
+
+    <section id="s2">
+      <h2>2. 红外热源热场仿真</h2>
+
+      <h3 id="s2-planck">普朗克谱辐射定律 &mdash; 式 (1)</h3>
+      <p>光谱辐射率 $I$ 取决于温度 $T$、波长 $\lambda$ 以及辐射体的光谱发射率：</p>
+      <div class="math-block">
+      $$I_{\lambda} = \varepsilon_{\lambda} C_{1} \lambda^{-5} \left(e^{C_{2}/\lambda T} - 1\right)^{-1} \tag{1}$$
+      </div>
+      <p class="math-note"><strong>解读：</strong>这就是<span class="key-term">普朗克黑体辐射定律（Planck's law）</span>。它描述一个物体在某温度下、各波长上辐射出多少能量。$C_1=3.74$ mW/kV·m、$C_2=0.1439$ m·K 是普朗克常数组合，$\varepsilon_\lambda$ 是辐射体的（光谱）发射系数。核心含义：温度 $T$ 越高，辐射强度越大，且能量向<strong>短波</strong>方向移动——这为下面的维恩位移定律埋下伏笔。</p>
+
+      <figure>
+        <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-10/a090c9e6-769e-4f14-a54b-fe64791cd9ac/d1df61011a08dc837154175187d0e105e27b4183f242e5e97d218c3d2a643fe0.jpg" alt="Fig 1 角系数 Fs" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+        <figcaption>图 1 &mdash; 角系数 $F_s$ 随源-表面间距及加热区尺寸的变化：(1) 小面源对方形区；(2) 线源对矩形区；(3–5) 矩形源对 $L\times L$、$L\times 2L$、$L\times 5L$ 矩形区。</figcaption>
+      </figure>
+
+      <h3 id="s2-wien">维恩位移定律 &mdash; 式 (2) 与 (3)</h3>
+      <p>使黑体辐射通量密度达到最大的波长，由普朗克定律取极值条件求得：</p>
+      <div class="math-block">
+      $$\frac{dE_{\lambda}}{d\lambda} = \frac{d}{d\lambda}\left[\frac{C_{1}}{\lambda^{5}\left(e^{C_{2}/\lambda T} - 1\right)}\right]_{T=\text{const}} = 0 \tag{2}$$
+      </div>
+      <p class="math-note"><strong>解读：</strong>对普朗克曲线求导并令其为零，就是在找"哪个波长辐射最强"。$E_\lambda$ 是温度 $T$ 下黑体的辐射通量密度。这一步是纯数学操作——求极值点。</p>
+      <div class="math-block">
+      $$\lambda_{\mathrm{max}} T = 2.898 \times 10^{-3}\ \mathrm{m \cdot K} \tag{3}$$
+      </div>
+      <p class="math-note"><strong>解读：</strong>式 (2) 的解就是<span class="key-term">维恩位移定律（Wien's displacement law）</span>。$\lambda_{\max}$ 与温度 $T$ 成<strong>反比</strong>：温度越高，峰值波长越短。因此更高的辐射体温度 → 更短波长 → 更强的热发射。这正是"短波卤素灯温度高、加热快"的物理根源。</p>
+      <div class="insight">
+        <div class="label">Note</div>
+        <p>把维恩定律套到本文两种热源上就一目了然：</p>
+        <ul>
+          <li><strong>卤素灯（近红外 0.7–1.5 μm）：</strong>由 $\lambda_{\max}=2.898\times10^{-3}/T$ 反推，灯丝温度约 2000–4000 K（白炽），波长短、能量密度高 → 加热极快，但穿透性强、指向性强，导致中心过热、边缘偏冷。</li>
+          <li><strong>陶瓷加热器（中红外 2–10 μm）：</strong>对应温度仅几百 K，波长长 → 辐射柔和、漫射均匀，符合朗伯（Lambert）漫射假设 → 热场对称均匀，但速度慢。</li>
+        </ul>
+        <p>一句话：<strong>波长决定了"快"还是"匀"，二者天然对立。</strong></p>
+      </div>
+
+      <h3 id="s2-sb">斯特藩-玻尔兹曼定律（含角系数）&mdash; 式 (4)</h3>
+      <p>据斯特藩-玻尔兹曼定律，单位面积辐射出的热量为：</p>
+      <div class="math-block">
+      $$Q = F_{\mathrm{s}}\, \varepsilon\, \sigma\, S_{\mathrm{h}} \left(T_{\mathrm{h}}^{4} - T_{\mathrm{s}}^{4}\right) \tag{4}$$
+      </div>
+      <p class="math-note"><strong>解读：</strong>辐射传热正比于温度的<strong>四次方之差</strong> $(T_h^4-T_s^4)$。相比前文纯黑体式，这里多了一个关键因子 $F_s$——<span class="key-term">角系数（angular / view factor）</span>，它描述"加热器发出的辐射有多少几何上能落到加热区"，取值由加热器与焊接区的尺寸比决定（查图 1）。这就是把理想辐射定律落地到<strong>真实几何布局</strong>的桥梁。</p>
+      <div class="summary-table">
+        <h4>式 (4) 各符号含义</h4>
+        <table>
+          <tr><th>符号</th><th>含义</th></tr>
+          <tr><td>$Q$</td><td>单位面积辐射热量</td></tr>
+          <tr><td>$F_s$</td><td>角系数（由加热器/焊区尺寸比查图 1 得到）</td></tr>
+          <tr><td>$\varepsilon$</td><td>物体发射率（emissivity）</td></tr>
+          <tr><td>$\sigma$</td><td>斯特藩-玻尔兹曼常数</td></tr>
+          <tr><td>$S_h$</td><td>加热面积</td></tr>
+          <tr><td>$T_h,\ T_s$</td><td>加热器温度、被加热表面温度</td></tr>
+        </table>
+      </div>
+
+      <figure>
+        <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-10/a090c9e6-769e-4f14-a54b-fe64791cd9ac/3555ee66c75f77b73b0f5e51793acb6a0604b6af487d2b368197ba77ee442705.jpg" alt="Fig 2 加热器与加热区位置关系" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+        <figcaption>图 2 &mdash; 加热器相对于加热区的位置关系（对应图 1 中曲线 1–5 的五种几何配置）。</figcaption>
+      </figure>
+
+      <h3 id="s2-sim">有限元仿真结果</h3>
+      <p>采用<span class="key-term">有限元法（FEM）</span>在 <strong>SolidWorks 2012 Flow Simulation</strong> 中模拟红外过程。仿真只考虑积分（总）波长辐射；辐射面按绝对黑/白/灰体处理，据朗伯定律其辐射为漫射（光度与方向无关）。模型为 <strong>40×40 mm 四层 PCB</strong>，贴装 BGA、QFP 及 SMD 0805/1206/1210 封装；加热元件距板 <strong>20 mm</strong>。</p>
+
+      <div class="figure-row">
+        <figure>
+          <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-10/a090c9e6-769e-4f14-a54b-fe64791cd9ac/98b4bc6d95d862e1e12bea860960227188615d5e657bba76bd995e49148e1b40.jpg" alt="Fig 3a 卤素灯热场" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+          <figcaption>(a) KGM 30/300 卤素灯：中心峰值 200–205 °C，边缘仅 140 °C</figcaption>
+        </figure>
+        <figure>
+          <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-10/a090c9e6-769e-4f14-a54b-fe64791cd9ac/a1f5cd9ac33f13faf402ef70e783775ff690f9c4a3dffdec43cb4d93ada046de.jpg" alt="Fig 3b 陶瓷加热器热场" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+          <figcaption>(b) Elstein SHTS/4 陶瓷加热器：热场均匀对称</figcaption>
+        </figure>
+      </div>
+      <figcaption style="text-align:center; margin:-6px 0 22px; font-size:13.5px; color:var(--text-secondary);">图 3 &mdash; 电子模块表面的仿真热场：(a) KGM 30/300 卤素灯、(b) Elstein SHTS/4 陶瓷加热器。</figcaption>
+
+      <div class="insight">
+        <div class="label">Note</div>
+        <p>图 3 是全文最直观的对比：<strong>卤素灯</strong>的热量高度集中在中心（峰值 200–205 °C，边缘骤降到 140 °C，PCB 不均匀性达 45–55 °C，元件外壳温差 90–100 °C）；<strong>陶瓷加热器</strong>热场平坦对称，PCB 不均匀性仅 8–13 °C。均匀性差意味着：焊接时有的焊点已过热损伤、有的还没熔化（冷焊），良率难保证。</p>
+      </div>
+
+      <div class="figure-row">
+        <figure>
+          <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-10/a090c9e6-769e-4f14-a54b-fe64791cd9ac/fccfe91f7c02e9154731f100bda5fc8df41f323625ceeecf664db0faf54ba068.jpg" alt="Fig 4a 卤素灯温度-时间" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+          <figcaption>(a) 卤素灯温度-时间曲线</figcaption>
+        </figure>
+        <figure>
+          <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-10/a090c9e6-769e-4f14-a54b-fe64791cd9ac/5c678ce82330123d25daa3cd918dd58602b3335ac19865a0d5ab72c84852e9af.jpg" alt="Fig 4b 陶瓷加热器温度-时间" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+          <figcaption>(b) 陶瓷加热器温度-时间曲线</figcaption>
+        </figure>
+      </div>
+      <figcaption style="text-align:center; margin:-6px 0 22px; font-size:13.5px; color:var(--text-secondary);">图 4 &mdash; 温度-时间依赖关系；距 PCB 距离（mm）：(1) 10、(2) 20、(3) 30、(4) 40。</figcaption>
+
+      <div class="insight">
+        <div class="label">Note</div>
+        <p>图 4 揭示了<strong>间距的强烈影响</strong>：距离每增加 10 mm，短波卤素灯的加热速率减半，中波陶瓷源降低 50%。当间距超过 <strong>20 mm</strong> 后红外加热趋于均匀，元件温度散布不超过 3–5%、PCB 不超过 5–7%。这就是为什么后文把<strong>最优间距定在 20–25 mm</strong>——既保证均匀性，又不过度牺牲速率。</p>
+      </div>
+    </section>
+
+    <section id="s3">
+      <h2>3. 实验装置</h2>
+      <p>受测红外加热器被集成到一台焊接工作站中，用于在 PCB 上贴装/拆卸不同封装的表面贴装元件。工作站由<strong>顶部与底部加热系统、冷却系统、控制单元与显示装置</strong>组成，可在两类顶部加热单元间快速循环切换。</p>
+      <ul>
+        <li><strong>底部加热器：</strong>由两只 KI 220-1000 卤素灯 + 反射镜 + 散热板组成，把 PCB 预热到 <strong>130–170 °C</strong>，保护元件与板免受热冲击。</li>
+        <li><strong>冷却系统：</strong>三只风扇（两只冷却焊接模块与顶部加热器，一只冷却底部加热单元）。</li>
+        <li><strong>控制：</strong>微控制器自动测试加热过程、维持设定温度曲线；数据显示在液晶屏。</li>
+      </ul>
+
+      <figure>
+        <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-10/a090c9e6-769e-4f14-a54b-fe64791cd9ac/bd3ddc9c134559446fb4803627f0536782116e5cb2d3db5d9a271f85132a2ca4.jpg" alt="Fig 5 实验装置" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+        <figcaption>图 5 &mdash; 采用顶部中波陶瓷辐射器的红外钎焊装置（Setup for IR brazing with top medium-wave ceramic radiator）。</figcaption>
+      </figure>
+
+      <p><strong>测温方案：</strong>用 KhK/TKhK 型热电偶测温，信号经运放直流放大后送入微控制器，由内置 10 位 ADC 转为二进制。为降低误差，热电偶信号<strong>每秒采样 20 次取平均</strong>，算法针对 MSP430 系列微控制器优化。研究了底部加热功率 1000 W 下、近红外区（0.7–1.5 μm，卤素灯）与中红外区（2–10 μm，陶瓷加热器）的 SMD 元件红外钎焊热曲线；用 OVEN TRM210 调节仪 + PC 自动处理数据。</p>
+    </section>
+
+    <section id="s4">
+      <h2>4. 结果与讨论</h2>
+
+      <h3 id="s4-profile">4.1 焊接热曲线（图 6 与图 7）</h3>
+      <p>图 6 给出卤素灯与陶瓷加热器的钎焊热曲线。<strong>预热阶段两条曲线形状接近</strong>——因为该阶段只有底部加热器工作（实验中未改变）。进入主加热后，卤素灯的加热速率比陶瓷器高 <strong>71–74%</strong>，这使其成为高产自动化产线的首选主加热元件。</p>
+
+      <figure>
+        <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-10/a090c9e6-769e-4f14-a54b-fe64791cd9ac/8e19535576516bb0a98cd400cca303d98231649f6785d03d75363b887adb16b8.jpg" alt="Fig 6 焊接热曲线" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+        <figcaption>图 6 &mdash; POS61 焊料的钎焊热曲线：(1) KGM 30/300 卤素灯、(2) Elstein SHTS/4 陶瓷加热器。</figcaption>
+      </figure>
+      <div class="insight">
+        <div class="label">Note</div>
+        <p><span class="key-term">POS61（ПОС61）</span>是俄标锡铅焊料，含锡约 61%，接近共晶成分，<strong>熔点约 183–190 °C</strong>。这个数字是读懂全部热曲线的锚点：底部预热把 PCB 带到 130–170 °C（仍低于熔点、避免热冲击），随后顶部红外源把焊点推过 ~190 °C 完成熔焊。正因为熔点固定，两种热源的差别就完全体现在"多快到达该温度"（速率）和"焊区内是否处处都达到该温度"（均匀性）这两个维度上——这正是全文对比的落脚点。</p>
+      </div>
+
+      <figure>
+        <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-10/a090c9e6-769e-4f14-a54b-fe64791cd9ac/0f2f3ee83027fc9b35dca4cee9dd78c76da789ca0dc17d9acd9c931d16c0f2a5.jpg" alt="Fig 7 陶瓷加热器不同间距热曲线" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+        <figcaption>图 7 &mdash; Elstein SHTS/4 陶瓷加热器的钎焊热曲线，间距（mm）：(1) 10、(2) 20。</figcaption>
+      </figure>
+      <div class="insight">
+        <div class="label">Note</div>
+        <p>图 7 有个反直觉的发现：对 BGA 封装，间距从 10 mm 增加到 30 mm（<strong>三倍</strong>），到达钎焊温度的加热速率反而<strong>提高 2–3 倍</strong>。这看似矛盾，实则是因为间距太近时辐射高度集中、热场极不均匀，热量无法有效"铺开"到整个 BGA 焊球阵列；拉开距离后辐射更均匀地覆盖整个封装底部，反而让整体达到熔焊温度更快。这进一步支持了"20–25 mm 最优间距"的结论。</p>
+      </div>
+
+      <h3 id="s4-rate">4.2 加热速率热场（图 8）</h3>
+      <p>图 8 对比两种热源的加热速率（°C/s）等温线形状：</p>
+      <div class="figure-row">
+        <figure>
+          <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-10/a090c9e6-769e-4f14-a54b-fe64791cd9ac/aa298fafe1a472d2f869a6526d088ed2cabbe1f2b3b77ab83045ff173746c337.jpg" alt="Fig 8a 卤素灯加热速率热场" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+          <figcaption>(a) KGM 30/300 卤素灯：峰值 20–22 °C/s，非对称集中</figcaption>
+        </figure>
+        <figure>
+          <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-10/a090c9e6-769e-4f14-a54b-fe64791cd9ac/28bdb72f5447eae66f132182a27e7d8b5bb8ebcecc4f6c966352b809dc52d2ec.jpg" alt="Fig 8b 陶瓷加热器加热速率热场" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+          <figcaption>(b) Elstein SHTS/4 陶瓷加热器：对称、方向无关</figcaption>
+        </figure>
+      </div>
+      <figcaption style="text-align:center; margin:-6px 0 22px; font-size:13.5px; color:var(--text-secondary);">图 8 &mdash; 红外加热速率热场（°C/s）：(a) KGM 30/300 卤素灯；(b) Elstein SHTS/4 陶瓷加热器。</figcaption>
+      <div class="summary-table">
+        <h4>加热速率的空间衰减对比</h4>
+        <table>
+          <tr><th>热源</th><th>峰值速率与区域</th><th>随距离衰减</th></tr>
+          <tr><td>卤素灯 (a)</td><td>20–22 °C/s，集中在 X 向 6–7 mm、Y 向 4–5 mm（约 120 mm²）</td><td>再 3–4 mm 降到 13–15 °C/s，4–5 mm 处降到 8–10 °C/s；非对称、方向相关</td></tr>
+          <tr><td>陶瓷器 (b)</td><td>速率仅 3–4 °C/s（低 5–7 倍）</td><td>距中心 25 mm 仍 3–4 °C/s，30 mm 降到 2–3 °C/s，35 mm 降到 0.5–1 °C/s；对称、与方向无关</td></tr>
+        </table>
+      </div>
+      <div class="insight">
+        <div class="label">Note</div>
+        <p>SolidWorks 2012 仿真给出的不均匀性量化对比很有说服力：</p>
+        <ul>
+          <li><strong>近红外区（卤素）：</strong>PCB 不均匀性 34–36%，元件外壳 26–44%；但速率快——30 mm 间距下 <strong>30 s</strong> 即达钎焊温度。</li>
+          <li><strong>中红外区（陶瓷）：</strong>PCB 不均匀性仅 3–4%，元件 8–12%；但慢——同样条件需 <strong>60 s</strong>。</li>
+        </ul>
+        <p>卤素灯的速率优势是唯一优势，但"20 °C/s 的高速率仅集中在 120 mm² 的小区域"恰恰暴露了它的不均匀本质——快，但快得不均。</p>
+      </div>
+
+      <h3 id="s4-quality">4.3 焊点质量（图 9）</h3>
+      <p>贴装过程中产生的接触焊点部分存在缺陷——在晶体管和电容触点附近发现<strong>焊球（braze balls，球状物）</strong>。缺陷原因可能是<strong>钎焊模式选择不当</strong>及预热阶段<strong>助焊剂溶剂快速蒸发</strong>。对红外站额外调整后重新贴装，用 Carton NSWT-620.PFM-X 显微镜检查，焊点符合 <strong>IPC-A-610D 标准</strong>。</p>
+
+      <div class="figure-row">
+        <figure>
+          <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-10/a090c9e6-769e-4f14-a54b-fe64791cd9ac/bffb30e145580dd5dada6dd0d17a03a2475f1fb04381d33ba51d65fada54bb05.jpg" alt="Fig 9a SMD电容焊点" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+          <figcaption>(a) SMD 电容焊点</figcaption>
+        </figure>
+        <figure>
+          <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-10/a090c9e6-769e-4f14-a54b-fe64791cd9ac/c2e0aba9da598a06158c274effa87100be4cbba36f1847e31805a726b66a6200.jpg" alt="Fig 9b 带状线微芯片焊点" loading="lazy" onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
+          <figcaption>(b) 带状线微芯片焊点</figcaption>
+        </figure>
+      </div>
+      <figcaption style="text-align:center; margin:-6px 0 22px; font-size:13.5px; color:var(--text-secondary);">图 9 &mdash; 高质量焊点：(a) SMD 电容；(b) 带状线微芯片（符合 IPC-A-610D 标准）。</figcaption>
+    </section>
+
+    <section id="s5">
+      <h2>5. 结论</h2>
+      <ol>
+        <li><strong>卤素灯（KGM 30/300）：</strong>PCB 加热不均匀性 45–55 °C，元件外壳温差 90–100 °C；实验等温线显示 20 °C/s 的最高速率集中在仅 <strong>120 mm²</strong> 的区域——快但极不均匀。</li>
+        <li><strong>陶瓷加热器（Elstein SHTS/4）：</strong>PCB 不均匀性仅 8–13 °C，元件与 PCB 温差 BGA 28–32、QFP 24–26、SMD 5–20 °C；加热均匀，但速率（3–4 °C/s）比卤素灯低 <strong>5–7 倍</strong>。</li>
+        <li><strong>选型建议：</strong>卤素灯速率高 → 高产自动化贴装线的主加热元件；中波陶瓷源均匀性高、加热时间长使工件体内热应力减小 → 最适合<strong>SMD 元件返修</strong>的红外站。</li>
+        <li><strong>最优间距：</strong>模块表面与加热元件间距应在 <strong>20–25 mm</strong>，此时元件不均匀性 3–5%、PCB 5–7%。</li>
+      </ol>
+    </section>
+
+    <section id="takeaway" class="takeaway">
+      <h2>核心要点总结</h2>
+      <ol>
+        <li><strong>核心矛盾：</strong>加热"快"与"匀"不可兼得——由维恩位移定律决定：短波高温快但集中，长波低温匀但慢。</li>
+        <li><strong>物理链条：</strong>普朗克谱辐射（式 1）→ 维恩位移（式 3，波长∝1/T）→ 斯特藩-玻尔兹曼含角系数（式 4，$Q\propto F_s(T_h^4-T_s^4)$），$F_s$ 把理想辐射落地到真实几何。</li>
+        <li><strong>卤素灯：</strong>近红外 0.7–1.5 μm，峰值 20–22 °C/s、200–205 °C 中心，PCB 不均 45–55 °C——量产贴装首选。</li>
+        <li><strong>陶瓷器：</strong>中红外 2–10 μm，均匀对称、PCB 不均仅 8–13 °C，速率低 5–7 倍——返修首选。</li>
+        <li><strong>间距是关键旋钮：</strong>每增 10 mm 速率约减半；&gt;20 mm 后趋于均匀；最优 20–25 mm。反直觉：BGA 拉远间距反而更快达到熔焊温度。</li>
+        <li><strong>工程落地：</strong>1000 W 底部预热（130–170 °C）防热冲击；调整钎焊模式与助焊剂后，焊点符合 IPC-A-610D 标准。</li>
+      </ol>
+    </section>
+
+    <section class="refs">
+      <h2>参考文献（节选）</h2>
+      <ol>
+        <li>Zvorykin, D.B., <em>Reflective Infrared Heating Furnaces</em>, Moscow: Mashinostroenie, 1985.</li>
+        <li>Lee, N.-C., <em>Reflow Soldering Processes and Troubleshooting: SMT, BGA, CSP and Flip Chip Technologies</em>, Newnes, 2002.</li>
+        <li>Anguiano, C., Felix, V., Salazar, D., Marquez, H., <em>Opt. Express</em>, 2013, 21(20), 23851–23855.</li>
+        <li>Lanin, V.L., <em>Surf. Eng. Appl. Electrochem.</em>, 2007, 43(5), 381–386.</li>
+        <li>Prakht, V.A. 等, <em>Modeling of Thermal and Electromagnetic Processes in Electrical Machines</em>, Moscow: INFRA-M, 2005.</li>
+        <li>Lanin, V.L., Lappo, A.I., Lavor, T.E., <em>Tekhnol. Elektron. Prom.</em>, 2015, no. 3, 60–62.</li>
+      </ol>
+      <p style="margin-top:10px;">完整 7 条参考文献见原文 References 部分。</p>
+    </section>
+  </main>
+</div>
+
+<a href="#" class="back-to-top" title="返回顶部">&uarr;</a>
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('active')">
+  <span class="lightbox-close">&times;</span>
+  <img id="lb-img" src="">
+</div>
+<script>
+document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ document.getElementById('lightbox').classList.remove('active'); }});
+</script>
+</body>
+</html>
