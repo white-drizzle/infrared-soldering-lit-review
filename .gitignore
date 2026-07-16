@@ -1,8 +1,9 @@
-# Temporary scripts
-html2md.py
-gen_matrix.py
-fix_latex.py
-_fix_skill*.py
+# 临时文件夹（脚本、中间产物、下载的HTML等）
+_tmp/
+
+# Python
+__pycache__/
+*.pyc
 
 # OS files
 Thumbs.db
