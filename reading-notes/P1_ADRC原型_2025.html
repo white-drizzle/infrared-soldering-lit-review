@@ -3,736 +3,582 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>核心解读 · 基于ADRC的红外焊接原型系统</title>
+<title>基于自抗扰控制结构的红外电子器件焊接原型系统</title>
 <script>
 MathJax = {
-  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$'], ['\\[','\\]']], tags: 'ams' }
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$'], ['\\[','\\]']], tags: 'none' }
 };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <style>
-:root{
-  --text:#1a1a1a; --text-secondary:#5a5a5a; --bg:#fdfcfa; --surface:#ffffff;
-  --border:#e0dcd4; --accent:#8b3a3a; --highlight-box:#faf6ef; --highlight-border:#d4a843;
-}
-*{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{
-  margin:0; background:var(--bg); color:var(--text);
-  font-family:"Noto Serif SC","Songti SC",Georgia,serif;
-  font-size:16.5px; line-height:1.85;
-}
-.layout{display:flex; max-width:1200px; margin:0 auto; gap:24px; padding:0 24px;}
-.toc-sidebar{
-  position:sticky; top:0; align-self:flex-start; width:230px; flex-shrink:0;
-  max-height:100vh; overflow-y:auto; padding:28px 12px 28px 0; font-size:14px;
-}
-.toc-sidebar h3{font-size:13px; letter-spacing:1px; color:var(--accent); text-transform:uppercase; margin:0 0 12px;}
-.toc-sidebar a{display:block; color:var(--text-secondary); text-decoration:none; padding:4px 8px; border-left:2px solid transparent; line-height:1.4;}
-.toc-sidebar a:hover{color:var(--accent); border-left-color:var(--highlight-border); background:var(--highlight-box);}
-.toc-sidebar a.sub{padding-left:20px; font-size:13px;}
-main{flex:1; min-width:0; max-width:860px; padding:36px 0 80px;}
-header.page-head{border-bottom:3px double var(--accent); padding-bottom:20px; margin-bottom:8px;}
-header.page-head .kicker{color:var(--accent); font-size:13px; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;}
-header.page-head h1{font-size:1.9rem; line-height:1.35; margin:0 0 12px;}
-header.page-head .meta{font-size:14px; color:var(--text-secondary); line-height:1.6;}
-header.page-head .meta strong{color:var(--text);}
-header.page-header{border-bottom:2px solid var(--accent); padding-bottom:18px; margin-bottom:32px;}
-header.page-header h1{font-size:1.65rem; color:var(--accent); line-height:1.3;}
-header.page-header .sub{font-size:.87rem; color:var(--text-secondary); margin-top:6px;}
-header.page-header .cite{font-size:.8rem; color:#999; margin-top:4px;}
-header.page-header .journal-info{font-size:.8rem; margin-top:4px;}
-header.page-header .journal-info .badge{display:inline-block; padding:1px 8px; border-radius:3px; font-size:.75rem; font-weight:600; margin-right:4px;}
-header.page-header .journal-info .badge-scie{background:#e8f0fe; color:#1a56c4;}
-header.page-header .journal-info .badge-esci{background:#fef3e8; color:#c47a1a;}
-header.page-header .journal-info .badge-ei{background:#e8f8ee; color:#2a8c3e;}
-header.page-header .journal-info .badge-delisted{background:#fde8e8; color:#c41a1a;}
-header.page-header .journal-info .if-val{color:var(--accent); font-weight:600;}
-header.page-header .meta{font-size:.78rem; color:#aaa; margin-top:2px; font-family:monospace; word-break:break-all;}
-header.page-header .meta a{color:#aaa; text-decoration:none;}
-header.page-header .meta a:hover{color:var(--accent); text-decoration:underline;}
-header.page-header .keywords{font-size:.82rem; color:var(--text-secondary); margin-top:6px;}
-header.page-header .keywords strong{color:var(--accent);}
-h2{font-size:1.5rem; color:var(--accent); margin:44px 0 16px; padding-bottom:8px; border-bottom:1px solid var(--border);}
-h3{font-size:1.2rem; margin:32px 0 12px;}
-h4{font-size:1.05rem; margin:20px 0 10px;}
-p{margin:12px 0;}
-figure{margin:24px 0; text-align:center;}
-figure img{max-width:100%; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:zoom-in; box-shadow:0 2px 10px rgba(0,0,0,.06);}
-figcaption{font-size:13.5px; color:var(--text-secondary); margin-top:8px; line-height:1.55; text-align:center;}
-.figure-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:end;}
-.figure-row figure{margin:8px 0;}
-.insight{background:var(--highlight-box); border-left:4px solid var(--highlight-border); border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0;}
-.insight .label{display:inline-block; font-family:Georgia,serif; font-size:12px; font-weight:bold; letter-spacing:1.5px; color:var(--accent); text-transform:uppercase; margin-bottom:6px;}
-.insight p{margin:6px 0;}
-.key-term{color:var(--accent); font-weight:600;}
-.math-block{overflow-x:auto; padding:8px 0;}
-.math-note{background:#f6f4ef; border-radius:6px; padding:10px 14px; font-size:14.5px; color:var(--text-secondary); margin:8px 0 18px;}
-.math-note strong{color:var(--accent);}
-.summary-table{margin:26px 0; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:6px 18px 14px;}
-.summary-table h4{color:var(--accent); margin:12px 0;}
-table{border-collapse:collapse; width:100%; font-size:14.5px; margin:8px 0;}
-th,td{border:1px solid var(--border); padding:8px 12px; text-align:left; vertical-align:top;}
-th{background:var(--accent); color:#fff; font-weight:600;}
-tbody tr:nth-child(even){background:#f7f4ef;}
-.data-table caption{caption-side:top; font-weight:600; color:var(--accent); margin-bottom:6px; text-align:left;}
-.takeaway{background:var(--surface); border:2px solid var(--accent); border-radius:10px; padding:8px 26px 20px; margin:40px 0;}
-.takeaway h2{border:none; color:var(--accent);}
-.takeaway ol{padding-left:22px;}
-.takeaway li{margin:10px 0;}
-.refs{font-size:13px; color:var(--text-secondary); margin-top:36px; border-top:1px solid var(--border); padding-top:16px;}
-.refs h2{font-size:1.2rem;}
-.refs ol{padding-left:20px;}
-.refs li{margin:5px 0; line-height:1.5;}
-.lightbox{display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.88); cursor:zoom-out; justify-content:center; align-items:center; padding:24px;}
-.lightbox.active{display:flex;}
-.lightbox img{max-width:95vw; max-height:95vh; object-fit:contain;}
-.lightbox-close{position:absolute; top:16px; right:24px; color:#fff; font-size:2rem; cursor:pointer; opacity:.6;}
-.lightbox-close:hover{opacity:1;}
-.back-to-top{position:fixed; bottom:28px; right:28px; background:var(--accent); color:#fff; width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:20px; box-shadow:0 3px 12px rgba(0,0,0,.25); opacity:.85;}
-.back-to-top:hover{opacity:1;}
-@media (max-width:900px){.toc-sidebar{display:none;} .layout{padding:0 16px;}}
-@media (max-width:640px){body{font-size:15px;} main{padding:24px 0 60px;} .figure-row{grid-template-columns:1fr;} header.page-head h1{font-size:1.5rem;}}
-@media print{.lightbox,.back-to-top,.toc-sidebar{display:none;} body{max-width:100%;} main{max-width:100%;} .insight{border:1px solid #ccc; box-shadow:none;}}
+  :root {
+    --text: #1a1a1a; --text-secondary: #5a5a5a;
+    --bg: #fdfcfa; --surface: #ffffff;
+    --border: #e0dcd4; --accent: #8b3a3a;
+    --highlight-box: #faf6ef; --highlight-border: #d4a843;
+    --radius: 6px;
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    font-family: "Noto Serif SC", "Songti SC", Georgia, serif;
+    font-size: 16px; line-height: 1.85; color: var(--text);
+    background: var(--bg); -webkit-font-smoothing: antialiased;
+  }
+  .layout { display:flex; max-width:1200px; margin:0 auto; }
+  .toc-sidebar {
+    width: 230px; flex-shrink:0; position:sticky; top:0; height:100vh;
+    overflow-y:auto; padding:28px 18px; background:#f9f7f2;
+    border-right:1px solid var(--border); font-size:.82rem;
+  }
+  .toc-sidebar h4 { font-size:.78rem; color:var(--accent); margin-bottom:10px; text-transform:uppercase; letter-spacing:.05em; }
+  .toc-sidebar a { display:block; padding:2px 0; color:var(--text-secondary); text-decoration:none; }
+  .toc-sidebar a:hover { color:var(--accent); }
+  .toc-sidebar .toc-h3 { padding-left:14px; font-size:.78rem; }
+  .content { flex:1; min-width:0; padding:36px 44px 100px; max-width:820px; }
+
+  .page-header { border-bottom:2px solid var(--accent); padding-bottom:18px; margin-bottom:32px; }
+  .page-header h1 { font-family: "Noto Serif SC", "Songti SC", Georgia, serif; font-size:1.65rem; color:var(--accent); line-height:1.3; }
+  .page-header .sub { font-size:.87rem; color:var(--text-secondary); margin-top:6px; }
+  .page-header .cite { font-size:.8rem; color:#999; margin-top:4px; }
+  .page-header .journal-info { font-size:.8rem; margin-top:4px; }
+  .page-header .journal-info .badge { display:inline-block; padding:1px 8px; border-radius:3px; font-size:.75rem; font-weight:600; margin-right:4px; }
+  .page-header .journal-info .badge-scie { background:#e8f0fe; color:#1a56c4; }
+  .page-header .journal-info .badge-esci { background:#fef3e8; color:#c47a1a; }
+  .page-header .journal-info .badge-ei { background:#e8f8ee; color:#2a8c3e; }
+  .page-header .journal-info .badge-delisted { background:#fde8e8; color:#c41a1a; }
+  .page-header .journal-info .if-val { color:var(--accent); font-weight:600; }
+  .page-header .meta { font-size:.78rem; color:#aaa; margin-top:2px; font-family:monospace; word-break:break-all; }
+  .page-header .meta a { color:#aaa; text-decoration:none; }
+  .page-header .meta a:hover { color:var(--accent); text-decoration:underline; }
+  .page-header .keywords { font-size:.82rem; color:var(--text-secondary); margin-top:6px; }
+  .page-header .keywords strong { color:var(--accent); }
+
+  h2 { font-family: "Noto Serif SC", "Songti SC", Georgia, serif; font-size:1.2rem; color:var(--accent); margin:40px 0 10px; padding-bottom:4px; border-bottom:1px solid var(--border); }
+  h3 { font-family: "Noto Serif SC", "Songti SC", Georgia, serif; font-size:1.02rem; font-weight:600; color:#5a2d2d; margin:26px 0 8px; }
+
+  figure { margin:22px 0; text-align:center; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  figure img { max-width:100%; height:auto; border-radius:4px; cursor:zoom-in; transition:box-shadow .2s; }
+  figure img:hover { box-shadow:0 4px 16px rgba(0,0,0,.12); }
+  figcaption { margin-top:10px; font-size:.83rem; color:var(--text-secondary); font-style:italic; line-height:1.5; }
+
+  .figure-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:22px 0; }
+  .figure-row figure { margin:0; }
+
+  .math-block { margin:16px 0; padding:12px 18px; background:#f4f1ea; border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; overflow-x:auto; }
+  .math-note { font-size:.87rem; color:var(--text-secondary); margin-top:-6px; margin-bottom:12px; padding-left:8px; }
+
+  .insight { margin:18px 0; padding:16px 20px; background:var(--highlight-box); border:1px solid var(--highlight-border); border-radius:var(--radius); box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  .insight .label { display:inline-block; font-size:.78rem; font-weight:700; color:#8b6914; background:#fef3d6; padding:2px 10px; border-radius:3px; margin-bottom:10px; letter-spacing:.05em; }
+  .insight p { margin:5px 0; }
+  .insight ul, .insight ol { margin:5px 0 5px 18px; }
+  .insight li { margin-bottom:2px; }
+
+  .key-term { font-weight:600; color:#8b3a3a; }
+
+  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:.9rem; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  thead tr { background:var(--accent); color:#fff; }
+  thead th { padding:7px 12px; font-weight:600; text-align:left; }
+  tbody td { padding:7px 12px; border-bottom:1px solid var(--border); }
+  tbody tr:nth-child(even) { background:#f9f7f2; }
+  table caption { caption-side:top; font-size:.83rem; color:var(--text-secondary); font-style:italic; margin-bottom:6px; text-align:left; }
+
+  .back-to-top { position:fixed; bottom:24px; right:24px; width:40px; height:40px; background:var(--accent); color:#fff; border-radius:50%; text-align:center; line-height:40px; font-size:1.2rem; cursor:pointer; opacity:.7; transition:opacity .2s; text-decoration:none; z-index:99; }
+  .back-to-top:hover { opacity:1; }
+
+  .lightbox { display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.88); cursor:zoom-out; justify-content:center; align-items:center; padding:24px; }
+  .lightbox.active { display:flex; }
+  .lightbox img { max-width:95vw; max-height:95vh; object-fit:contain; border-radius:4px; }
+  .lightbox-close { position:absolute; top:16px; right:24px; color:#fff; font-size:2rem; cursor:pointer; opacity:.6; transition:opacity .2s; }
+  .lightbox-close:hover { opacity:1; }
+
+  @media (max-width: 860px) { .toc-sidebar { display:none; } .content { padding:24px 20px 60px; } }
+  @media print {
+    .lightbox, .back-to-top, .toc-sidebar { display:none; }
+    body { max-width:100%; font-size:12pt; background:#fff; }
+    .insight { box-shadow:none; border:1px solid #ccc; }
+    .content { padding:0; }
+  }
 </style>
 </head>
 <body>
 <div class="layout">
-<nav class="toc-sidebar" id="toc">
-  <h3>目录</h3>
-  <a href="#abstract">摘要</a>
-  <a href="#s1">1. 研究背景与问题</a>
+
+<nav class="toc-sidebar">
+  <h4>Paper Navigator</h4>
+  <a href="#abs">研究摘要</a>
+  <a href="#s1">1. 引言</a>
   <a href="#s2">2. 原型系统描述</a>
   <a href="#s3">3. 建模与参数辨识</a>
-  <a href="#s3-1" class="sub">3.1 红外加热机理</a>
-  <a href="#s3-2" class="sub">3.2 集总热容模型</a>
-  <a href="#s3-3" class="sub">3.3 基于实验的系统建模</a>
-  <a href="#s4">4. ADRC控制策略</a>
-  <a href="#s4-1" class="sub">4.1 扩张状态观测器</a>
-  <a href="#s4-2" class="sub">4.2 稳定性分析</a>
-  <a href="#s5">5. 闭环系统性能分析</a>
-  <a href="#s5-1" class="sub">5.1 数值仿真</a>
-  <a href="#s5-2" class="sub">5.2 实验结果</a>
-  <a href="#s6">6. 应用示例：BGA返修</a>
-  <a href="#s7">7. 结论与要点</a>
+  <a href="#s3a" class="toc-h3">3.1 红外加热机理</a>
+  <a href="#s3b" class="toc-h3">3.2 集总参数热模型</a>
+  <a href="#s3c" class="toc-h3">3.3 基于实验的系统建模</a>
+  <a href="#s4">4. ADRC 控制策略设计</a>
+  <a href="#s4a" class="toc-h3">4.1 控制目标与理想控制律</a>
+  <a href="#s4b" class="toc-h3">4.2 扩展状态观测器</a>
+  <a href="#s4c" class="toc-h3">4.3 稳定性分析</a>
+  <a href="#s5">5. 闭环性能分析</a>
+  <a href="#s5a" class="toc-h3">5.1 数值仿真</a>
+  <a href="#s5b" class="toc-h3">5.2 实验结果</a>
+  <a href="#s6">6. 应用示例：BGA 局部返修</a>
+  <a href="#s7">7. 结论</a>
+  <a href="#sum">核心要点总结</a>
+  <a href="#ack">数据可用性与作者贡献</a>
+  <a href="#refs">参考文献</a>
 </nav>
-<main>
+
+<main class="content">
 
 <header class="page-header">
-  <h1>基于自抗扰控制（ADRC）的红外电子器件焊接原型系统</h1>
+  <h1>基于自抗扰控制结构的红外电子器件焊接原型系统</h1>
   <p class="sub">A prototype for infrared soldering of electronic devices using the active disturbance rejection control structure</p>
-  <p class="cite">R Citlalli Anguiano Cota, David I Rosas Almeida, J Rigoberto Herrera García - <em>Engineering Research Express</em> 2025, 7(4): 045392, Universidad Autónoma de Baja California</p>
-  <p class="journal-info"><span class="badge badge-esci">ESCI Q3</span> IF=<span class="if-val">1.8</span></p>
-  <p class="meta"><a href="https://doi.org/10.1088/2631-8695/ae24c8" target="_blank">DOI: 10.1088/2631-8695/ae24c8</a> | 收稿: 2025-07-15 | 修订: 2025-11-18 | 出版: 2025-12-05</p>
-  <p class="keywords"><strong>关键词：</strong>温度控制（Temperature Control）; 红外光（Infrared Light）; 鲁棒性（Robustness）; 轨迹跟踪（Trajectory Tracking）; 时滞系统（Time-delay Systems）</p>
+  <p class="cite">R Citlalli Anguiano Cota, David I Rosas Almeida, J Rigoberto Herrera García - <em>Engineering Research Express</em> 2025, Vol. 7, Art. 045392 — Facultad de Ingeniería, Universidad Autónoma de Baja California, Mexicali, Mexico</p>
+  <p class="journal-info"><span class="badge badge-esci">ESCI Q2</span> IF=<span class="if-val">1.8</span> <span class="badge badge-ei">EI</span></p>
+  <p class="meta"><a href="https://doi.org/10.1088/2631-8695/ae24c8" target="_blank">DOI: 10.1088/2631-8695/ae24c8</a> | 收稿: 2025-07-15 | 修改: 2025-11-18 | 接收: 2025-11-26 | 出版: 2025-12-05</p>
+  <p class="keywords"><strong>关键词：</strong>温度控制（temperature control）；红外光（infrared light）；鲁棒性（robustness）；跟踪（tracking）；时滞系统（delayed systems）</p>
 </header>
 
-<!-- ===== ABSTRACT ===== -->
-<h2 id="abstract">摘要</h2>
-
-<p>本文研究了<span class="key-term">自抗扰控制（Active Disturbance Rejection Control, ADRC）</span>框架在红外热系统中用于电子焊接温度轨迹跟踪的实现。该系统的主要挑战在于加热过程引入的输入时滞（<span class="key-term">输入延迟，input delay</span>）。通过一阶 Padé 近似分析时滞效应，作者证明该延迟可被视为<span class="key-term">外部扰动（external disturbance）</span>，并由 ADRC 实时估计与补偿，从而无需精确的数学模型。</p>
-
-<p>闭环性能经数值仿真和实验双重验证，并与标准 PID 控制器进行对比。结果表明：ADRC 的控制效率指数（ITAE<sub>eff</sub>）<strong>提升约 12%</strong>，在跟踪精度与控制能量之间取得更优平衡。</p>
-
+<!-- ═══════════ ABSTRACT ═══════════ -->
+<h2 id="abs">研究摘要</h2>
+<p>本文研究了将<span class="key-term">自抗扰控制（Active Disturbance Rejection Control, ADRC）</span>框架应用于红外加热电子焊接系统中的温度跟踪问题。核心思路是不依赖精确数学模型的扰动估计与补偿，直接解决加热过程引入的<span class="key-term">输入时滞（input delay）</span>带来的控制难题。主要发现如下：</p>
+<ul>
+  <li>通过一阶<span class="key-term">Padé 近似（Padé approximation）</span>分析，将输入时滞的影响建模为有界外部扰动，由 ADRC 实时估计并补偿，无需对时滞做多项式近似。</li>
+  <li>搭建了基于石英卤钨灯（QTH）+ 椭圆金涂层反射镜 + 光学阵列的焊接原型，并对 BGA 器件实现闭环温度控制。</li>
+  <li>数值仿真与实物实验均验证：ADRC 在跟踪精度上优于经典 <span class="key-term">PID（Proportional-Integral-Derivative）</span>控制，控制效率指标 <span class="key-term">ITAE<sub>eff</sub>（控制效率指数）</span>提升约 12%。</li>
+  <li>对带损伤焊球的 BGA 器件进行了局部回流返修演示，焊球在表面张力作用下恢复球形几何。</li>
+</ul>
 <div class="insight">
-  <div class="label">核心创新点</div>
-  <p><strong>用最简模型应对最棘手的延迟问题。</strong>传统思路是用 Padé 近似或 Smith 预估器对延迟显式建模，再围绕延迟设计控制器——要么模型变复杂（Padé 引入非最小相位零点），要么对模型精度要求高（Smith 预估器）。本文的策略是：<strong>将延迟效应整体视为一个未知扰动 $\gamma(\cdot)$</strong>，利用 ADRC 的扩张状态观测器（ESO）在线估计并补偿。这带来两个关键收益：① 控制设计用最简单的一阶模型（式 7）；② 延迟被"吸收"进扰动估计通道，无需显式建模。</p>
-  <p>从实际工程角度看，这意味着系统不需要精确辨识延迟值（$\tau = 1.603\text{ s}$ 仅用于验证模型，不参与控制器设计），对不同工况下的延迟变化具有天然鲁棒性。</p>
+  <div class="label">Note</div>
+  <p><strong>为什么「时滞当作扰动」是聪明的做法：</strong>经典控制处理时滞的手段（Smith 预估器、Padé 近似建模）都需要对时滞结构有精确假设。ADRC 的思路是反其道而行——把一切说不清、建不准的东西（时滞、未建模动态、参数漂移）统一归入一个「总扰动」项，再用<span class="key-term">扩展状态观测器（Extended State Observer, ESO）</span>把它估计出来并在控制律中抵消。只要扰动有界且其导数有界，观测器就能收敛。这正是 ADRC 在工业场合（尤其像焊接这种模型难精确、工况多变的过程）受欢迎的根本原因。</p>
 </div>
 
-<!-- ===== FIG 1 ===== -->
+<!-- ═══════════ 1. INTRODUCTION ═══════════ -->
+<h2 id="s1">1. 引言</h2>
+<p>电子电路板上的元器件按安装技术分为<span class="key-term">通孔技术（Through-Hole Technology, THT）</span>与<span class="key-term">表面贴装技术（Surface-Mount Technology, SMT）</span>两类。可靠的焊点需要三种要素：助焊剂（清洁表面）、焊料（填充接头）与热量（熔化焊料）。焊接的关键在于<strong>精确跟踪温度曲线</strong>——温度与时间的关系，两种基本类型为 RSS 曲线（Ramp-Soak-Spike，升温-保温-峰值）与线性斜坡曲线。偏离器件制造商规定的温度曲线会引发冷焊、桥连、立碑（tomb-stoning）、焊球损伤、焊盘剥离等一系列缺陷。</p>
+<p>现代电子制造依赖紧凑、自动化、节能的 SMT 回流焊系统，<span class="key-term">红外辐射（infrared radiation, IR）</span>与强制对流是两种主流传热机制。近红外（NIR）辐射可实现局部与选择性加热，适合 PET 等热敏/低成本基板；QTH 灯配合光学布置可将红外辐射聚焦到特定器件上。但这些系统的共同局限是<strong>缺乏闭环控制方案来跟踪预设温度曲线</strong>，导致热不均匀、焊球成形不良等问题。工业红外炉加热快且无接触，但性能对材料发射率与几何形状敏感，陶瓷基板上红外加热会产生显著热梯度；混合 IR-对流系统则兼顾了快速加热与温度均匀性。</p>
+<p>热控制还与材料表征和温度均匀性相关：PBGA 封装在过模材料超过玻璃化转变温度（约 170 °C）时会发生过大翘曲导致断路或短路；红外炉内表面发射率变化与遮挡效应可造成基板内高达 10 °C 的梯度。先进的热建模与智能控制（三维瞬态热模型、模糊逻辑实时温控等）已被用于提升回流工艺的精度与可重复性。</p>
+<p>本文提出将 ADRC 控制结构用于红外光 + 光学阵列加热的电子器件焊接曲线跟踪。该问题的难点在于：缺乏精确的被控对象模型、存在时滞与未建模动态。处理传输时滞的两类经典方法——Smith 预估器与 Padé 近似——已被与 PID、模糊、滑模、内模控制等多种算法结合，ADRC 亦是其中之一。本文的假设是：<strong>将输入时滞视为有界外部扰动，利用 ADRC 的扰动估计能力进行补偿</strong>，从而避免对时滞做多项式近似，获得更优的闭环性能。</p>
 <figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/7ce50fa737a84a06e75ae04cb97c64218dfdac725570556c39b32256f4fd1c41.jpg" alt="Fig 1" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/afe25d9304a86086e959e0ce126ac1f74036b1eebc7747443b42cfb79187702e.jpg" alt="Fig 1" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 1 论文组织结构示意图</figcaption>
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 1 &mdash; 论文组织结构示意图</figcaption>
 </figure>
-
-<!-- ===== SECTION 1: INTRODUCTION ===== -->
-<h2 id="s1">1. 研究背景与问题</h2>
-
-<h3>电子焊接的温度控制需求</h3>
-
-<p>电子电路板的焊接工艺分为<span class="key-term">通孔插装（Through-Hole Technology, THT）</span>和<span class="key-term">表面贴装（Surface-Mount Technology, SMT）</span>。实现可靠焊点需要三个要素：<strong>助焊剂</strong>（清洁焊接面）、<strong>焊料</strong>（填充连接处）和<strong>热量</strong>（熔化焊料并形成固态连接）。温度必须精确跟踪预设的<span class="key-term">温度曲线（temperature profile）</span>——即温度随时间变化的关系——以防止元件因过热而损坏。</p>
-
 <div class="insight">
-  <div class="label">回流焊温度曲线</div>
-  <p>工业回流焊使用两种基本温度曲线类型：</p>
-  <table>
-    <tr><th>曲线类型</th><th>特征</th><th>适用场景</th></tr>
-    <tr><td><strong>RSS 曲线</strong>（Ramp-Soak-Spike）</td><td>预热→恒温浸润→峰值回流→冷却，四阶段分明</td><td>最常用，适合大多数 SMT 组件</td></tr>
-    <tr><td><strong>线性斜坡曲线</strong>（Linear Ramp）</td><td>恒定速率升温，无保温平台</td><td>简单工艺，热应力要求低的场景</td></tr>
-  </table>
-  <p>未严格遵循温度曲线会导致多种焊接缺陷：冷焊点、焊桥、立碑效应（tomb-stoning）、焊球损坏、焊料飞溅等。因此，<strong>温度曲线跟踪精度</strong>是焊接质量的核心控制目标。</p>
+  <div class="label">Note</div>
+  <p><strong>RSS 温度曲线为什么是四段式：</strong>预热段（线性升温至保温温度）让焊料与器件均匀受热、挥发助焊剂溶剂；保温段（恒温）均衡整板温度、防止热冲击；回流段（快速升至峰值）使焊料熔化并润湿焊盘形成金属间化合物；冷却段（受控降温）让焊点固化而避免热冲击产生裂纹。峰值温度与「液相线以上时间」（TAL）是决定焊点可靠性的两个核心工艺参数——峰值过高会损伤器件，TAL 过短则金属间化合物层过薄。</p>
 </div>
 
-<h3>红外加热的研究现状</h3>
-
-<p>在现代电子制造中，<span class="key-term">近红外（Near-Infrared, NIR）</span>辐射系统在需要局部选择性加热的应用中展现出优势，特别是热敏感或低成本基板（如 PET）。已有的研究工作（如 [4, 5]）利用 QTH 灯（石英钨卤素灯）结合光学装置实现聚焦加热，但存在一个共同缺陷：<strong>缺乏能跟踪预设温度曲线的闭环控制方案</strong>，导致热不均匀性和焊球效应等问题无法根本解决。</p>
-
-<p>在更广泛的工业场景中，IR 炉提供快速、非接触式加热，但性能对材料的<span class="key-term">发射率（emissivity）</span>和几何形状高度敏感。在陶瓷基板上，纯 IR 加热可产生高达 $10^\circ\text{C}$ 的梯度。因此，工业中常采用<strong>混合 IR-对流系统</strong>——结合 IR 的快速加热能力和对流的均匀性——实现可靠的无铅焊接。</p>
-
-<div class="insight">
-  <div class="label">研究定位</div>
-  <p>本文的工作处于两条技术路线的交汇点：（1）利用聚焦红外光学系统实现局部精确加热（延续了作者 2013 年 Optics Express 的工作 [5]）；（2）引入闭环控制实现温度曲线跟踪（填补了此前聚焦 IR 系统"有加热无控制"的空白）。</p>
-  <p>控制策略选择了 ADRC 而非 PID，因为：① 热系统难以精确建模（发射率随温度变化、对流系数不确定）；② 存在约 1.6 s 的输入延迟；③ ADRC 天然适合"模型不确定 + 外部扰动"的场景。</p>
-</div>
-
-<div class="summary-table">
-  <h4>本节要点速查</h4>
-  <table>
-    <tr><th>概念</th><th>一句话解释</th></tr>
-    <tr><td>回流焊温度曲线</td><td>焊接过程中温度随时间变化的预设轨迹，分预热/浸润/回流/冷却四阶段</td></tr>
-    <tr><td>RSS 曲线</td><td>最常用的温度曲线类型，含保温平台以减少热应力</td></tr>
-    <tr><td>IR 焊接的挑战</td><td>材料发射率差异导致热不均匀；聚焦系统缺乏闭环控制</td></tr>
-    <tr><td>本文的突破点</td><td>在聚焦 IR 系统中首次引入 ADRC 闭环温度控制</td></tr>
-  </table>
-</div>
-
-<!-- ===== SECTION 2: PROTOTYPE DESCRIPTION ===== -->
+<!-- ═══════════ 2. PROTOTYPE ═══════════ -->
 <h2 id="s2">2. 原型系统描述</h2>
-
-<p>实验原型系统的核心组成如下：</p>
-
+<p>原型的第一部分是<span class="key-term">石英钨卤灯（Quartz Tungsten Halogen, QTH）</span>白炽灯，集成了椭圆金涂层反射镜。反射镜利用椭圆几何特性将辐射汇聚到第二焦点，实现能量集中。灯泡电功率 150 W（15 V、10 A），通过调节电功率可调制光输出功率，焦点处温度最高可达 1200 °C。光学系统由准直透镜（捕获并准直辐射）与聚焦透镜（调节红外光束直径、精确递送能量到目标器件）组成。</p>
+<p>加热目标为<span class="key-term">球栅阵列（Ball Grid Array, BGA）</span>器件——焊球呈阵列分布在器件一侧的 SMT 封装，尺寸 5 mm × 6 mm。部分焊球存在损伤缺陷，这正是电子焊接行业需要解决的问题之一。J 型热电偶直接接触 BGA 表面监测热曲线，配合 NI cRIO-9074 实时控制器（LabVIEW 实现控制算法）与自制功率放大器构成闭环：热电偶 → 数据采集 → 实时控制 → 功放 → 红外光源。</p>
 <figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/4d73109757ac82d67b930762e299fa02f50b911c6fac7e44ab0ed57f251ae7ee.jpg" alt="Fig 2" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/4ae77c54eed1f87f4f43a4535814fbb552a374a4df119e46f43d251b9289f252.jpg" alt="Fig 2" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 2 加热过程的光学装置（Optical setup for heating process）</figcaption>
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 2 &mdash; 加热过程的光学装置（右上角为热电偶与 BGA 接触细节）</figcaption>
 </figure>
-
-<h3>光源：QTH 灯 + 椭圆金膜反射器</h3>
-
-<p>光源采用 <strong>150 W 石英钨卤素灯</strong>（Quartz Tungsten Halogen, QTH，型号 64635 HLX MR16），供电 15 V / 10 A。灯源集成<span class="key-term">椭圆镀金反射器（elliptical gold-coated reflector）</span>，发射从紫外（UV）到红外（IR）的宽谱辐射。椭圆反射器的几何特性使辐射高效汇聚至第二焦点，焦点温度可达 <strong>1200 °C</strong>。</p>
-
-<h3>光学系统：准直 + 聚焦</h3>
-
-<p>在反射器焦点之外设置<span class="key-term">非球面准直透镜（aspheric collimating lens, SiO₂, f=40 mm, Ø50 mm）</span>捕获并准直辐射，随后由<span class="key-term">双凸聚焦透镜（biconvex field lens, SiO₂, f=50 mm, Ø50 mm）</span>调节 IR 光束直径，确保能量精确传递至目标元件。两片透镜在 400–2500 nm 波段的透过率均 >90%。</p>
-
-<h3>加热目标与传感</h3>
-
-<p>加热目标为 <strong>BGA（Ball Grid Array）器件</strong>，尺寸 5 × 6 mm，部分焊球存在损伤缺陷。J 型热电偶直接接触 BGA 表面监测温度，连接至 <strong>NI cRIO-9074 实时控制器</strong>（400 MHz CPU, 128 MB DRAM）。控制算法在 LabVIEW 中实现，控制信号经自制功率驱动器（增益 3.5，输入 ±10 V，输出 ±35 V @ 10 A）调节灯源供电。</p>
-
 <figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/078e00b10f264d5998e181afe722ae6fd76e0492f8f4d451345ee79c0f4a3c7b.jpg" alt="Fig 3" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/97e45d2b77cc3ab6711d7f64860693696e46a1b4bda4f58b20aa8b92577bb379.jpg" alt="Fig 3" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 3 红外加热温度控制系统框图（Block diagram of the temperature control system）</figcaption>
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 3 &mdash; 红外加热过程温度控制系统框图</figcaption>
 </figure>
-
-<div class="summary-table">
-  <h4>原型系统关键组件</h4>
-  <table>
-    <tr><th>组件</th><th>型号/类型</th><th>关键参数</th></tr>
-    <tr><td>卤素灯</td><td>64635 HLX, MR16</td><td>150 W, 15 V, 石英卤素金膜反射灯</td></tr>
-    <tr><td>准直透镜</td><td>非球面 SiO₂</td><td>f=40 mm, Ø50 mm, 400–2500 nm 透过率 >90%</td></tr>
-    <tr><td>聚焦透镜</td><td>双凸 SiO₂</td><td>f=50 mm, Ø50 mm, 400–2500 nm 透过率 >90%</td></tr>
-    <tr><td>电子元件</td><td>BGA 封装</td><td>6×5 mm, 无铅焊球, 回流温度 150–245 °C</td></tr>
-    <tr><td>控制平台</td><td>NI cRIO-9074</td><td>实时控制器, 400 MHz CPU, 128 MB DRAM</td></tr>
-    <tr><td>温度采集</td><td>NI 9211</td><td>4 通道, ±80 mV, 14 S/s, 24 位</td></tr>
-    <tr><td>模拟输出</td><td>NI 9263</td><td>4 通道, ±10 V, 16 位, 100 kS/s</td></tr>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/2ed5381663c79d7709a22bf4edd93246be325b507b1e288ca00ce10899428eff.jpg" alt="Fig 4" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 4 &mdash; 焊接工艺中的典型温度曲线（预热/保温/回流/冷却四阶段）</figcaption>
+</figure>
+<table>
+  <caption>表 1. 原型主要组件及其特性（原文 Table 1）</caption>
+  <thead><tr><th>组件</th><th>型号/类型</th><th>主要参数</th></tr></thead>
+  <tbody>
+    <tr><td>卤素灯</td><td>64635 HLX, MR16</td><td>150 W, 15 V，石英卤素金反射镜灯</td></tr>
+    <tr><td>准直透镜</td><td>非球面透镜（SiO₂）</td><td>焦距 40 mm，直径 50 mm，无镀膜，400–2500 nm 透射率 &gt; 90%</td></tr>
+    <tr><td>场镜</td><td>双凸透镜（SiO₂）</td><td>焦距 50 mm，直径 50 mm，无镀膜，400–2500 nm 透射率 &gt; 90%</td></tr>
+    <tr><td>电子器件</td><td>BGA 封装</td><td>6 × 5 mm PCB 安装器件，无铅焊点；回流曲线温度范围 150–245 °C</td></tr>
+    <tr><td>控制平台</td><td>NI cRIO-9074</td><td>National Instruments 实时控制器，8 槽，CPU 400 MHz，128 MB DRAM</td></tr>
+    <tr><td>温度采集模块</td><td>NI9211</td><td>4 通道 ±80 mV，14 S/s，24 位热电偶差分 AI</td></tr>
+    <tr><td>模拟信号生成模块</td><td>NI9263</td><td>4 AO，±10 V，16 位，100 kS/s/通道，同步输出</td></tr>
     <tr><td>温度传感器</td><td>J 型热电偶</td><td>−210 至 750 °C</td></tr>
-    <tr><td>功率驱动器</td><td>自制</td><td>输入 ±10 V, 增益 3.5, 输出 ±35 V @ 10 A</td></tr>
-  </table>
-</div>
-
-<figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/6b905e430b5a4946478ceed27759c687bf3edd11f98860e0a8835bf8ff73ee8c.jpg" alt="Fig 4" loading="lazy"
-       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 4 焊接工艺中的典型温度曲线（Typical temperature profile in soldering processes）</figcaption>
-</figure>
-
+    <tr><td>功率驱动器</td><td>自制</td><td>输入 ±10 V，增益 3.5，输出 ±35 V @ 10 A</td></tr>
+  </tbody>
+</table>
 <div class="insight">
-  <div class="label">回流焊四阶段的物理意义</div>
-  <table>
-    <tr><th>阶段</th><th>温度范围</th><th>作用</th><th>控制要求</th></tr>
-    <tr><td><strong>预热（Preheating）</strong></td><td>室温 → ~150 °C</td><td>激活助焊剂、驱除溶剂、减缓热冲击</td><td>线性升温，速率 1–3 °C/s</td></tr>
-    <tr><td><strong>恒温浸润（Soaking）</strong></td><td>~150–180 °C</td><td>均匀化温度分布、减少热应力</td><td>温度恒定，时间 60–120 s</td></tr>
-    <tr><td><strong>回流（Reflow）</strong></td><td>峰值 235–245 °C</td><td>焊料熔化、形成冶金连接</td><td>快速升至峰值，TAL 30–90 s</td></tr>
-    <tr><td><strong>冷却（Cooling）</strong></td><td>峰值 → 室温</td><td>焊料凝固、形成可靠焊点</td><td>控制冷却速率，避免热冲击</td></tr>
-  </table>
-  <p>本原型系统将严格遵循此四阶段 RSS 曲线进行温度控制。关键挑战在于：<strong>回流阶段需在短时间内精确到达峰值温度</strong>（±2 °C 以内），超调可能导致元件损坏，欠调则焊料不充分熔化。</p>
+  <div class="label">Note</div>
+  <p><strong>为什么选 QTH 灯 + 椭圆反射镜做局部加热：</strong>钨卤灯的辐射谱覆盖紫外到红外的宽带范围，且其辐射强度强烈依赖于灯丝温度（黑体辐射定律）。椭圆反射镜的几何特性使第一焦点（灯丝）发出的光高效汇聚到第二焦点（加热目标），实现「把能量集中送到指定器件而不加热整块 PCB」——这与工业红外炉的整板加热路线本质不同，是实现选择性返修（selective rework）的关键硬件基础。光功率可通过电功率连续调制，为闭环温控提供了执行机构裕度。</p>
 </div>
 
-<!-- ===== SECTION 3: MODELING ===== -->
+<!-- ═══════════ 3. MODELING ═══════════ -->
 <h2 id="s3">3. 建模与参数辨识</h2>
 
-<h3 id="s3-1">3.1 红外加热机理</h3>
+<h3 id="s3a">3.1 红外加热机理</h3>
+<p>系统温升源于石英卤钨灯红外辐射的吸收。光源辐射输出强烈依赖其工作温度，遵循 <span class="key-term">Stefan–Boltzmann 定律（斯特藩-玻尔兹曼定律）</span>$P = \epsilon \sigma A T^{4}$（ε 为发射率，σ 为斯特藩-玻尔兹曼常数，A 为发射面积）。对 BGA 器件而言，红外辐射主要在暴露的金属区域与焊球表面被吸收；由于材料热导率高、焊球特征尺寸小，吸收的热量在体积内快速再分布，短暂瞬态后温度场近似均匀——这为下一节的集总热容模型提供了依据。</p>
 
-<p>系统的温升源于石英-卤素灯红外辐射的吸收。辐射输出由<span class="key-term">斯特藩–玻尔兹曼定律（Stefan–Boltzmann law）</span>决定：$P = \epsilon \sigma A T^4$，其中 $\epsilon$ 为发射率，$\sigma$ 为斯特藩–玻尔兹曼常数，$A$ 为发射面积。</p>
+<h3 id="s3b">3.2 集总参数热模型</h3>
+<p>采用<span class="key-term">集总热容（lumped-capacitance）</span>能量平衡描述温度演化，假设加热区域温度空间均匀。该近似适用于小尺寸、高导热的物体（如 BGA 与焊球区域），其<span class="key-term">毕渥数（Biot number）</span>$Bi = hL_c/k$ 低于 0.1 即可成立。热动态满足：</p>
+<div class="math-block">$$ m c _ { p } \frac { d T ( t ) } { d t } = q _ { \mathrm { in } } ( t ) - h A ( T ( t ) - T _ { \infty } ) \tag{1} $$</div>
+<p class="math-note"><strong>解读：</strong>这是经典的一阶热平衡方程——左侧是热惯性（质量 m × 比热容 c<sub>p</sub> × 温升速率），右侧第一项是吸收的辐射功率（输入），第二项是与环境（温度 T<sub>∞</sub>）的对流/辐射热交换（h 为综合换热系数，A 为换热面积）。它把复杂传热问题压缩成一个一阶微分方程。</p>
+<p>假设加热区间输入功率近似恒定，方程 (1) 的解为：</p>
+<div class="math-block">$$ T ( t ) = T _ { \infty } + ( T _ { 0 } - T _ { \infty } ) e ^ { - t / \tau _ { \mathrm { th } } } , \qquad \tau _ { \mathrm { th } } = \frac { m c _ { p } } { h A } \tag{2} $$</div>
+<p class="math-note"><strong>解读：</strong>温度以指数形式趋近稳态，<span class="key-term">热时间常数（thermal time constant）</span>τ<sub>th</sub> = mc<sub>p</sub>/(hA) 决定趋近快慢：经过一个 τ<sub>th</sub>，输出达到终值的约 63%。τ<sub>th</sub> 越大，系统惯性越大、响应越慢——这是后续控制设计中需要补偿的主导动态。</p>
 
-<p>对于 BGA 器件，红外辐射主要在裸露金属区域和焊球表面被吸收。由于焊球材料的高热导率和小的特征尺寸，吸收的热量在体积内快速重新分布，温度场在短暂瞬态后变得近乎均匀——这为使用<span class="key-term">集总热容模型（lumped-capacitance model）</span>提供了物理依据。</p>
-
-<div class="insight">
-  <div class="label">为什么可以用集总参数模型？</div>
-  <p>集总热容模型的适用条件是<span class="key-term">毕渥数（Biot number, Bi）</span>小于 0.1：</p>
-  <p>
-    \[ Bi = \frac{h L_c}{k} \]
-  </p>
-  <p>其中 $h$ 为对流换热系数，$L_c$ 为特征长度（体积/表面积），$k$ 为热导率。<strong>物理直觉：</strong>$Bi \ll 0.1$ 意味着固体内部热传导远快于表面换热——固体内部温度几乎是均匀的，温度梯度集中在边界层。BGA 焊球的特征尺寸在亚毫米级，焊料（Sn 基合金）的 $k \approx 50\text{–}60\text{ W/(m·K)}$，自然对流下 $h \approx 10\text{–}25\text{ W/(m}^2\text{·K)}$，估算 $Bi \approx 10^{-4}\text{–}10^{-3}$，远小于 0.1。</p>
-</div>
-
-<h3 id="s3-2">3.2 集总热容模型</h3>
-
-<p>在集总参数假设下，热动力学满足以下能量平衡方程：</p>
-
-<div class="math-block">
-  \[ m c_p \frac{dT(t)}{dt} = q_{\mathrm{in}}(t) - hA(T(t) - T_{\infty}), \tag{1} \]
-</div>
-<p class="math-note"><strong>解读：</strong>温度变化率 × 热容量 = 吸收的辐射功率 − 对流/辐射散热。这是一个一阶线性常微分方程，时间常数 $\tau_{\mathrm{th}} = mc_p / hA$。</p>
-
-<p>当输入功率在加热阶段近似恒定（$q_{\mathrm{in}}$ = 常数）时，方程 (1) 的解为：</p>
-
-<div class="math-block">
-  \[ T(t) = T_{\infty} + (T_0 - T_{\infty}) e^{-t / \tau_{\mathrm{th}}}, \qquad \tau_{\mathrm{th}} = \frac{m c_p}{h A}, \tag{2} \]
-</div>
-<p class="math-note"><strong>解读：</strong>温度从初始值 $T_0$ 以指数形式趋近稳态值，时间常数 $\tau_{\mathrm{th}}$ 表征热响应速度——经过 1 个 $\tau_{\mathrm{th}}$ 后达到约 63% 的终值，5 个 $\tau_{\mathrm{th}}$ 后达到 99%。</p>
-
-<h3 id="s3-3">3.3 基于实验的系统建模</h3>
-
-<p>通过对系统施加 <strong>3 V 阶跃输入</strong>，记录温度响应（图 5），利用 MATLAB 系统辨识工具箱得到一阶+延迟模型：</p>
-
-<div class="math-block">
-  \[ F(s) = \frac{b}{s + a} e^{-\tau s}, \tag{3} \]
-</div>
-<p class="math-note"><strong>解读：</strong>辨识参数 $a = 0.094339$, $b = 4.4838$, $\tau = 1.603\text{ s}$。时间常数 $\tau_{\mathrm{th}} = 1/a = 10.61\text{ s}$（验证了图 5(a) 中 63% 上升时间的判据）。</p>
-
-<div class="figure-row">
-  <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/46034cecba16f4322f6f5ada6e919cee772d159cf501152c085bb6b42e8ba39b.jpg" alt="Fig 5a" loading="lazy"
-         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(a) 测量温度输出 y(t)</figcaption>
-  </figure>
-  <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/0167beffc308b4cc7a85fa36765bcde5ec490b4d1349bdcadc5f772facc29272.jpg" alt="Fig 5b" loading="lazy"
-         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(b) 初始阶段放大 —— 显示时滞 τ</figcaption>
-  </figure>
-</div>
-<div class="figure-row">
-  <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/12def7f60c4492ac1e6b0dc23d6e29e71a8454d53914508f29a1c8d9750bf81d.jpg" alt="Fig 5c" loading="lazy"
-         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(c) 控制输入 u(t)</figcaption>
-  </figure>
-  <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/288b5bec119ba69544bd0e7a805a3148dfa3b4d161960bb18abd2e27f101aebe.jpg" alt="Fig 5d" loading="lazy"
-         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(d) 输入初始阶段放大 —— 显示时滞 τ</figcaption>
-  </figure>
-</div>
-<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:13.5px;color:var(--text-secondary);">图 5 系统动态模型辨识实验结果。(a) 测量温度 y(t)；(b) 初始阶段放大，显示 ~1.603 s 的输入延迟；(c) 控制输入 u(t)；(d) 输入初始放大，确认延迟存在</figcaption>
-
-<div class="insight">
-  <div class="label">从延迟到扰动的关键推导</div>
-  <p>作者的核心建模创新在于<strong>放弃对延迟显式建模</strong>，转而将延迟作为扰动处理。推导链路如下：</p>
-  <p><strong>第 1 步：</strong>对传递函数 (3) 中的 $e^{-\tau s}$ 使用一阶 Padé 近似：</p>
-  <p>
-    \[ e^{-\tau s} \approx \frac{2 - \tau s}{2 + \tau s}, \tag{4} \]
-  </p>
-  <p><strong>第 2 步：</strong>代入后得到二阶非最小相位系统（有右半平面零点）：</p>
-  <p>
-    \[ F(s) \approx \frac{-b s + 2b/\tau}{s^2 + \frac{a\tau+2}{\tau} s + \frac{2a}{\tau}}, \tag{5} \]
-  </p>
-  <p><strong>第 3 步（关键）：</strong>状态空间形式（式 6）显示 $\dot{x}_1$ 只受 $x_2$ 和 $u$ 驱动，而 $\dot{x}_2$ 受 $x_1$ 影响——这意味着 $x_1$ 扮演了"外部驱动"的角色。</p>
-  <p><strong>第 4 步（最终简化）：</strong>将 $x_1$ 的影响（以及延迟引起的一切非理想效应）合并为一个有界扰动项 $\gamma(\cdot)$，得到本文实际使用的控制模型：</p>
-  <p>
-    \[ \dot{x}(t) = -a x(t) + b u(t) + \gamma(\cdot), \qquad y(t)=x(t), \tag{7} \]
-  </p>
-  <p>假设 $|\gamma(\cdot)| < \delta_0$ 和 $|\dot{\gamma}(\cdot)| < \delta_1$（有界+有界变化率），ADRC 的扩张状态观测器即可以估计并补偿之。<strong>这步简化消除了延迟项和二阶动力学，但保留下来的 $\gamma(\cdot)$ 恰好由 ESO 处理。</strong></p>
-</div>
-
+<h3 id="s3c">3.3 基于实验的系统建模</h3>
+<p>对系统施加幅值 3 V 的阶跃输入信号，响应表现出典型一阶系统特征，但起始阶段存在约 <strong>1.603 s 的时滞</strong>。使用 MATLAB System Identification Toolbox 辨识得到传递函数：</p>
+<div class="math-block">$$ F ( s ) = \frac { b } { s + a } e ^ { - \tau s } \tag{3} $$</div>
+<p class="math-note"><strong>解读：</strong>a = 0.094339、b = 4.4838、τ = 1.603。这是一阶惯性环节 + 纯时滞（transport delay）的标准形式，e<sup>−τs</sup> 即输入时滞的频域表达。时滞来自加热过程的物理环节（热传递与传感延迟）。</p>
 <figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/4091c4bbc13ce658e23229cb47342ecf7adec5e67a058b5240ee7391ca872f94.jpg" alt="Fig 6" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/c96602b0b59e37838dc83e0aab4d814fdef1f2a6f14254706b1b7fa727219765.jpg" alt="Fig 6" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 6 辨识模型（红色）与实验数据（黑色）的对比验证。模型紧密近似实际系统，存在一定偏差但 ADRC 可补偿</figcaption>
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 6 &mdash; 实验温度输出（黑线）与数值温度输出（红线）对比，验证模型 (3) 的准确性</figcaption>
 </figure>
-
-<div class="summary-table">
-  <h4>本节要点速查</h4>
-  <table>
-    <tr><th>概念</th><th>一句话解释</th></tr>
-    <tr><td>集总热容模型</td><td>$Bi \ll 0.1$ 时，温度在空间上均匀，可用一阶 ODE 描述</td></tr>
-    <tr><td>辨识模型</td><td>$F(s) = \frac{4.4838}{s+0.094339} e^{-1.603s}$，一阶+延迟</td></tr>
-    <tr><td>时间常数</td><td>$\tau_{\mathrm{th}} = 10.61\text{ s}$，决定系统热响应速度</td></tr>
-    <tr><td>核心建模策略</td><td>将延迟效应整体视为有界扰动 $\gamma(\cdot)$，由 ADRC 的 ESO 估计</td></tr>
-    <tr><td>Padé 近似的作用</td><td>用于<strong>分析</strong>延迟如何影响系统动力学（非最小相位），而非用于控制器设计</td></tr>
-  </table>
+<div class="figure-row">
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/9e629ed8f6700c239f272b46761c71c1e34ce7db547f9f0faba6edc903cd3fca.jpg" alt="Fig 5a" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(a) 实测温度 y(t)</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/b2644b913076e233918871dcf303894cf969e68c7ee6ed434afdd6094196e60c.jpg" alt="Fig 5b" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(b) 起始段时滞 τ 的存在</figcaption>
+  </figure>
+</div>
+<div class="figure-row">
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/5fff4d14fd7e32598924e5e39d3b20c25f30958c2ce097e56d8d6e244250f5c4.jpg" alt="Fig 5c" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(c) 阶跃控制输入 u(t)（幅值 3 V）</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/38dc469432110e47b9fe634c326e5bf1a62c0a01e187e40b9541cbb26c50fd28.jpg" alt="Fig 5d" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(d) 时滞细节（约 1.603 s）</figcaption>
+  </figure>
+</div>
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 5 &mdash; 系统动态模型辨识的实验结果：(a) 实测温度 y；(b)(d) 输入时滞 τ 的存在；(c) 控制输入 u</figcaption>
+<p>对时滞项 e<sup>−τs</sup> 有多种多项式近似，最常用之一是一阶 Padé 近似：</p>
+<div class="math-block">$$ e ^ { - \tau s } \approx \frac { 2 - \tau s } { 2 + \tau s } \tag{4} $$</div>
+<p class="math-note"><strong>解读：</strong>Padé 近似用有理函数逼近超越函数 e<sup>−τs</sup>，一阶形式分子含零点 −2/τ（右半平面零点），这使近似后的系统成为<span class="key-term">非最小相位系统（non-minimum phase system）</span>。</p>
+<p>将其代入传递函数 (3) 得：</p>
+<div class="math-block">$$ F ( s ) \approx \frac { - b s + \frac { 2 b } { \tau } } { s ^ { 2 } + \frac { a \tau + 2 } { \tau } s + \frac { 2 a } { \tau } } \tag{5} $$</div>
+<p class="math-note"><strong>解读：</strong>一阶时滞系统经 Padé 近似后变成二阶系统，分子含负系数项 −bs（右半平面零点），阶数抬升一阶——这正是经典「用近似换模型复杂度」的代价。</p>
+<p>其状态空间表示为：</p>
+<div class="math-block">$$ \begin{aligned} \dot { x } _ { 1 } ( t ) & = - \frac { 2 a } { \tau } x _ { 2 } ( t ) + \frac { 2 b } { \tau } u ( t ) , \\ \dot { x } _ { 2 } ( t ) & = x _ { 1 } ( t ) - \frac { a \tau + 2 } { \tau } x _ { 2 } ( t ) - b u ( t ) , \\ y ( t ) & = x _ { 2 } ( t ) . \end{aligned} \tag{6} $$</div>
+<p class="math-note"><strong>解读：</strong>该系统的输出 y = x<sub>2</sub> 的动态受到一个人为引入的辅助状态 x<sub>1</sub> 影响——这个 x<sub>1</sub> 与真实物理无关，纯粹来自时滞近似，可以视为一种外部扰动。</p>
+<p>因此本文采用系统 (3) 的最简近似：</p>
+<div class="math-block">$$ \begin{aligned} \dot { x } ( t ) & = - a x ( t ) + b u ( t ) + \gamma ( \cdot ) , \\ y ( t ) & = x ( t ) , \end{aligned} \tag{7} $$</div>
+<p class="math-note"><strong>解读：</strong>把时滞的影响全部打包进「扰动项」γ(·)，并假设 |γ(·)| &lt; δ<sub>0</sub>、|γ̇(·)| &lt; δ<sub>1</sub>（有界且导数有界）。这就是本文的核心思想——<strong>不建时滞的近似模型，而是把时滞当成扰动交给 ADRC 去估计</strong>。实验测得的时间常数（63% 上升准则，补偿时滞后）与辨识值 τ<sub>th</sub> = 1/a = 10.61 s 吻合，验证了热模型与参数的有效性。</p>
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>非最小相位与扰动建模的工程直觉：</strong>直接接触焊料表面的热电偶因自身热容与接触热阻会引入微小动态滞后；传感器位于器件表面而非红外光束焦点，快速瞬态时还会出现轻微空间温度偏差——这些效应都会「阻尼并延迟」实测响应，但不会改变系统主导的一阶热行为。换言之，实验中观察到的时间常数与模型参数相互印证，而建模误差与上述未建模动态恰好都落进了 ADRC 的「总扰动」口袋里，这正是该方法对模型不精确性鲁棒的来源。</p>
 </div>
 
-<!-- ===== SECTION 4: ADRC CONTROL ===== -->
+<!-- ═══════════ 4. ADRC DESIGN ═══════════ -->
 <h2 id="s4">4. ADRC 控制策略设计与实现</h2>
 
-<p>控制目标：设计输入 $u(t)$ 使得跟踪误差渐进收敛：</p>
-<div class="math-block">
-  \[ \lim_{t \to \infty} |y(t) - y_r(t)| = 0, \tag{8} \]
-</div>
-<p>其中 $y_r(t)$ 为已知参考信号，$\dot{y}_r(t) = \rho$ = 常数。</p>
+<h3 id="s4a">4.1 控制目标与理想控制律</h3>
+<p>控制目标是设计控制输入 u(t)，使系统输出跟踪参考信号 y<sub>r</sub>(t)（其导数为常数，即斜坡类参考）：</p>
+<div class="math-block">$$ \lim _ { t \to \infty } | y ( t ) - y _ { r } ( t ) | = 0 \tag{8} $$</div>
+<p class="math-note"><strong>解读：</strong>焊接工艺要求输出温度精确跟踪预设温度曲线，因此这是一个轨迹跟踪（trajectory tracking）问题，而非简单的镇定问题。</p>
+<p>定义误差变量 e(t) = y(t) − y<sub>r</sub>(t)，其动态为：</p>
+<div class="math-block">$$ \dot { e } ( t ) = - a e ( t ) - a y _ { r } ( t ) - \dot { y } _ { r } ( t ) + \gamma ( \cdot ) + b u ( t ) \tag{9} $$</div>
+<p class="math-note"><strong>解读：</strong>误差动态中除自身项 −ae 外，还混入了参考信号项、扰动 γ 与控制输入项——控制律的设计目标就是把后三者抵消掉。</p>
+<p>理想控制律为：</p>
+<div class="math-block">$$ u ( t ) = \frac { 1 } { b } \left( a y _ { r } ( t ) + \dot { y } _ { r } ( t ) - \gamma ( \cdot ) - k e ( t ) \right) \tag{10} $$</div>
+<p class="math-note"><strong>解读：</strong>这是标准的「模型抵消 + 比例反馈」形式：前馈项 a y<sub>r</sub> + ẏ<sub>r</sub> 处理参考轨迹，−γ 抵消扰动，−ke 提供误差收敛（k 为控制器增益）。若扰动已知，代入 (9) 得：</p>
+<div class="math-block">$$ \dot { e } ( t ) = - ( a + k ) e ( t ) \tag{11} $$</div>
+<p class="math-note"><strong>解读：</strong>选择足够大的 k 即可使误差原点全局指数稳定。但 γ(t) 未知，控制律 (10) 无法直接实现——下一步用扩展状态观测器在线估计 γ。</p>
 
-<p>定义误差 $e(t) = y(t) - y_r(t)$，其动力学为：</p>
-<div class="math-block">
-  \[ \dot{e}(t) = -a e(t) - a y_r(t) - \dot{y}_r(t) + \gamma(\cdot) + b u(t), \tag{9} \]
-</div>
-
-<p>若 $\gamma(\cdot)$ 已知，理想控制律为：</p>
-<div class="math-block">
-  \[ u(t) = \frac{1}{b}\bigl(a y_r(t) + \dot{y}_r(t) - \gamma(\cdot) - k e(t)\bigr), \tag{10} \]
-</div>
-<p>代入后得到 $\dot{e}(t) = -(a + k) e(t)$——选择 $k > -a$ 即可使误差指数收敛至零。但 $\gamma(t)$ 未知，故 (10) 不可直接实现。</p>
-
-<h3 id="s4-1">4.1 扩张状态观测器（ESO）</h3>
-
+<h3 id="s4b">4.2 扩展状态观测器</h3>
+<p>扰动 γ(·) 不可测，用扩展状态观测器估计。针对被控对象 (7)，所提出的观测器为：</p>
+<div class="math-block">$$ \dot { \hat { x } } ( t ) = - a \hat { x } ( t ) + b u ( t ) + c _ { 1 } ( y ( t ) - \hat { y } ( t ) ) + w ( t ) \tag{12} $$</div>
+<p class="math-note"><strong>解读：</strong>x̂ 是状态的估计，w 是扰动 γ 的估计（「扩展状态」）。观测器结构与对象 (7) 相同，外加两个修正项：比例修正 c<sub>1</sub>(y − ŷ) 与估计的扰动 w。</p>
+<div class="math-block">$$ \begin{aligned} \dot { w } ( t ) & = c _ { 2 } ( y ( t ) - \hat { y } ( t ) ) + c _ { 3 } \operatorname { s i g n } ( y ( t ) - \hat { y } ( t ) ) , \\ \hat { y } ( t ) & = \hat { x } ( t ) . \end{aligned} \tag{13} $$</div>
+<p class="math-note"><strong>解读：</strong>扰动估计 w 的更新律含两项：线性积分项 c<sub>2</sub>·(y−ŷ) 与<span class="key-term">滑模项（sliding mode term）</span>c<sub>3</sub>·sign(y−ŷ)。sign 项带来强鲁棒性，也引入不连续面，形成二阶滑模动态。</p>
+<p>定义观测误差 ε(t) = x(t) − x̂(t)，其动态为：</p>
+<div class="math-block">$$ \begin{aligned} \dot { \epsilon } ( t ) & = \gamma ( \cdot ) - ( c _ { 1 } + a ) \epsilon ( t ) - w ( t ) , \\ \dot { w } ( t ) & = c _ { 2 } \epsilon ( t ) + c _ { 3 } \operatorname { s i g n } ( \epsilon ( t ) ) . \end{aligned} \tag{14} $$</div>
+<p class="math-note"><strong>解读：</strong>误差动态中，扰动 γ 与观测器增益、滑模项共同作用。做变量代换 η<sub>1</sub>(t) = ε(t)、η<sub>2</sub>(t) = γ(·) − (c<sub>1</sub>+a)ε(t) − w(t)，得：</p>
+<div class="math-block">$$ \begin{aligned} \dot { \eta } _ { 1 } ( t ) & = \eta _ { 2 } ( t ) , \\ \dot { \eta } _ { 2 } ( t ) & = - c _ { 2 } \eta _ { 1 } ( t ) - ( c _ { 1 } + a ) \eta _ { 2 } ( t ) - c _ { 3 } \operatorname { s i g n } ( \eta _ { 1 } ( t ) ) + \dot { \gamma } ( \cdot ) . \end{aligned} \tag{15} $$</div>
+<p class="math-note"><strong>解读：</strong>变换后系统呈标准二阶形式：η̇<sub>1</sub> = η<sub>2</sub>（积分链），η<sub>2</sub> 动态含线性反馈与滑模项。γ̇(·) 有界（|γ̇| &lt; δ<sub>1</sub>）保证稳定性分析成立。</p>
+<p>定义矩阵 A 与 Lyapunov 方程 A<sup>T</sup>P + PA = −I 的解 P：</p>
+<div class="math-block">$$ A = \begin{bmatrix} 0 & 1 \\ - c _ { 2 } & - ( c _ { 1 } + a ) \end{bmatrix} \tag{16} $$</div>
+<p class="math-note"><strong>解读：</strong>A 是观测器误差系统的线性部分矩阵，其特征值由增益 c<sub>1</sub>、c<sub>2</sub> 决定。</p>
+<div class="math-block">$$ P = \begin{bmatrix} p _ { 1 1 } & p _ { 1 2 } \\ p _ { 1 2 } & p _ { 2 2 } \end{bmatrix} \tag{17} $$</div>
+<p class="math-note"><strong>解读：</strong>P 为 Lyapunov 方程 A<sup>T</sup>P + PA = −I 的正定解，用于构造 Lyapunov 函数 V = η<sup>T</sup>Pη 并推导滑模增益 c<sub>3</sub> 的充分条件。</p>
+<p>依据文献 [27] 的定理 1，可证明：</p>
+<div class="math-block">$$ c _ { 3 } &gt; 2 \lambda _ { \mathrm { m a x } } ( P ) \sqrt { \frac { \lambda _ { \mathrm { m a x } } ( P ) } { \lambda _ { \mathrm { m i n } } ( P ) } } \left( \frac { c _ { 2 } \delta _ { 1 } } { \sigma } \right) \tag{18} $$</div>
+<p class="math-note"><strong>解读：</strong>定理 1（原文）：对系统 (14)，若 c<sub>3</sub> 满足上式（对某个 0 &lt; σ &lt; 1），则原点 (η<sub>1</sub>=0, η<sub>2</sub>=0) 在 Lyapunov 意义下全局渐近稳定。λ<sub>max</sub>/λ<sub>min</sub> 为 P 的最大/最小特征值——这是选择滑模增益 c<sub>3</sub> 的工程准则。</p>
+<p>系统 (14) 在 η<sub>1</sub>(t) = 0 处存在不连续面，c<sub>3</sub>·sign(η<sub>1</sub>) 产生<span class="key-term">二阶滑模（second-order sliding mode）</span>，即等效控制出现在定义不连续面的函数的二阶时间导数中：</p>
+<div class="math-block">$$ \ddot { \eta } _ { 1 } ( t ) = - c _ { 2 } \eta _ { 1 } ( t ) - ( c _ { 1 } + a ) \eta _ { 2 } ( t ) - u _ { \mathrm { e q } } ( \cdot ) + \dot { \gamma } ( \cdot ) = 0 \tag{19} $$</div>
+<p class="math-note"><strong>解读：</strong>滑模面上 η̈<sub>1</sub> = 0，由此可解出等效控制（equivalent control）——即滑模面上使系统维持滑动所需的「平均」控制作用。</p>
+<div class="math-block">$$ u _ { \mathrm { e q } } ( \cdot ) = \dot { \gamma } ( \cdot ) \tag{20} $$</div>
+<p class="math-note"><strong>解读：</strong>等效控制恰等于扰动导数——这从机理上说明观测器的滑模通道在「追踪」扰动的变化率。</p>
+<div class="math-block">$$ w ( t ) = \gamma ( \cdot ) \tag{21} $$</div>
+<p class="math-note"><strong>解读：</strong>由等效控制关系反推，在滑模面上观测误差为零且扰动估计 w 精确等于真实扰动 γ——观测器实现了对扰动的在线重构。</p>
+<p>最终控制律 (10) 取如下可实现形式：</p>
+<div class="math-block">$$ u ( t ) = \frac { 1 } { b } \left( a y _ { r } ( t ) + \dot { y } _ { r } ( t ) - w ( t ) - k e ( t ) \right) \tag{22} $$</div>
+<p class="math-note"><strong>解读：</strong>把理想控制律 (10) 中未知的 γ 换成观测器估计 w——「估计扰动、实时补偿」闭环形成：观测器（内环）估计扰动 → 控制器（外环）利用估计值抵消扰动。</p>
 <div class="insight">
-  <div class="label">ESO 的核心思想</div>
-  <p><span class="key-term">扩张状态观测器（Extended State Observer, ESO）</span>是 ADRC 的核心组件。它将系统中所有不确定因素——外部扰动、未建模动态、参数变化——统一视为一个"总扰动"（total disturbance），并将其扩展为系统的一个额外状态变量，用观测器估计之。</p>
-  <p>与传统 Luenberger 观测器的区别在于：传统观测器只估计系统已有的状态；ESO 额外估计一个"虚拟"扰动状态，并在控制律中将其减去——这就是"扰动补偿"的本质。</p>
+  <div class="label">Note</div>
+  <p><strong>扩展状态观测器的本质：</strong>ESO 把一个「一阶对象 + 未知扰动」的辨识问题转化为一个二阶观测器的增益设计问题。对象阶数越高，ESO 阶数也相应提高（n 阶对象配 n+1 阶 ESO）。这里 sign 项带来的二阶滑模比普通线性 ESO 更强的原因是：线性 ESO 只能保证扰动估计误差有界收敛到 O(1/c<sub>3</sub>) 的邻域，而滑模 ESO 在理论上可精确重构扰动（等效控制原理），这对含时滞的焊接过程尤为重要——因为时滞扰动的导数可能较大，线性观测器带宽不够时估计会明显滞后。</p>
 </div>
 
-<p>本文设计的 ESO 结构为：</p>
-<div class="math-block">
-  \[ \dot{\hat{x}}(t) = -a \hat{x}(t) + b u(t) + c_1(y(t) - \hat{y}(t)) + w(t), \tag{12} \]
-</div>
-<div class="math-block">
-  \[ \dot{w}(t) = c_2(y(t) - \hat{y}(t)) + c_3\,\mathrm{sign}(y(t) - \hat{y}(t)), \qquad \hat{y}(t) = \hat{x}. \tag{13} \]
-</div>
-<p class="math-note"><strong>解读：</strong>$c_1(y-\hat{y})$ 为线性校正项（比例反馈），$c_2(y-\hat{y})$ 为积分型校正，$c_3\,\mathrm{sign}(y-\hat{y})$ 为滑模项——提供对扰动快速变化的鲁棒跟踪。三项协同使 $w(t)$ 渐进收敛到真实的 $\gamma(\cdot)$。</p>
-
-<p>通过变量变换 $\eta_1 = \epsilon$、$\eta_2 = \gamma - (c_1 + a)\epsilon - w$，得到误差动力学：</p>
-<div class="math-block">
-  \[ \dot{\eta}_1 = \eta_2, \qquad \dot{\eta}_2 = -c_2\eta_1 - (c_1 + a)\eta_2 - c_3\,\mathrm{sign}(\eta_1) + \dot{\gamma}(\cdot). \tag{14} \]
-</div>
-
-<p>定理 1（引自 [27]）保证了当 $c_3$ 满足不等式 (17) 时，原点 $(\eta_1 = 0, \eta_2 = 0)$ 是<strong>全局渐近稳定的</strong>。系统存在不连续面 $\eta_1 = 0$，$c_3\,\mathrm{sign}(\eta_1)$ 项产生<span class="key-term">二阶滑模（second-order sliding mode）</span>——等效控制出现在不连续面函数的二阶导数中，使得：</p>
-<div class="math-block">
-  \[ u_{eq}(\cdot) = \dot{\gamma}(\cdot), \qquad w(t) = \gamma(\cdot). \tag{19,20} \]
-</div>
-<p class="math-note"><strong>解读：</strong>这证明了 ESO 的滑模项可以精确重构未知扰动 $\gamma(t)$，且在有限时间内收敛。收敛后，ESO 的输出 $w(t)$ 就等于真实的扰动值——这正是 ADRC "自抗扰" 的数学基础。</p>
-
-<p>最终可实现的 ADRC 控制律为：</p>
-<div class="math-block">
-  \[ u(t) = \frac{1}{b}\bigl(a y_r(t) + \dot{y}_r(t) - w(t) - k e(t)\bigr), \tag{21} \]
-</div>
-
-<h3 id="s4-2">4.2 稳定性分析</h3>
-
-<p>将 (21) 代入 (9)：</p>
-<div class="math-block">
-  \[ \dot{e}(t) = -(a + k) e(t) + \gamma(\cdot) - w(t). \tag{22} \]
-</div>
-
-<p>由于 $\lim_{t\to\infty} w(t) = \gamma(\cdot)$，项 $\gamma(\cdot) - w(t)$ 为<span class="key-term">渐消扰动（vanishing disturbance）</span>。实际中只能达到 $|\gamma(\cdot) - w(t)| \le \epsilon$（<span class="key-term">非渐消扰动，non-vanishing disturbance</span>），系统轨迹收敛至原点的一个小邻域内，输出保持在参考信号附近。</p>
-
+<h3 id="s4c">4.3 稳定性分析</h3>
+<p>重要性质：观测器性能与控制器输入无关，凭借其鲁棒性与收敛性可应用<span class="key-term">分离原理（separation principle）</span>——即观测器与控制器可独立设计。将 (22) 代入 (9) 得：</p>
+<div class="math-block">$$ \dot { e } ( t ) = - ( a + k ) e ( t ) + \gamma ( \cdot ) - w ( t ) \tag{23} $$</div>
+<p class="math-note"><strong>解读：</strong>闭环误差动态 = 稳定线性项 −(a+k)e + 扰动估计残差 γ − w。若观测器收敛（w → γ），残差趋于零，闭环稳定。</p>
+<p>理想情况下：</p>
+<div class="math-block">$$ \lim _ { t \to \infty } w ( t ) = \gamma ( \cdot ) \tag{24} $$</div>
+<p class="math-note"><strong>解读：</strong>γ(·) − w(t) 可视为<span class="key-term">渐消扰动（vanishing disturbance）</span>；若满足文献 [28] 中的线性增长界，原点成为渐近稳定平衡点。</p>
+<p>实际工程中可实现的最佳状态是估计残差有界：</p>
+<div class="math-block">$$ \lim _ { t \to \infty } | \gamma ( \cdot ) - w ( t ) | \leqslant \epsilon \tag{25} $$</div>
+<p class="math-note"><strong>解读：</strong>对非渐消扰动（non-vanishing disturbance），系统轨迹收敛到原点的小邻域内，输出保持贴近参考——这给出了实际闭环性能的界。</p>
 <div class="insight">
-  <div class="label">分离原理（Separation Principle）</div>
-  <p>一个重要的工程细节：观测器性能独立于控制输入，因此可应用<span class="key-term">分离原理</span>——先独立设计 ESO（参数 $c_1, c_2, c_3$），确保 $w(t) \to \gamma(\cdot)$ 快速收敛；再独立设计控制器增益 $k$，使跟踪误差动力学 $\dot{e} = -(a+k)e$ 稳定。</p>
-  <p>这种"观测器—控制器解耦"设计极大简化了参数整定：</p>
-  <table>
-    <tr><th>参数</th><th>数值</th><th>作用</th></tr>
-    <tr><td>$c_1 = 200$</td><td>最大</td><td>主导误差的线性修正速度——大值 → 快收敛</td></tr>
-    <tr><td>$c_2 = 50$</td><td>中等</td><td>积分型校正——消除稳态偏差</td></tr>
-    <tr><td>$c_3 = 70$</td><td>较大</td><td>滑模项增益——克服 $\dot{\gamma}$ 的有界变化，保证鲁棒收敛</td></tr>
-    <tr><td>$k = 0.5$（仿真）/ $0.9$（实验）</td><td>控制器增益</td><td>调节闭环带宽——$k$ 越大响应越快但可能放大噪声</td></tr>
-  </table>
+  <div class="label">Note</div>
+  <p><strong>分离原理为什么重要：</strong>它把「观测器增益（c<sub>1</sub>, c<sub>2</sub>, c<sub>3</sub>）」与「控制器增益（k）」两组参数的整定解耦——可以先按扰动收敛速度调观测器，再按跟踪性能调控制器，互不干扰。这在工程调试上极其友好，也是 ADRC 参数整定比传统 PID 更直观的原因之一（PID 的 P/I/D 三项耦合，整定常需反复试凑）。</p>
 </div>
 
-<div class="summary-table">
-  <h4>本节要点速查</h4>
-  <table>
-    <tr><th>概念</th><th>一句话解释</th></tr>
-    <tr><td>ADRC 基本思想</td><td>估计 + 补偿：先观测总扰动，再在控制律中减去</td></tr>
-    <tr><td>ESO</td><td>将扰动扩展为额外状态并用滑模+线性校正估计</td></tr>
-    <tr><td>扰动补偿</td><td>$w(t) \to \gamma(\cdot)$ 后，控制律 (21) 将系统简化为 $\dot{x} = -a x + a y_r + \dot{y}_r - k e$</td></tr>
-    <tr><td>二阶滑模</td><td>sign 项使等效控制出现在 $\ddot{\eta}_1$ 中，确保 $w = \gamma$</td></tr>
-    <tr><td>分离原理</td><td>观测器与控制器独立设计，简化参数整定</td></tr>
-  </table>
-</div>
-
-<!-- ===== SECTION 5: PERFORMANCE ===== -->
+<!-- ═══════════ 5. PERFORMANCE ═══════════ -->
 <h2 id="s5">5. 闭环系统性能分析</h2>
+<p>分别在数值仿真与实物实验中对比经典 PID 与 ADRC 的跟踪性能。PID 是工业过程中（含时滞过程）使用最广泛的控制器，作为比较基准最合适。仿真在 LabVIEW 上用固定步长 Euler 求解器（步长 0.001 s）完成，实验在 NI cRIO-9074 实时平台上进行。</p>
 
-<p>本节对 PID 和 ADRC 进行数值与实验对比。所有仿真在 LabVIEW 中用固定步长 Euler 求解器（0.001 s）完成，实验在 NI cRIO-9074 实时平台上运行。</p>
-
-<h3 id="s5-1">5.1 数值仿真结果</h3>
-
-<p>PID 控制器形式及自动整定得到的增益：</p>
-<div class="math-block">
-  \[ u(t) = k_p e(t) + k_i \int e(t) dt + k_d \frac{de(t)}{dt}, \tag{25} \]
-</div>
-<p>$k_p = 0.05099$, $k_i = 0.00361$, $k_d = 0.120288$。</p>
-
+<h3 id="s5a">5.1 数值仿真结果</h3>
+<p>经典 PID 控制器形式为：</p>
+<div class="math-block">$$ u ( t ) = k _ { p } e ( t ) + k _ { i } \int e ( t ) d t + k _ { d } \frac { d e ( t ) } { d t } \tag{26} $$</div>
+<p class="math-note"><strong>解读：</strong>用自整定算法选取增益 k<sub>p</sub> = 0.05099、k<sub>i</sub> = 0.00361、k<sub>d</sub> = 0.120288。PID 的三个通道分别处理当前误差、历史误差累积（消除稳态偏差）、误差变化率（抑制超调）。</p>
 <div class="figure-row">
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/f031ac8497e3ac0542fa9d830d4c52a9c1a86f819d899a95d319203418d25a88.jpg" alt="Fig 7a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/a9cae443c2e537724f5929c1cb6b9c47dc63466bcc01edbd795f2390cbde029d.jpg" alt="Fig 7a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(a) 参考信号 y<sub>r</sub>(t) 与测量输出 y(t) 对比</figcaption>
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(a) 参考信号 y<sub>r</sub>(t) 与实测输出 y(t)</figcaption>
   </figure>
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/0e79c319e8925d48f1ecd294510c96d87818752840746bff75c44bf289de9ffd.jpg" alt="Fig 7b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/75ab5e2aaf20006713345dfdf5c1a1024ef2971b7af631137991734e77769eb4.jpg" alt="Fig 7b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(b) 控制信号 u(t)</figcaption>
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(b) 对应的控制信号 u(t)</figcaption>
   </figure>
 </div>
-<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:13.5px;color:var(--text-secondary);">图 7 PID 仿真结果。(a) 参考温度（黑）与实际输出（红）存在显著偏差——第一段约 17 °C，峰值处约 22 °C；(b) 控制信号在 0–10 V 工作范围内</figcaption>
-
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 7 &mdash; 仿真结果：PID 控制器跟踪焊接典型参考信号的闭环性能。(a) 参考信号与实测输出; (b) 控制信号 u</figcaption>
+<p>PID 仿真结果（图 7）：输出（红线）不振荡，但大部分时间存在显著误差——参考信号第一阶段约 17 °C、最高温处约 22 °C，对焊接工艺而言误差过大。控制输入 u(t) 保持在 0–10 V（功放工作范围）内。</p>
+<div class="figure-row">
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/d85d47d63abebd1c5aff93e887b4f0846b85dc10235858fb3f3383fd607f105c.jpg" alt="Fig 8a" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(a) 参考信号与系统输出</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/f6a7967ab877b02356ea6e441b7124e74e3c5be45995f9a4ca8faf5d0bff02d6.jpg" alt="Fig 8b" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(b) 对应的控制信号 u(t)</figcaption>
+  </figure>
+</div>
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 8 &mdash; 数值结果：ADRC 控制器跟踪焊接典型参考信号的闭环性能。(a) 参考信号与系统输出; (b) 控制信号 u</figcaption>
+<div class="figure-row">
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/73de0f24c855397e9fbb34a10942efde510179388c4bd0e5416d12fb36067254.jpg" alt="Fig 9a" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(a) 观测输出 ŷ(t) 与实测输出 y(t)</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/1dcc0830fb6537efdd93c6be992ace2b56dd277828649daf57141abfb07ff950.jpg" alt="Fig 9b" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(b) 观测误差 ε(t)</figcaption>
+  </figure>
+</div>
+<figure style="margin:0;margin-top:14px;">
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/8586267116c6f8e6b186cde24f10097ff9eb1402feb050f9a5c652017282445c.jpg" alt="Fig 9c" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>(c) 估计的扰动 w(t)</figcaption>
+</figure>
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 9 &mdash; 数值结果：鲁棒观测器对扰动 w 的辨识性能。(a) 观测输出 ŷ 与实测输出 y; (b) 观测误差 ε；（c）估计的扰动 w 见上图</figcaption>
+<p>ADRC 仿真（图 8）：观测器增益 c<sub>1</sub> = 200、c<sub>2</sub> = 50、c<sub>3</sub> = 70，控制器增益 k = 0.5。稳态误差几乎消除，但参考最高温处存在约 10 °C 超调。图 9 显示观测器性能接近理想：扰动 w(t) 被准确估计，可用于可靠的在线补偿。结论：数值仿真背景下 ADRC 结构优于 PID。</p>
 <div class="insight">
-  <div class="label">PID 在时滞系统中的根本局限</div>
-  <p>PID 仿真结果暴露了时滞系统的经典困境：</p>
-  <p><strong>无振荡但有大偏差。</strong>PID 输出无振荡说明增益被整定得较为保守——这是因为在时滞系统中，增大增益很容易引发不稳定振荡。PID 必须在"快速响应（大增益）"和"稳定性（小增益）"之间做痛苦的折中。在预热段（斜率最大处）偏差 ~17 °C，峰值处偏差 ~22 °C——这些误差在焊接工艺中不可接受。</p>
-  <p><strong>根本原因：</strong>PID 是<strong>被动响应</strong>——只有误差出现后才行动。而延迟意味着"当前的误差"反映的是 1.6 秒前的控制效果，当前施加的控制要到 1.6 秒后才显现——这种因果链的错位使 PID 始终"追着误差跑"。</p>
-  <p>ADRC 的解法不同：它不是靠增大增益来加快响应，而是<strong>主动估计延迟造成的影响</strong>并提前补偿——将延迟从"控制问题"转化为"观测问题"。</p>
+  <div class="label">Note</div>
+  <p><strong>仿真中 PID 与 ADRC 误差特征的对比解读：</strong>PID 在含时滞系统中本质上是「先看到偏差再反应」——时滞使偏差信息晚到，比例项被迫加大增益弥补相位损失，但增益过大会振荡，因此 PID 只能在高增益与稳态误差之间折中。ADRC 的观测器则在时滞作用生效前就「预测」到扰动并前馈补偿，相当于把时滞环节从控制回路中"隔离"出来——这是仿真中 ADRC 稳态误差近零而 PID 高达 17–22 °C 的机理原因。ADRC 的代价是参考最高温处约 10 °C 超调（观测器暂态估计误差所致），但该超调对焊接工艺而言远优于持续的大偏差。</p>
 </div>
 
+<h3 id="s5b">5.2 实验结果</h3>
+<p>实验中因仿真增益下跟踪误差显著，PID 增益重新整定为 k<sub>p</sub> = 0.5、k<sub>i</sub> = 0.2、k<sub>d</sub> = 0.2。闭环性能见图 10：输出（红线）在参考信号起始阶段出现振荡；稳态误差先减后增，最高温度处误差约 20 °C；控制输入在实验开始阶段振荡显著。</p>
 <div class="figure-row">
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/f9eb48887c466a53fae979d395b1cdf7f2c86d44fc38dd29e8d7b3db957c4674.jpg" alt="Fig 8a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/eeeeb302dddbdb2e9af26dcee2474323ae2ab2bb0463f9ebf18975f6c419a673.jpg" alt="Fig 10a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(a) 参考信号 y<sub>r</sub>(t) 与系统输出 y(t)</figcaption>
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(a) 参考信号与实测输出</figcaption>
   </figure>
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/7d4f9f192fa97e11862c19f40f2e2bfecf809b5a6351caf57aceea1389490c0e.jpg" alt="Fig 8b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/486be33496dd4ec0c47a4a074e8ac565b6e806760c128520f41ea7955abef238.jpg" alt="Fig 10b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(b) 控制信号 u(t)</figcaption>
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(b) 对应的控制信号 u(t)</figcaption>
   </figure>
 </div>
-<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:13.5px;color:var(--text-secondary);">图 8 ADRC 仿真结果（$c_1=200, c_2=50, c_3=70, k=0.5$）。(a) 稳态误差近零，峰值处有约 10 °C 超调；(b) 控制信号平滑</figcaption>
-
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 10 &mdash; 实验结果：PID 控制器闭环性能。(a) 参考信号与实测输出; (b) 控制信号 u</figcaption>
 <div class="figure-row">
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/18d00569fa40bc8bad0907053539a983e0bee9f08637d42420657539ce4b6559.jpg" alt="Fig 9a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/1d9f938909e813611241fe40649bbab21bdc16c3c462f0cbeb01b1dee616b592.jpg" alt="Fig 11a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(a) 观测器输出 $\hat{y}(t)$ 与测量输出 $y(t)$</figcaption>
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(a) 参考信号与实测输出</figcaption>
   </figure>
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/4916c6e4b9f8151014d7932da0d77579c0e24dcea912681c48b9565a8f7544c6.jpg" alt="Fig 9b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/1ee0fb7c7e348a3de8aea1b29e22ef58d4909be4e3e38b5502c8faee9024dc38.jpg" alt="Fig 11b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(b) 观测误差 $\epsilon(t)$</figcaption>
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(b) 对应的控制信号 u(t)</figcaption>
   </figure>
 </div>
-<div style="max-width:50%;margin:0 auto;">
-  <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/6d34f9644eb03a20b97ebf5d603d9813249f215035599e116b3cf1d74739cb15.jpg" alt="Fig 9c" loading="lazy"
-         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(c) 估计扰动 $w(t)$</figcaption>
-  </figure>
-</div>
-<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:13.5px;color:var(--text-secondary);">图 9 扩张状态观测器（ESO）的仿真性能。(a) 观测器输出与测量输出几乎重合；(b) 观测误差 $\epsilon(t)$ 趋近于零；(c) 扰动估计 $w(t)$ 准确追踪真实扰动</figcaption>
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 11 &mdash; 实验结果：ADRC 控制器闭环性能。(a) 参考信号与实测输出; (b) 控制信号 u</figcaption>
+<p>ADRC 实验（图 11）：观测器参数不变，控制器增益调为 k = 0.9。输出几乎全程存在小幅振荡但均值贴近参考；关键结果是<strong>最高温度处误差仅约 4 °C</strong>（远优于 PID 的 20 °C）。控制信号持续振荡但频率低于 PID 情形。</p>
+<p>两种控制器都出现的振荡是含时滞系统的典型现象，对焊接工艺不构成问题——关键判据是参考结束阶段能否达到最高温度。由此可得出结论：<strong>ADRC 控制器在不要求复杂对象模型的情况下优于 PID 控制器</strong>。</p>
+<p>为从能量效率角度评估整体性能，引入控制效率指标 ITAE<sub>eff</sub>，定义为时间加权绝对误差积分（ITAE）与总控制能量（E<sub>u</sub>）之比：</p>
+<div class="math-block">$$ I T A E _ { \mathrm { e f f } } = \frac { I T A E } { E _ { u } } \tag{27} $$</div>
+<p class="math-note"><strong>解读：</strong>该指标量化控制器「用每单位执行机构能量换取多少跟踪误差削减」的能力，数值越低表示控制效率越高。</p>
+<div class="math-block">$$ I T A E = T _ { s } ^ { 2 } \sum _ { k = 1 } ^ { N } k \left| y _ { r } ( k ) - y ( k ) \right| \tag{28} $$</div>
+<p class="math-note"><strong>解读：</strong>ITAE 对误差按时间加权（k 为采样序号，T<sub>s</sub> 为采样周期）——后期误差的惩罚重于早期误差，适合评估长期跟踪质量。</p>
+<div class="math-block">$$ E _ { u } = \sum _ { k = 1 } ^ { N } u ( k ) ^ { 2 } \tag{29} $$</div>
+<p class="math-note"><strong>解读：</strong>E<sub>u</sub> 为控制输入平方和，衡量执行机构消耗的能量；N 为实验采样总数。</p>
+<table>
+  <caption>表 2. PID 与 ADRC 控制器的不同性能指标对比（原文 Table 2）</caption>
+  <thead><tr><th>控制器</th><th>ITAE</th><th>E<sub>u</sub></th><th>ITAE<sub>eff</sub></th></tr></thead>
+  <tbody>
+    <tr><td>PID</td><td>3.0042e5</td><td>2.427e3</td><td>123.74</td></tr>
+    <tr><td>ADRC</td><td>2.7470e5</td><td>2.529e3</td><td>108.6206</td></tr>
+  </tbody>
+</table>
+<p>如表 2 所示，ADRC 的控制效率指标（108.62）低于 PID（123.74），改进约 <strong>12.2%</strong>——在控制能量接近（甚至略高）的前提下，ADRC 以更小的跟踪误差实现了更高的控制效率，在误差削减与执行机构努力之间取得更优平衡。</p>
+<table>
+  <caption>整理表 A. 控制系统关键参数汇总（据原文第 3–5 节整理）</caption>
+  <thead><tr><th>参数类别</th><th>符号</th><th>数值</th></tr></thead>
+  <tbody>
+    <tr><td>辨识模型增益</td><td>a, b</td><td>0.094339, 4.4838</td></tr>
+    <tr><td>输入时滞</td><td>τ</td><td>1.603 s</td></tr>
+    <tr><td>热时间常数</td><td>τ<sub>th</sub> = 1/a</td><td>10.61 s</td></tr>
+    <tr><td>PID 仿真增益</td><td>k<sub>p</sub>, k<sub>i</sub>, k<sub>d</sub></td><td>0.05099, 0.00361, 0.120288</td></tr>
+    <tr><td>PID 实验增益（重调）</td><td>k<sub>p</sub>, k<sub>i</sub>, k<sub>d</sub></td><td>0.5, 0.2, 0.2</td></tr>
+    <tr><td>ADRC 观测器增益</td><td>c<sub>1</sub>, c<sub>2</sub>, c<sub>3</sub></td><td>200, 50, 70</td></tr>
+    <tr><td>ADRC 控制器增益（仿真/实验）</td><td>k</td><td>0.5 / 0.9</td></tr>
+    <tr><td>仿真求解器</td><td>—</td><td>LabVIEW 固定步长 Euler，步长 0.001 s</td></tr>
+  </tbody>
+</table>
 
-<div class="insight">
-  <div class="label">仿真结果对比总结</div>
-  <table>
-    <tr><th>指标</th><th>PID</th><th>ADRC</th><th>ADRC 优势</th></tr>
-    <tr><td>峰值温度误差</td><td>~22 °C</td><td>~10 °C（超调）</td><td>误差减半，但存在超调</td></tr>
-    <tr><td>稳态跟踪误差</td><td>持续偏大（~17 °C）</td><td>几乎消除</td><td>ESO 补偿了延迟引起的偏差</td></tr>
-    <tr><td>控制信号</td><td>平滑</td><td>平滑</td><td>两者相当</td></tr>
-    <tr><td>扰动观测精度</td><td>无此能力</td><td>$\epsilon(t) \to 0$</td><td>ADRC 的独特优势</td></tr>
-  </table>
-</div>
-
-<h3 id="s5-2">5.2 实验结果</h3>
-
-<p>实验阶段因仿真增益跟踪误差大，PID 参数被重新整定为 $k_p=0.5$, $k_i=0.2$, $k_d=0.2$。ADRC 的观测器参数保持不变（$c_1=200, c_2=50, c_3=70$），控制器增益调整为 $k=0.9$。</p>
-
-<div class="figure-row">
-  <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/1527244cdc53f224a182e004d0a74dd4916d6729308365bf3f67d9bc6606f1ae.jpg" alt="Fig 10a" loading="lazy"
-         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(a) 参考信号 y<sub>r</sub>(t) 与实际输出 y(t)</figcaption>
-  </figure>
-  <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/4dbe3334ca275ce3b53228e03e34c162076dd1fc7e23d1bd6b60f935ed8b486a.jpg" alt="Fig 10b" loading="lazy"
-         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(b) 控制信号 u(t)</figcaption>
-  </figure>
-</div>
-<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:13.5px;color:var(--text-secondary);">图 10 PID 控制器实验结果。(a) 初始段出现振荡，稳态误差先减小后增大，峰值温度误差约 20 °C；(b) 控制信号在初始阶段振荡显著</figcaption>
-
-<div class="figure-row">
-  <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/19739f5c711437421a2e3ed421c3bd17efa5ec7d63399a8faca23df0cbd6a02a.jpg" alt="Fig 11a" loading="lazy"
-         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(a) 参考信号 y<sub>r</sub>(t) 与实际输出 y(t)</figcaption>
-  </figure>
-  <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/209494bef1974da242df110a0766b1149a9f717d16c6d274a4801e854bb8238e.jpg" alt="Fig 11b" loading="lazy"
-         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3Ctext%3E%3C/svg%3E'">
-    <figcaption>(b) 控制信号 u(t)</figcaption>
-  </figure>
-</div>
-<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:13.5px;color:var(--text-secondary);">图 11 ADRC 控制器实验结果（$k=0.9$）。(a) 输出持续存在小幅振荡，但平均值接近参考，峰值温度误差仅约 4 °C；(b) 控制信号振荡频率低于 PID</figcaption>
-
-<div class="insight">
-  <div class="label">实验 vs. 仿真：ADRC 的实际情况</div>
-  <p>实验与仿真之间存在差距，这一点值得诚实分析：</p>
-  <table>
-    <tr><th>维度</th><th>仿真</th><th>实验</th><th>差距的可能原因</th></tr>
-    <tr><td>峰值误差</td><td>~10 °C 超调</td><td>~4 °C</td><td>$k$ 从 0.5 调至 0.9 增强了跟踪力</td></tr>
-    <tr><td>振荡情况</td><td>几乎无振荡</td><td>持续的轻微振荡</td><td>实际系统中存在传感器噪声、功率驱动器的非线性、BGA 发射率随温度变化等仿真未能覆盖的因素</td></tr>
-    <tr><td>控制信号</td><td>平滑</td><td>存在振荡但频率低于 PID</td><td>ESO 对高频噪声的响应被滑模项放大；但低频振荡说明 ADRC 仍然在"等待"估计值收敛</td></tr>
-  </table>
-  <p><strong>关键结论：</strong>两种控制器都存在振荡——这是时滞系统中不可避免的现象，但不影响焊接工艺，因为工艺的核心要求是<strong>峰值温度精度</strong>而非全程平滑性。在"峰值温度误差"这一关键指标上，ADRC（~4 °C）大幅优于 PID（~20 °C）。</p>
-</div>
-
-<h3>控制效率指标：ITAE<sub>eff</sub></h3>
-
-<p>为定量比较两种控制器的综合性能，定义了<span class="key-term">控制效率指数（Control Efficiency Index）</span>：</p>
-
-<div class="math-block">
-  \[ ITAE_{eff} = \frac{ITAE}{E_u}, \qquad ITAE = T_s^2 \sum_{k=1}^{N} k |y_r(k) - y(k)|, \qquad E_u = \sum_{k=1}^{N} u(k)^2. \tag{26-28} \]
-</div>
-<p class="math-note"><strong>解读：</strong>ITAE 衡量<strong>跟踪精度</strong>（时间加权的绝对误差积分，$k$ 因子使后期误差惩罚更重——这对焊接工艺尤为合理，因为峰值温度误差最致命）；$E_u$ 衡量<strong>控制能量</strong>（控制信号的平方和）。两者之比即"单位控制能量获得的跟踪精度"——值越小表示效率越高。</p>
-
-<div class="summary-table">
-  <h4>性能指标对比</h4>
-  <table>
-    <tr><th>控制器</th><th>ITAE</th><th>$E_u$</th><th>ITAE<sub>eff</sub></th></tr>
-    <tr><td>PID</td><td>$3.0042 \times 10^5$</td><td>$2.427 \times 10^3$</td><td>123.74</td></tr>
-    <tr><td>ADRC</td><td>$2.7470 \times 10^5$</td><td>$2.529 \times 10^3$</td><td><strong>108.62</strong></td></tr>
-  </table>
-  <p style="text-align:center;color:var(--accent);font-weight:600;margin:8px 0;">ADRC 的 ITAE<sub>eff</sub> 降低 12.2%，即控制效率提升 12.2%</p>
-</div>
-
-<div class="insight">
-  <div class="label">效能分析的深层含义</div>
-  <p>值得注意的是，ADRC 的控制能耗 $E_u = 2529$ 略高于 PID 的 $2427$（约 4.2% 的额外能耗），但 ITAE 从 $3.0042\times 10^5$ 降至 $2.7470\times 10^5$（跟踪误差减少 8.6%）。</p>
-  <p><strong>所以 ADRC 的"效率提升"并非省电——它用略多的电换来了显著更好的跟踪精度。</strong>从工程实用角度看，这意味着：如果目标是达到给定的跟踪精度（如峰值误差 < 5 °C），ADRC 反而可能比 PID 更省电——因为 PID 可能需要大幅加大增益才能达到同样精度，而加大增益会推高 $E_u$。</p>
-</div>
-
-<!-- ===== SECTION 6: APPLICATION ===== -->
+<!-- ═══════════ 6. APPLICATION ═══════════ -->
 <h2 id="s6">6. 应用示例：BGA 局部返修</h2>
-
-<p>为展示系统的实际应用能力，作者对带有损伤焊球的 BGA 器件进行了局部回流修复。这不是正式的验证测试，而是<strong>可行性演示</strong>。</p>
-
+<p>为展示实际应用，对带损伤焊球的 BGA 器件执行局部加热工艺。图 12 展示了多个受损焊球（红色标注）——半扁平或不规则形貌是制造中的常见失效模式（贴装时表面张力过大或搬运设备机械应力所致），此类器件常被直接报废，造成材料浪费与成本上升。</p>
 <figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/602ccf13496434371311a035f146d432691ee0b77f11417acaebb34ce3244fc3.jpg" alt="Fig 12" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/c43a0b48e03403bfbab67fbd8a9fdb3b682111e60450d9af68964751592b6906.jpg" alt="Fig 12" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 12 存在损伤焊球（红色标注）的 BGA 器件。损伤通常表现为半扁平或不规则形状，由操作不当或机械应力造成</figcaption>
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 12 &mdash; 带损伤焊球的 BGA 器件（损伤处红色标注）</figcaption>
 </figure>
-
+<p>按标准无铅回流温度曲线执行局部回流：预热至约 150 °C，保温区接近 180 °C，峰值 <strong>244 °C ± 2 °C</strong>，液相线以上时间（TAL）58 s。焊料达到熔点后，表面张力成为主导力——为最小化表面能而恢复焊球的球形几何；焊料的黏聚与弹性特性促进焊球快速自重构。处理后的器件见图 13：焊点恢复了规则、均匀的球形。</p>
 <figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-11/c77bb4f3-f87a-4808-bde4-677b6cd2eccd/4fbb01cbae2865fcdc61ead56c10094e8a9930dd8c93be156aa71a31c005f07f.jpg" alt="Fig 13" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/d4fde53bad004012dbe8550fa661a32157c275ef1fe53c4c59cabd375d0484d8.jpg" alt="Fig 13" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 13 热加工后的 BGA 器件，焊球已修复为规则球形</figcaption>
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 13 &mdash; 热加工后的 BGA 器件，焊球已修复</figcaption>
 </figure>
-
-<p>修复过程采用标准无铅回流温度曲线：预热至 ~150 °C → 浸润区 ~180 °C → 峰值 <strong>244 ± 2 °C</strong>，液相线以上时间（<span class="key-term">Time Above Liquidus, TAL</span>）<strong>58 s</strong>。当焊料达到熔点后，<span class="key-term">表面张力（surface tension）</span>成为主导力——在熔融相中表面张力最小化表面能，使受损焊球自动恢复规则的球形。</p>
-
 <div class="insight">
-  <div class="label">表面张力驱动的自修复机制</div>
-  <p>受损焊球恢复球形的物理原理简洁而优美：</p>
-  <p>在固相中，屈服强度阻止变形恢复。一旦温度超过液相线，焊料变为牛顿流体，<strong>表面张力（$\gamma_{LV}$）成为唯一的形状约束力</strong>。根据 Young-Laplace 方程，液滴内部压力 $\Delta P = 2\gamma_{LV}/R$——对于给定体积，球形具有最小表面积，因此具有最低的表面自由能。热力学驱动力使任何非球形扰动被"拉回"到球形。</p>
-  <p>这一过程极为迅速——液态金属的表面张力通常在 0.4–0.5 N/m 量级，对于直径 ~0.5 mm 的焊球，形状恢复的时间常数在毫秒量级。<strong>因此只要温度正确到达熔点以上，焊球必然自修复。</strong></p>
-  <p>从可持续性角度看，这种修复能力意味着：因焊球变形而报废的 BGA 可以被重新利用，减少电子废弃物。需注意的是，修复后的焊点还需要通过剪切测试、X 射线检测等机械可靠性验证才能用于正式产品。</p>
+  <div class="label">Note</div>
+  <p><strong>「表面张力自修复」的物理机制：</strong>熔融焊料是液滴系统，表面张力驱动其趋向最小表面积形态——球体正是给定体积下表面积最小的几何体。因此只要焊球被充分熔化（峰值温度与 TAL 达标）且未被氧化（助焊剂作用），球形几何就会「自动」恢复。该演示证明：光学约束 + 闭环温控使热量只作用于目标区域，避免整板受热，实现了选择性返修——从可持续性角度看，可修复本应报废的器件、减少电子废弃物。未来工作将包括剪切测试、切片分析与 X 射线检查等机械可靠性验证。</p>
 </div>
 
-<div class="summary-table">
-  <h4>应用示例关键参数</h4>
-  <table>
-    <tr><th>参数</th><th>数值</th></tr>
-    <tr><td>预热温度</td><td>~150 °C</td></tr>
-    <tr><td>浸润温度</td><td>~180 °C</td></tr>
-    <tr><td>峰值温度</td><td>244 ± 2 °C</td></tr>
-    <tr><td>TAL（液相线以上时间）</td><td>58 s</td></tr>
-    <tr><td>焊料类型</td><td>无铅（Lead-free）</td></tr>
-  </table>
-</div>
+<!-- ═══════════ 7. CONCLUSION ═══════════ -->
+<h2 id="s7">7. 结论</h2>
+<ol>
+  <li>ADRC 结构能有效解决控制输入含时滞系统的跟踪问题，且<strong>无需对时滞做任何多项式近似</strong>——时滞效应被当作外部扰动，由 ADRC 实时估计与补偿。</li>
+  <li>数值仿真的精度优于实验结果，但实验仍确认 ADRC 闭环系统优于传统 PID，优势源于其对未建模动态与外部扰动的主动估计。</li>
+  <li>ADRC 的控制信号略为多变（振荡），但跟踪精度与控制能量之间的权衡明显更优：以更少的相对控制能量实现了更贴近期望热曲线的温度响应，红外温度调节的整体控制效率更高。</li>
+  <li>在原型上的应用展示表明，ADRC 有助于提升工业焊接工艺，为降低能耗与减少电子电路废弃物提供了可行路径。</li>
+</ol>
 
-<!-- ===== SECTION 7: CONCLUSION ===== -->
-<h2 id="s7">7. 结论与要点</h2>
+<!-- ═══════════ KEY TAKEAWAYS ═══════════ -->
+<h2 id="sum">核心要点总结</h2>
+<ol>
+  <li><strong>「时滞即扰动」范式：</strong>输入时滞经一阶 Padé 分析后，其影响被归并为有界外部扰动 γ(·)，由 ESO 在线估计并补偿——这是全文方法论的基石，避免了 Smith 预估器/高阶 Padé 等复杂时滞建模。</li>
+  <li><strong>硬件方案：</strong>150 W QTH 灯 + 椭圆金反射镜 + 双透镜光学阵列，实现焦点温度最高 1200 °C 的局部聚焦加热；NI cRIO-9074 实时平台闭环控制 BGA 温度。</li>
+  <li><strong>模型：</strong>一阶惯性 + 纯时滞 F(s) = (b/(s+a))e<sup>−τs</sup>，a = 0.094339、b = 4.4838、τ = 1.603 s；热时间常数 τ<sub>th</sub> = 10.61 s 与实验 63% 准则吻合。</li>
+  <li><strong>控制律：</strong>u = (1/b)(ay<sub>r</sub> + ẏ<sub>r</sub> − w − ke)，观测器增益 c<sub>1</sub> = 200、c<sub>2</sub> = 50、c<sub>3</sub> = 70，控制器增益 k = 0.5（仿真）/ 0.9（实验）；分离原理保证观测器与控制器独立整定。</li>
+  <li><strong>性能对比：</strong>仿真中 PID 误差 17–22 °C 而 ADRC 稳态误差近零（仅最高温处约 10 °C 超调）；实验中最高温误差 PID 约 20 °C vs ADRC 约 4 °C。</li>
+  <li><strong>效率指标：</strong>ITAE<sub>eff</sub> 由 123.74（PID）降至 108.62（ADRC），提升约 12.2%——同等控制能量下跟踪更准。</li>
+  <li><strong>应用价值：</strong>BGA 局部返修演示（峰值 244 °C ± 2 °C，TAL 58 s）成功修复受损焊球，展示选择性返修与减少电子废弃物的可持续路径。</li>
+</ol>
 
-<p>本文证明 ADRC 控制结构可以有效解决存在输入时滞的系统的温度跟踪问题，<strong>无需对延迟进行任何多项式近似</strong>。核心思想简洁有力：将延迟效应视为外部扰动，利用 ADRC 的扰动估计与补偿能力在实时中处理。</p>
+<!-- ═══════════ ACK ═══════════ -->
+<h2 id="ack">数据可用性与作者贡献</h2>
+<p><strong>数据可用性声明：</strong>支持本研究结果的所有数据均包含在文章内（及任何补充文件中）。</p>
+<p><strong>作者贡献：</strong></p>
+<ul>
+  <li>R Citlalli Anguiano Cota（ORCID 0000-0003-1087-293X）：概念化（同等）、形式分析（同等）、调查（同等）</li>
+  <li>David I Rosas Almeida（ORCID 0000-0002-7906-7405）：概念化（同等）、形式分析（同等）、调查（同等）、方法论（同等）、软件（同等）</li>
+  <li>J Rigoberto Herrera García（ORCID 0000-0003-4897-8270）：撰写—审阅与编辑（同等）、调查（同等）</li>
+</ul>
 
-<p>尽管数值仿真精度优于实验结果，实验结果仍确认 ADRC 闭环系统优于传统 PID。ADRC 的优势来源于其对热过程中<strong>未建模动力学和外部扰动的主动估计</strong>。</p>
+<!-- ═══════════ REFERENCES ═══════════ -->
+<h2 id="refs">参考文献</h2>
+<ol>
+  <li>Strauss R 1998 <em>SMT soldering handbook</em> (Elsevier)</li>
+  <li>Lee N C 2002 <em>Reflow soldering processes</em> (Newnes)</li>
+  <li>Gannamani R and Pecht M 1996 <em>IEEE Transactions on Components, Packaging, and Manufacturing Technology: Part A</em> 19 194–201</li>
+  <li>Wenger T, Schletterer P and Reichenberger M 2025 <em>Flex. Print. Electron.</em> 10 1–13</li>
+  <li>Anguiano C, Félix M, Medel A, Bravo M, Salazar D and Márquez H 2013 <em>Opt. Express</em> 21 23851–65</li>
+  <li>Lanin V, Emel'yanov V and Petukhov I 2024 <em>Surf. Eng. Appl. Electrochem.</em> 60 374–407</li>
+  <li>Vandevelde B 2011 Excessive warpage of large packages during reflow soldering <em>The ELFNET Book on Failure Mechanisms, Testing Methods, and Quality Issues of Lead-Free Solder Interconnects</em> (Springer) pp 283–96</li>
+  <li>Dušek K and Váňa T 2011 Study of temperature profiles of the infrared continuous furnace <em>Proceedings of the 2011 34th International Spring Seminar on Electronics Technology (ISSE)</em> (IEEE) pp 188–91</li>
+  <li>Sarvar F and Conway P P 2002 <em>IEEE Transactions on Components, Packaging, and Manufacturing Technology: Part C</em> 21 126–33</li>
+  <li>Inoue M and Koyanagawa T 2005 Thermal simulation for predicting substrate temperature during reflow soldering process <em>Proceedings Electronic Components and Technology, 2005. ECTC'05</em> (IEEE) pp 1021–6</li>
+  <li>Lam T L 2020 <em>IEEE Access</em> 9 123566–74</li>
+  <li>Gu K and Niculescu S I 2003 <em>J. Dyn. Sys., Meas., Control</em> 125 158–65</li>
+  <li>Richard J P 1998 Some trends and tools for the study of time-delay systems <em>CESA'98, 2nd Conf. IMACS-IEEE conference on Computational Engineering in Systems Applications</em> pp 27–43</li>
+  <li>Deng Y, Léchappé V, Moulay E, Chen Z, Liang B, Plestan F and Han Q L 2022 <em>Int. J. Syst. Sci.</em> 53 2496–534</li>
+  <li>Korupu V L and Muthukumarasamy M 2022 <em>Chem. Prod. Process Model.</em> 17 701–32</li>
+  <li>Glader C, Högnäs G, Mäkilä P and Toivonen H 1991 <em>Int. J. Control</em> 53 369–90</li>
+  <li>Wei Y, Hu Y, Dai Y and Wang Y 2016 <em>Int. J. Control Autom. Syst.</em> 14 181–7</li>
+  <li>Ranjan S, Sharma A and Chaudhary P 2014 An effective temperature controller system using pid mechanism <em>Innovative Applications of Computational Intelligence on Power, Energy and Controls with their impact on Humanity (CIPECH)</em> (IEEE) pp 182–5</li>
+  <li>Phan V D, Nguyen X H, Dinh V N, Dang T S, Le V C, Ho S P, Ta H C, Duong D T and Mai T A 2024 <em>Electronics</em> 13 342</li>
+  <li>Liang H, Sun B, Huang B, Li Y and Yang C 2024 <em>IEEE Trans. Autom. Sci. Eng.</em> 22 5627–36</li>
+  <li>Arkun Y, Canney W M, Hollett J and Morari M 1986 <em>Ind. Eng. Chem. Process Des. Dev.</em> 25 102–8</li>
+  <li>Wu Z, He T, Li D, Xue Y, Sun L and Sun L 2019 <em>Control Eng. Pract.</em> 83 83–97</li>
+  <li>Hou G, Gong L, Wang M, Yu X, Yang Z and Mou X 2022 <em>ISA Trans.</em> 122 357–70</li>
+  <li>Illés B, Krammer O and Geczy A 2020 <em>Reflow Soldering: Apparatus and Heat Transfer Processes</em> (Elsevier)</li>
+  <li>Incropera F P, DeWitt D P, Bergman T L and Lavine A S 2007 <em>Fundamentals of Heat and Mass Transfer</em> 6th edn (Wiley)</li>
+  <li>Holman J P 2010 <em>Heat Transfer</em> 10th ed, McGraw-Hill Series in Mechanical Engineering (McGraw-Hill Education)</li>
+  <li>Rosas Almeida D I, Alvarez J and Fridman L 2007 <em>International Journal of Robust and Nonlinear Control: IFAC-Affiliated Journal</em> 17 842–61</li>
+  <li>Khalil H 2002 <em>Nonlinear Systems</em> Pearson Education (Prentice Hall)</li>
+</ol>
 
-<div class="insight">
-  <div class="label">与作者 2021 年工作 [5] 的关联与递进</div>
-  <p>对比作者 2013/2021 年的 FILSS（聚焦红外光焊接系统）工作，本文代表了一条清晰的技术演进路径：</p>
-  <table>
-    <tr><th>维度</th><th>2021 年工作（FILSS + VIM）</th><th>2025 年本文（ADRC 原型）</th></tr>
-    <tr><td>核心技术</td><td>可变辐照掩模（VIM）实现空间选择性加热</td><td>ADRC 闭环控制实现温度曲线跟踪</td></tr>
-    <tr><td>控制方式</td><td>开环 + 光强调节（无反馈）</td><td>闭环 + 扰动主动补偿</td></tr>
-    <tr><td>时滞处理</td><td>未涉及</td><td>延迟 ≈ 扰动 → ESO 估计</td></tr>
-    <tr><td>验证方式</td><td>Zemax 仿真 + 热成像（空间分布）</td><td>数值仿真 + 实验（时间跟踪）</td></tr>
-    <tr><td>应用场景</td><td>多组件选择性加热</td><td>BGA 局部返修与修复</td></tr>
-  </table>
-  <p><strong>递进关系：</strong>2021 年解决了"把热量投到哪里"的问题（光学设计 + VIM 空间选择性），本文解决了"如何精确控制热量投入的时间轨迹"（ADRC 温度跟踪）。两者的结合——用 VIM 实现空间选择性 + ADRC 实现时间精确性——将构成一套完整的聚焦红外焊接系统。</p>
-</div>
-
-<div class="takeaway">
-  <h2>核心要点（Key Takeaways）</h2>
-  <ol>
-    <li><strong>创新贡献：</strong>首次将 ADRC 应用于聚焦红外焊接系统的温度控制，并将输入延迟视为外部扰动——<strong>无需显式建模延迟</strong>即可实现高精度跟踪。</li>
-    <li><strong>建模策略：</strong>通过 Padé 近似<strong>分析</strong>了延迟如何使系统变为非最小相位，但<strong>不依赖</strong>Padé 进行控制设计——仅用简化的一阶模型 + $\gamma(\cdot)$ 扰动项作为控制模型。</li>
-    <li><strong>ESO 设计：</strong>扩张状态观测器采用线性校正 + 积分校正 + 滑模项三通道结构，保证了对有界扰动的鲁棒精确估计，且观测器与控制器可分离设计（分离原理）。</li>
-    <li><strong>性能验证：</strong>ADRC 的 ITAE<sub>eff</sub>（108.62）比 PID（123.74）低 12.2%，跟踪精度提升但控制能耗略增——总体以小幅额外能耗换取显著精度改善。</li>
-    <li><strong>实验关键指标：</strong>在峰值温度（焊接质量的决定性参数）处，ADRC 误差约 4 °C vs PID 约 20 °C——五倍的精度差距。</li>
-    <li><strong>实际演示：</strong>成功对损伤 BGA 焊球进行局部回流修复（峰值 244 ± 2 °C, TAL 58 s），焊球通过表面张力自动恢复球形，展示了局部返修和组件回收的可行性。</li>
-    <li><strong>局限性：</strong>实验与仿真之间存在差距（存在未消除的持续振荡），未来需要机械可靠性测试（剪切、X 射线检测）来验证修复质量；控制参数（$c_1, c_2, c_3, k$）目前手动整定，缺乏系统性整定方法。</li>
-  </ol>
-</div>
-
-<!-- ===== REFERENCES ===== -->
-<div class="refs">
-  <h2>参考文献</h2>
-  <ol>
-    <li>Strauss R 1998 <em>SMT Soldering Handbook</em> (Elsevier)</li>
-    <li>Lee N C 2002 <em>Reflow Soldering Processes</em> (Newnes)</li>
-    <li>Gannamani R and Pecht M 1996 <em>IEEE Trans. Compon. Packag. Manuf. Technol. A</em> <strong>19</strong> 194–201</li>
-    <li>Wenger T, Schletterer P and Reichenberger M 2025 <em>Flex. Print. Electron.</em> <strong>10</strong> 1–13 — NIR LED 选择性加热</li>
-    <li>Anguiano C, Félix M, Medel A, Bravo M, Salazar D and Márquez H 2013 <em>Opt. Express</em> <strong>21</strong> 23851–65 — QTH 聚焦加热原型（本文作者的前期工作）</li>
-    <li>Lanin V, Emel'yanov V and Petukhov I 2024 <em>Surf. Eng. Appl. Electrochem.</em> <strong>60</strong> 374–407 — IR-对流混合系统综述</li>
-    <li>Vandevelde B 2011 Excessive warpage of large packages during reflow soldering, <em>The ELFNET Book</em> (Springer) pp 283–96</li>
-    <li>Dušek K and Váňa T 2011 Study of temperature profiles of the infrared continuous furnace, <em>Proc. ISSE 2011</em> (IEEE) pp 188–91</li>
-    <li>Sarvar F and Conway P P 2002 <em>IEEE Trans. Compon. Packag. Manuf. Technol. C</em> <strong>21</strong> 126–33 — 3D 瞬态热模型</li>
-    <li>Inoue M and Koyanagawa T 2005 Thermal simulation for predicting substrate temperature during reflow soldering, <em>Proc. ECTC 2005</em> (IEEE) pp 1021–6</li>
-    <li>Lam T L 2020 <em>IEEE Access</em> <strong>9</strong> 123566–74 — 模糊逻辑实时温度控制</li>
-    <li>Gu K and Niculescu S I 2003 <em>J. Dyn. Sys. Meas. Control</em> <strong>125</strong> 158–65</li>
-    <li>Richard J P 1998 Some trends and tools for the study of time-delay systems, <em>Proc. CESA'98</em> pp 27–43</li>
-    <li>Deng Y et al. 2022 <em>Int. J. Syst. Sci.</em> <strong>53</strong> 2496–534 — Smith 预估器综述</li>
-    <li>Korupu V L and Muthukumarasamy M 2022 <em>Chem. Prod. Process Model.</em> <strong>17</strong> 701–32</li>
-    <li>Glader C et al. 1991 <em>Int. J. Control</em> <strong>53</strong> 369–90</li>
-    <li>Wei Y et al. 2016 <em>Int. J. Control Autom. Syst.</em> <strong>14</strong> 181–7</li>
-    <li>Ranjan S et al. 2014 An effective temperature controller system using PID mechanism, <em>Proc. CIPECH 2014</em> (IEEE) pp 182–5</li>
-    <li>Phan V D et al. 2024 <em>Electronics</em> <strong>13</strong> 342</li>
-    <li>Liang H et al. 2024 <em>IEEE Trans. Autom. Sci. Eng.</em> <strong>22</strong> 5627–36</li>
-    <li>Arkun Y et al. 1986 <em>Ind. Eng. Chem. Process Des. Dev.</em> <strong>25</strong> 102–8</li>
-    <li>Wu Z et al. 2019 <em>Control Eng. Pract.</em> <strong>83</strong> 83–97</li>
-    <li>Hou G et al. 2022 <em>ISA Trans.</em> <strong>122</strong> 357–70</li>
-    <li>Illés B, Krammer O and Geczy A 2020 <em>Reflow Soldering: Apparatus and Heat Transfer Processes</em> (Elsevier)</li>
-    <li>Incropera F P et al. 2007 <em>Fundamentals of Heat and Mass Transfer</em> 6th edn (Wiley)</li>
-    <li>Holman J P 2010 <em>Heat Transfer</em> 10th edn (McGraw-Hill)</li>
-    <li>Rosas Almeida D I, Alvarez J and Fridman L 2007 <em>Int. J. Robust Nonlinear Control</em> <strong>17</strong> 842–61 — ESO 稳定性定理</li>
-    <li>Khalil H 2002 <em>Nonlinear Systems</em> (Prentice Hall)</li>
-  </ol>
-</div>
+<!-- ═══════════ FOOTER ═══════════ -->
+<p style="margin-top:40px;color:var(--text-secondary);font-size:.83rem;border-top:1px solid var(--border);padding-top:16px;">
+文献来源：R Citlalli Anguiano Cota, David I Rosas Almeida, J Rigoberto Herrera García. "A prototype for infrared soldering of electronic devices using the active disturbance rejection control structure." <em>Engineering Research Express</em> 2025, Vol. 7, Art. 045392. DOI: 10.1088/2631-8695/ae24c8. 图片由 MinerU 从原 PDF 提取。
+</p>
 
 </main>
 </div>
 
 <div class="lightbox" id="lightbox" onclick="this.classList.remove('active')">
   <span class="lightbox-close">&times;</span>
-  <img id="lb-img" src="">
+  <img id="lb-img" src="" alt="">
 </div>
 
-<a href="#" class="back-to-top" title="回到顶部">&#9650;</a>
+<a class="back-to-top" href="#" title="回到顶部">&uarr;</a>
+
+<script>
+document.addEventListener('keydown', e => { if(e.key==='Escape') document.getElementById('lightbox').classList.remove('active'); });
+</script>
 
 </body>
 </html>
