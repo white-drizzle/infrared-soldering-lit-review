@@ -153,10 +153,10 @@ MathJax = {
 
 <!-- ═══════════ 1. INTRODUCTION ═══════════ -->
 <h2 id="s1">1. 引言</h2>
-<p>电子电路板上的元器件按安装技术分为<span class="key-term">通孔技术（Through-Hole Technology, THT）</span>与<span class="key-term">表面贴装技术（Surface-Mount Technology, SMT）</span>两类。可靠的焊点需要三种要素：助焊剂（清洁表面）、焊料（填充接头）与热量（熔化焊料）。焊接的关键在于<strong>精确跟踪温度曲线</strong>——温度与时间的关系，两种基本类型为 RSS 曲线（Ramp-Soak-Spike，升温-保温-峰值）与线性斜坡曲线。偏离器件制造商规定的温度曲线会引发冷焊、桥连、立碑（tomb-stoning）、焊球损伤、焊盘剥离等一系列缺陷。</p>
+<p>电子电路板上的元器件按安装技术分为<span class="key-term">通孔技术（Through-Hole Technology, THT）</span>与<span class="key-term">表面贴装技术（Surface-Mount Technology, SMT）</span>两类。可靠的焊点需要三种要素：助焊剂（清洁表面）、焊料（填充接头）与热量（熔化焊料）。焊接的关键在于<strong>精确跟踪温度曲线</strong>——温度与时间的关系，两种基本类型为 RSS 曲线（Ramp-Soak-Spike，升温-保温-峰值）与线性斜坡曲线（图 4）。偏离器件制造商规定的温度曲线会引发冷焊、桥连、立碑（tomb-stoning）、焊球损伤、焊盘剥离等一系列缺陷。</p>
 <p>现代电子制造依赖紧凑、自动化、节能的 SMT 回流焊系统，<span class="key-term">红外辐射（infrared radiation, IR）</span>与强制对流是两种主流传热机制。近红外（NIR）辐射可实现局部与选择性加热，适合 PET 等热敏/低成本基板；QTH 灯配合光学布置可将红外辐射聚焦到特定器件上。但这些系统的共同局限是<strong>缺乏闭环控制方案来跟踪预设温度曲线</strong>，导致热不均匀、焊球成形不良等问题。工业红外炉加热快且无接触，但性能对材料发射率与几何形状敏感，陶瓷基板上红外加热会产生显著热梯度；混合 IR-对流系统则兼顾了快速加热与温度均匀性。</p>
 <p>热控制还与材料表征和温度均匀性相关：PBGA 封装在过模材料超过玻璃化转变温度（约 170 °C）时会发生过大翘曲导致断路或短路；红外炉内表面发射率变化与遮挡效应可造成基板内高达 10 °C 的梯度。先进的热建模与智能控制（三维瞬态热模型、模糊逻辑实时温控等）已被用于提升回流工艺的精度与可重复性。</p>
-<p>本文提出将 ADRC 控制结构用于红外光 + 光学阵列加热的电子器件焊接曲线跟踪。该问题的难点在于：缺乏精确的被控对象模型、存在时滞与未建模动态。处理传输时滞的两类经典方法——Smith 预估器与 Padé 近似——已被与 PID、模糊、滑模、内模控制等多种算法结合，ADRC 亦是其中之一。本文的假设是：<strong>将输入时滞视为有界外部扰动，利用 ADRC 的扰动估计能力进行补偿</strong>，从而避免对时滞做多项式近似，获得更优的闭环性能。</p>
+<p>本文提出将 ADRC 控制结构用于红外光 + 光学阵列加热的电子器件焊接曲线跟踪。该问题的难点在于：缺乏精确的被控对象模型、存在时滞与未建模动态。处理传输时滞的两类经典方法——Smith 预估器与 Padé 近似——已被与 PID、模糊、滑模、内模控制等多种算法结合，ADRC 亦是其中之一。本文的假设是：<strong>将输入时滞视为有界外部扰动，利用 ADRC 的扰动估计能力进行补偿</strong>，从而避免对时滞做多项式近似，获得更优的闭环性能。图 1 给出了本文的组织结构。</p>
 <figure>
   <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/afe25d9304a86086e959e0ce126ac1f74036b1eebc7747443b42cfb79187702e.jpg" alt="Fig 1" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
@@ -170,8 +170,8 @@ MathJax = {
 
 <!-- ═══════════ 2. PROTOTYPE ═══════════ -->
 <h2 id="s2">2. 原型系统描述</h2>
-<p>原型的第一部分是<span class="key-term">石英钨卤灯（Quartz Tungsten Halogen, QTH）</span>白炽灯，集成了椭圆金涂层反射镜。反射镜利用椭圆几何特性将辐射汇聚到第二焦点，实现能量集中。灯泡电功率 150 W（15 V、10 A），通过调节电功率可调制光输出功率，焦点处温度最高可达 1200 °C。光学系统由准直透镜（捕获并准直辐射）与聚焦透镜（调节红外光束直径、精确递送能量到目标器件）组成。</p>
-<p>加热目标为<span class="key-term">球栅阵列（Ball Grid Array, BGA）</span>器件——焊球呈阵列分布在器件一侧的 SMT 封装，尺寸 5 mm × 6 mm。部分焊球存在损伤缺陷，这正是电子焊接行业需要解决的问题之一。J 型热电偶直接接触 BGA 表面监测热曲线，配合 NI cRIO-9074 实时控制器（LabVIEW 实现控制算法）与自制功率放大器构成闭环：热电偶 → 数据采集 → 实时控制 → 功放 → 红外光源。</p>
+<p>原型的第一部分是<span class="key-term">石英钨卤灯（Quartz Tungsten Halogen, QTH）</span>白炽灯，集成了椭圆金涂层反射镜。反射镜利用椭圆几何特性将辐射汇聚到第二焦点，实现能量集中。灯泡电功率 150 W（15 V、10 A），通过调节电功率可调制光输出功率，焦点处温度最高可达 1200 °C。光学系统由准直透镜（捕获并准直辐射）与聚焦透镜（调节红外光束直径、精确递送能量到目标器件）组成，整体光学布置见图 2。</p>
+<p>加热目标为<span class="key-term">球栅阵列（Ball Grid Array, BGA）</span>器件——焊球呈阵列分布在器件一侧的 SMT 封装，尺寸 5 mm × 6 mm。部分焊球存在损伤缺陷，这正是电子焊接行业需要解决的问题之一。J 型热电偶直接接触 BGA 表面监测热曲线，配合 NI cRIO-9074 实时控制器（LabVIEW 实现控制算法）与自制功率放大器构成闭环：热电偶 → 数据采集 → 实时控制 → 功放 → 红外光源，如图 3 所示。</p>
 <figure>
   <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/4ae77c54eed1f87f4f43a4535814fbb552a374a4df119e46f43d251b9289f252.jpg" alt="Fig 2" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
@@ -225,15 +225,9 @@ MathJax = {
 <p class="math-note"><strong>解读：</strong>温度以指数形式趋近稳态，<span class="key-term">热时间常数（thermal time constant）</span>τ<sub>th</sub> = mc<sub>p</sub>/(hA) 决定趋近快慢：经过一个 τ<sub>th</sub>，输出达到终值的约 63%。τ<sub>th</sub> 越大，系统惯性越大、响应越慢——这是后续控制设计中需要补偿的主导动态。</p>
 
 <h3 id="s3c">3.3 基于实验的系统建模</h3>
-<p>对系统施加幅值 3 V 的阶跃输入信号，响应表现出典型一阶系统特征，但起始阶段存在约 <strong>1.603 s 的时滞</strong>。使用 MATLAB System Identification Toolbox 辨识得到传递函数：</p>
+<p>对系统施加幅值 3 V 的阶跃输入信号，响应表现出典型一阶系统特征，但起始阶段存在约 <strong>1.603 s 的时滞</strong>（图 5）。使用 MATLAB System Identification Toolbox 辨识得到传递函数：</p>
 <div class="math-block">$$ F ( s ) = \frac { b } { s + a } e ^ { - \tau s } \tag{3} $$</div>
 <p class="math-note"><strong>解读：</strong>a = 0.094339、b = 4.4838、τ = 1.603。这是一阶惯性环节 + 纯时滞（transport delay）的标准形式，e<sup>−τs</sup> 即输入时滞的频域表达。时滞来自加热过程的物理环节（热传递与传感延迟）。</p>
-<figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/c96602b0b59e37838dc83e0aab4d814fdef1f2a6f14254706b1b7fa727219765.jpg" alt="Fig 6" loading="lazy"
-       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 6 &mdash; 实验温度输出（黑线）与数值温度输出（红线）对比，验证模型 (3) 的准确性</figcaption>
-</figure>
 <div class="figure-row">
   <figure>
     <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/9e629ed8f6700c239f272b46761c71c1e34ce7db547f9f0faba6edc903cd3fca.jpg" alt="Fig 5a" loading="lazy"
@@ -263,6 +257,13 @@ MathJax = {
   </figure>
 </div>
 <figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 5 &mdash; 系统动态模型辨识的实验结果：(a) 实测温度 y(t)；(b) 输入时滞 τ 的存在；(c) 控制输入 u(t)（幅值 3 V）；(d) 时滞细节（约 1.603 s）</figcaption>
+<p>图 6 对比了实验温度输出（黑线）与数值温度输出（红线），验证模型 (3) 的准确性。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/c96602b0b59e37838dc83e0aab4d814fdef1f2a6f14254706b1b7fa727219765.jpg" alt="Fig 6" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 6 &mdash; 实验温度输出（黑线）与数值温度输出（红线）对比，验证模型 (3) 的准确性</figcaption>
+</figure>
 <p>对时滞项 e<sup>−τs</sup> 有多种多项式近似，最常用之一是一阶 Padé 近似：</p>
 <div class="math-block">$$ e ^ { - \tau s } \approx \frac { 2 - \tau s } { 2 + \tau s } \tag{4} $$</div>
 <p class="math-note"><strong>解读：</strong>Padé 近似用有理函数逼近超越函数 e<sup>−τs</sup>，一阶形式分子含零点 −2/τ（右半平面零点），这使近似后的系统成为<span class="key-term">非最小相位系统（non-minimum phase system）</span>。</p>
