@@ -262,7 +262,7 @@ MathJax = {
     <figcaption>(d) 时滞细节（约 1.603 s）</figcaption>
   </figure>
 </div>
-<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 5 &mdash; 系统动态模型辨识的实验结果：(a) 实测温度 y；(b)(d) 输入时滞 τ 的存在；(c) 控制输入 u</figcaption>
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 5 &mdash; 系统动态模型辨识的实验结果：(a) 实测温度 y(t)；(b) 输入时滞 τ 的存在；(c) 控制输入 u(t)（幅值 3 V）；(d) 时滞细节（约 1.603 s）</figcaption>
 <p>对时滞项 e<sup>−τs</sup> 有多种多项式近似，最常用之一是一阶 Padé 近似：</p>
 <div class="math-block">$$ e ^ { - \tau s } \approx \frac { 2 - \tau s } { 2 + \tau s } \tag{4} $$</div>
 <p class="math-note"><strong>解读：</strong>Padé 近似用有理函数逼近超越函数 e<sup>−τs</sup>，一阶形式分子含零点 −2/τ（右半平面零点），这使近似后的系统成为<span class="key-term">非最小相位系统（non-minimum phase system）</span>。</p>
@@ -404,7 +404,7 @@ MathJax = {
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>(c) 估计的扰动 w(t)</figcaption>
 </figure>
-<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 9 &mdash; 数值结果：鲁棒观测器对扰动 w 的辨识性能。(a) 观测输出 ŷ 与实测输出 y; (b) 观测误差 ε；（c）估计的扰动 w 见上图</figcaption>
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 9 &mdash; 数值结果：鲁棒观测器对扰动 w(t) 的辨识性能。(a) 观测输出 ŷ(t) 与实测输出 y(t); (b) 观测误差 ε(t); (c) 估计的扰动 w(t)</figcaption>
 <p>ADRC 仿真（图 8）：观测器增益 c<sub>1</sub> = 200、c<sub>2</sub> = 50、c<sub>3</sub> = 70，控制器增益 k = 0.5。稳态误差几乎消除，但参考最高温处存在约 10 °C 超调。图 9 显示观测器性能接近理想：扰动 w(t) 被准确估计，可用于可靠的在线补偿。结论：数值仿真背景下 ADRC 结构优于 PID。</p>
 <div class="insight">
   <div class="label">Note</div>
