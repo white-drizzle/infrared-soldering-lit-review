@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>强脉冲光焊接工艺用于提升 Sn–3.0Ag–0.5Cu 球栅阵列封装的跌落冲击可靠性</title>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$'], ['\\[','\\]']], tags: 'none' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  :root {
+    --text: #1a1a1a; --text-secondary: #5a5a5a;
+    --bg: #fdfcfa; --surface: #ffffff;
+    --border: #e0dcd4; --accent: #8b3a3a;
+    --highlight-box: #faf6ef; --highlight-border: #d4a843;
+    --radius: 6px;
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    font-family: "Noto Serif SC", "Songti SC", Georgia, serif;
+    font-size: 16px; line-height: 1.85; color: var(--text);
+    background: var(--bg); -webkit-font-smoothing: antialiased;
+  }
+  .layout { display:flex; max-width:1200px; margin:0 auto; }
+  .toc-sidebar {
+    width: 230px; flex-shrink:0; position:sticky; top:0; height:100vh;
+    overflow-y:auto; padding:28px 18px; background:#f9f7f2;
+    border-right:1px solid var(--border); font-size:.82rem;
+  }
+  .toc-sidebar h4 { font-size:.78rem; color:var(--accent); margin-bottom:10px; text-transform:uppercase; letter-spacing:.05em; }
+  .toc-sidebar a { display:block; padding:2px 0; color:var(--text-secondary); text-decoration:none; }
+  .toc-sidebar a:hover { color:var(--accent); }
+  .toc-sidebar .toc-h3 { padding-left:14px; font-size:.78rem; }
+  .content { flex:1; min-width:0; padding:36px 44px 100px; max-width:820px; }
+
+  .page-header { border-bottom:2px solid var(--accent); padding-bottom:18px; margin-bottom:32px; }
+  .page-header h1 { font-family: "Noto Serif SC", "Songti SC", Georgia, serif; font-size:1.65rem; color:var(--accent); line-height:1.3; }
+  .page-header .sub { font-size:.87rem; color:var(--text-secondary); margin-top:6px; }
+  .page-header .cite { font-size:.8rem; color:#999; margin-top:4px; }
+  .page-header .journal-info { font-size:.8rem; margin-top:4px; }
+  .page-header .journal-info .badge { display:inline-block; padding:1px 8px; border-radius:3px; font-size:.75rem; font-weight:600; margin-right:4px; }
+  .page-header .journal-info .badge-scie { background:#e8f0fe; color:#1a56c4; }
+  .page-header .journal-info .badge-esci { background:#fef3e8; color:#c47a1a; }
+  .page-header .journal-info .badge-ei { background:#e8f8ee; color:#2a8c3e; }
+  .page-header .journal-info .badge-delisted { background:#fde8e8; color:#c41a1a; }
+  .page-header .journal-info .if-val { color:var(--accent); font-weight:600; }
+  .page-header .meta { font-size:.78rem; color:#aaa; margin-top:2px; font-family:monospace; word-break:break-all; }
+  .page-header .meta a { color:#aaa; text-decoration:none; }
+  .page-header .meta a:hover { color:var(--accent); text-decoration:underline; }
+  .page-header .keywords { font-size:.82rem; color:var(--text-secondary); margin-top:6px; }
+  .page-header .keywords strong { color:var(--accent); }
+
+  h2 { font-family: "Noto Serif SC", "Songti SC", Georgia, serif; font-size:1.2rem; color:var(--accent); margin:40px 0 10px; padding-bottom:4px; border-bottom:1px solid var(--border); }
+  h3 { font-family: "Noto Serif SC", "Songti SC", Georgia, serif; font-size:1.02rem; font-weight:600; color:#5a2d2d; margin:26px 0 8px; }
+
+  figure { margin:22px 0; text-align:center; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  figure img { max-width:100%; height:auto; border-radius:4px; cursor:zoom-in; transition:box-shadow .2s; }
+  figure img:hover { box-shadow:0 4px 16px rgba(0,0,0,.12); }
+  figcaption { margin-top:10px; font-size:.83rem; color:var(--text-secondary); font-style:italic; line-height:1.5; }
+
+  .figure-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:22px 0; }
+  .figure-row figure { margin:0; }
+
+  .math-block { margin:16px 0; padding:12px 18px; background:#f4f1ea; border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; overflow-x:auto; }
+  .math-note { font-size:.87rem; color:var(--text-secondary); margin-top:-6px; margin-bottom:12px; padding-left:8px; }
+
+  .insight { margin:18px 0; padding:16px 20px; background:var(--highlight-box); border:1px solid var(--highlight-border); border-radius:var(--radius); box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  .insight .label { display:inline-block; font-size:.78rem; font-weight:700; color:#8b6914; background:#fef3d6; padding:2px 10px; border-radius:3px; margin-bottom:10px; letter-spacing:.05em; }
+  .insight p { margin:5px 0; }
+  .insight ul, .insight ol { margin:5px 0 5px 18px; }
+  .insight li { margin-bottom:2px; }
+
+  .key-term { font-weight:600; color:#8b3a3a; }
+
+  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:.9rem; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  thead tr { background:var(--accent); color:#fff; }
+  thead th { padding:7px 12px; font-weight:600; text-align:left; }
+  tbody td { padding:7px 12px; border-bottom:1px solid var(--border); }
+  tbody tr:nth-child(even) { background:#f9f7f2; }
+  table caption { caption-side:top; font-size:.83rem; color:var(--text-secondary); font-style:italic; margin-bottom:6px; text-align:left; }
+
+  .back-to-top { position:fixed; bottom:24px; right:24px; width:40px; height:40px; background:var(--accent); color:#fff; border-radius:50%; text-align:center; line-height:40px; font-size:1.2rem; cursor:pointer; opacity:.7; transition:opacity .2s; text-decoration:none; z-index:99; }
+  .back-to-top:hover { opacity:1; }
+
+  .lightbox { display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.88); cursor:zoom-out; justify-content:center; align-items:center; padding:24px; }
+  .lightbox.active { display:flex; }
+  .lightbox img { max-width:95vw; max-height:95vh; object-fit:contain; border-radius:4px; }
+  .lightbox-close { position:absolute; top:16px; right:24px; color:#fff; font-size:2rem; cursor:pointer; opacity:.6; transition:opacity .2s; }
+  .lightbox-close:hover { opacity:1; }
+
+  @media (max-width: 860px) { .toc-sidebar { display:none; } .content { padding:24px 20px 60px; } }
+  @media print {
+    .lightbox, .back-to-top, .toc-sidebar { display:none; }
+    body { max-width:100%; font-size:12pt; background:#fff; }
+    .insight { box-shadow:none; border:1px solid #ccc; }
+    .content { padding:0; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="toc-sidebar">
+  <h4>Paper Navigator</h4>
+  <a href="#abs">研究摘要</a>
+  <a href="#s1">1. 引言</a>
+  <a href="#s2">2. 实验方法</a>
+  <a href="#s2a" class="toc-h3">2.1 材料与样品制备</a>
+  <a href="#s2b" class="toc-h3">2.2 焊接工艺条件</a>
+  <a href="#s2c" class="toc-h3">2.3 表征与测试方法</a>
+  <a href="#s3">3. 结果与讨论</a>
+  <a href="#s3a" class="toc-h3">3.1 温度响应与峰值温度</a>
+  <a href="#s3b" class="toc-h3">3.2 Ag3Sn 析出与微观组织</a>
+  <a href="#s3c" class="toc-h3">3.3 剪切力、硬度与 IMC 厚度</a>
+  <a href="#s3d" class="toc-h3">3.4 跌落冲击可靠性</a>
+  <a href="#s4">4. 结论</a>
+  <a href="#sum">核心要点总结</a>
+  <a href="#refs">参考文献</a>
+</nav>
+
+<main class="content">
+
+<header class="page-header">
+  <h1>强脉冲光焊接工艺用于提升 Sn–3.0Ag–0.5Cu 球栅阵列封装的跌落冲击可靠性</h1>
+  <p class="sub">Proposal of Intense Pulsed Light Soldering Process for Improving the Drop Impact Reliability of Sn–3.0Ag–0.5Cu Ball Grid Array Package</p>
+  <p class="cite">Kyung Deuk Min, Eun Ha, Sinyeob Lee, Jae-Seon Hwang, Taegyu Kang, Jinho Joo, Seung-Boo Jung - Journal of Manufacturing Processes 2023, Sungkyunkwan University &amp; Samsung Electronics</p>
+  <p class="journal-info"><span class="badge badge-scie">SCIE Q1</span> <span class="badge badge-ei">EI</span></p>
+  <p class="meta"><a href="https://doi.org/10.1016/j.jmapro.2023.05.007" target="_blank">DOI: 10.1016/j.jmapro.2023.05.007</a> | Journal of Manufacturing Processes | 2023</p>
+  <p class="keywords"><strong>关键词：</strong>微连接（microjoining）; 强脉冲光焊接（intense pulsed light soldering）; 球栅阵列（ball grid array）; 力学性能（mechanical properties）; 金属间化合物（intermetallic compound）; Sn–3.0Ag–0.5Cu</p>
+</header>
+
+<!-- ═══════════ ABSTRACT ═══════════ -->
+<h2 id="abs">研究摘要</h2>
+<p>传统电子封装制造依赖<span class="key-term">对流再流焊（convection reflow）</span>工艺，但该工艺存在三大痛点：工艺时间长、焊点界面生成厚的金属间化合物（IMC）、以及因预热与废热产生的高功耗——这些都与碳中和目标相悖。本文提出采用<span class="key-term">强脉冲光（intense pulsed light, IPL）</span>辐射焊接工艺，并首次将其应用于真实电子封装：带有机保焊膜（OSP）表面处理的 PCB 上组装化学镀镍浸金（ENIG）表面处理的 BGA 封装。核心结果：</p>
+<ul>
+  <li><strong>IMC 大幅减薄</strong>：IPL 焊接（最短工艺条件）焊点界面 IMC 厚度仅 <strong>1.2 μm</strong>，而再流焊焊点为 <strong>6.1 μm</strong>。</li>
+  <li><strong>跌落可靠性显著提升</strong>：板级跌落冲击测试中，IPL 焊点失效跌落次数为 <strong>277 次</strong>，再流焊焊点仅 <strong>103 次</strong>——可靠性最高提升至传统工艺的 <strong>2.68 倍</strong>。</li>
+  <li><strong>功耗大幅降低</strong>：IPL 辐射焊接工艺功耗为 <strong>17.95 kWh</strong>，远低于传统对流再流焊的 <strong>29.50 kWh</strong>。</li>
+</ul>
+<p>作者据此认为，IPL 焊接在缩短工艺时间、减薄 IMC（提升跌落冲击可靠性）与降低功耗三方面均具有巨大潜力。</p>
+
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>为什么这篇文献值得读：</strong>再流焊是当前电子封装的"默认"工艺，其最深的软肋是 300 s 级的长时加热让 Cu–Sn 互扩散充分进行，焊点界面长成厚 IMC——而 IMC 越厚越脆，是跌落、冲击场景下焊点失效的源头。本文用氙灯脉冲光"快闪"焊接，把加热时间压缩到 8.33–16 s，从时间维度直接掐断了 IMC 的生长。这篇论文给出的"快加热 → 薄 IMC → 高跌落可靠性"因果链，与 P2 中"卤素灯快而尖、陶瓷源慢而匀"的红外加热权衡一脉相承，是理解激光/闪光/红外快速焊接路线共同物理逻辑的关键一环。</p>
+</div>
+
+<!-- ═══════════ 1. INTRODUCTION ═══════════ -->
+<h2 id="s1">1. 引言</h2>
+<p>随着人工智能、大容量服务器、电动汽车与物联网产品需求的持续增长，电子封装制造工艺的开发日益迫切。在电子封装制造中，<span class="key-term">微连接（microjoining）</span>工艺负责电子元器件之间的电气与机械互连，直接决定电子产品的可靠性与量产效率 [1,2]。例如，固态硬盘（SSD）模块就是通过闪存、DRAM、无源元件、电源管理 IC、控制器、连接器与 PCB 之间的微连接完成的；微连接执行得当，电子产品才能获得优异的电气与信号特性、更高的良率与可靠性。在各种微连接方法中，<span class="key-term">钎焊（soldering）</span>凭借优异的量产性与可靠性被广泛用于电子封装制造。</p>
+
+<p>迄今为止，钎焊主要通过对流再流焊完成。如图 1 所示，再流焊的原理是用风扇将石英加热器产生的热量通过对流传递给焊料使其熔化——因此在焊接前必须先预热空气氛围；且热量不在试样内直接产生，需经介质（空气）传递，试样升温耗时，熔化焊料约需 5 分钟。此外，对流加热并非全部热量都用于熔化焊料，部分废热造成功率效率低下；再流焊设备长度达 5–10 m，占用洁净室大量空间。特别是近年来环保政策要求通过节能降低二氧化碳排放，再流焊 29.50 kWh [3] 的功耗在电子封装制造中占比相当高，节能关乎企业能否满足碳税、碳排放交易体系、碳边境调节税等碳定价机制 [4]。同时，由于再流焊工艺时间长（300 s），焊点界面会形成厚的<span class="key-term">金属间化合物（intermetallic compound, IMC）</span>，抗冲击性能差 [5,6]。</p>
+
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/ce6760ef1407ec09428f5ad8bddd8ca5626ab88e96d36602ee865eb84bb82e5b.jpg" alt="Fig 1" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 1 &mdash; (a) 再流焊与 (b) IPL 焊接工艺原理示意图（左：石英加热器+风扇对流加热；右：氙灯辐射直接加热）</figcaption>
+</figure>
+
+<p>为提高焊点力学性能，已有研究者尝试用超声能量形成薄 IMC 层 [7]，或在焊料中添加 Cu-CNTs 抑制 IMC 生长 [8]，但这些方法存在焊点错位、制造成本上升等缺点；激光辅助键合（laser-assisted bonding）也被提出用于克服再流焊的上述问题，但激光焊接机昂贵，且焊接面积受激光光斑尺寸限制、难以覆盖大区域 [9,10]。为从根本上解决问题，本文采用<span class="key-term">强脉冲光（intense pulsed light, IPL）</span>能量进行焊接（图 1b）：其原理是用氙灯（Xenon lamp）产生的多波长光辐照试样使焊料熔化，并安装反射器将向上发散的光聚焦到工作台以提高光利用率。与再流焊不同，IPL 的传热方式为<span class="key-term">辐射（radiation）</span>：光辐照到试样后，通过<span class="key-term">光热效应（photothermal effect）</span>在试样内部直接产热，无需预热即可快速完成焊接，量产性高；辐射传热废热少，功率效率高，可通过节电减少 CO₂ 排放；IPL 设备长度仅 1.6 m，空间效率优于再流焊；与激光焊接的小面积不同，IPL 辐照面积宽达 20 × 30 cm²，更适合量产。同时，由于焊接时间短，焊点形成薄 IMC，力学性能优异。</p>
+
+<p>IPL 工艺是多次脉冲形式的多波长光重复辐照（图 2）。单脉冲能量 $E_{\mathrm{single\,pulse}}$ 可由充电电压（charge voltage）$V$、峰值电流（peak current）$I_{\mathrm{peak}}$ 与脉冲宽度（pulse width）$T$ 控制：</p>
+<div class="math-block">$$ E_{\mathrm{single\,pulse}} = V I_{\mathrm{peak}} T \tag{1} $$</div>
+<p class="math-note"><strong>解读：</strong>式 (1) 即单脉冲能量 = 充电电压 × 峰值电流 × 脉宽。充电电压决定电容储能，峰值电流由放电回路决定，脉宽控制放电持续时间——三者是 IPL 光源能量的基本控制旋钮。</p>
+
+<p>单位面积的总 IPL 能量 $E_{\mathrm{total,\,per\,unit\,area}}$ 可由单脉冲能量、IPL 辐照次数 $n$ 与辐照面积计算：</p>
+<div class="math-block">$$ E_{\mathrm{total,\,per\,unit\,area}} = \frac{E_{\mathrm{single\,pulse}}}{\mathrm{Irradiation\,area}} \times n \tag{2} $$</div>
+<p class="math-note"><strong>解读：</strong>总能量与脉冲次数 $n$ 成正比，除以辐照面积得到单位面积能量密度——这是本文对比各工艺条件时统一使用的"J/cm²"指标。</p>
+
+<p>总工艺时间由辐照次数除以频率（frequency）$f$ 得到：</p>
+<div class="math-block">$$ t_{\mathrm{total}} = \frac{n}{f} \tag{3} $$</div>
+<p class="math-note"><strong>解读：</strong>频率固定时，辐照次数越多工艺时间越长；提高频率则可在同样次数下压缩工艺时间（本文 IPL4 即以 3.6 Hz 将时间压到 8.33 s）。</p>
+
+<p>如式 (4) 所示，峰值功率 $P_{\mathrm{peak}}$ 可由充电电压与峰值电流控制；平均功率 $P_{\mathrm{avg}}$ 则由 $P_{\mathrm{peak}}$、脉宽 $T$ 与频率 $f$ 计算（式 (5)）：</p>
+<div class="math-block">$$ P_{\mathrm{peak}} = V I_{\mathrm{peak}} \tag{4} $$</div>
+<p class="math-note"><strong>解读：</strong>峰值功率 = 充电电压 × 峰值电流，刻画单脉冲瞬间的功率上限。</p>
+
+<div class="math-block">$$ P_{\mathrm{avg}} = P_{\mathrm{peak}} T f \tag{5} $$</div>
+<p class="math-note"><strong>解读：</strong>平均功率 = 峰值功率 × 脉宽 × 频率，即一个周期内脉冲能量的时间平均；脉宽或频率提高都会推高平均功率，对应更快的升温（见 3.1 节温度响应）。</p>
+
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>辐射传热 vs 对流传热的工程含义：</strong>再流焊是"加热空气再烤工件"——预热把整条炉体气氛抬到焊接温度，热量经介质间接传递，时间长、热惯性大、废热多；IPL 是"光直接打在工件上"——氙灯多波长光被焊点/基板表层吸收，光热效应直接产热，热惰性极小。这正是"8.33 s vs 300 s"数量级差异的物理根源，也是"无需预热"与"功耗降低约 40%"的前提。该对比与红外加热文献中"短波快而集中、中波慢而匀"的讨论互补：IPL 属于前者，但用脉冲化与大面积辐照缓解了"快而不匀"的副作用。</p>
+</div>
+
+<p>此前已有若干研究考察了柔性基板上的光子焊接（photonic soldering）可行性 [11,12]，但这些工作聚焦可行性而非制造工艺；也有研究考察了频率、脉冲次数与脉冲功率对低温焊料 Si 芯片贴装 IPL 焊接的影响 [9]，以及用 IPL 能量制备 SAC305 焊球用于剪切测试、并观察到 IPL 焊接可形成薄 IMC [10]。然而，<strong>针对真实电子封装——例如带有机保焊膜（OSP）表面处理的 BGA 封装——的 IPL 焊接研究尚属空白</strong>。BGA 封装组装相比传统引线键合具有信号损耗低、I/O 数量高的优势，随着电子产品小型化与高集成化，高可靠 BGA 封装需求持续增长 [13–15]。本文即聚焦 BGA 封装组装的 IPL 焊接：由于工艺时间短，预期可形成薄 IMC，从而获得高可靠焊点。</p>
+
+<!-- ═══════════ 2. EXPERIMENTAL ═══════════ -->
+<h2 id="s2">2. 实验方法</h2>
+
+<h3 id="s2a">2.1 材料与样品制备</h3>
+<p>研究在各种 IPL 焊接条件下考察 BGA 封装组装的可行性，并与再流焊工艺对比。实验采用<span class="key-term">化学镀镍浸金（electroless nickel immersion gold, ENIG）</span>表面处理的 BGA 组件（A-CABGA100–0.8 mm–10 mm-DC-LF-305，Practical Components, Inc., USA）与 OSP 表面处理的 PCB。BGA 组件本体尺寸 10 × 10 mm²，焊球阵列为 10 × 10；焊球材料为 SAC305 合金，使用 type-4 的 SAC305 焊膏（S3X58-KVH，Koki, 日本，粒径 25–38 μm）作为键合材料。实验焊接流程如图 3 所示：焊膏通过金属掩模（厚度 0.1 mm）印刷在 PCB 上，再将 BGA 组件贴装到印刷图案上。</p>
+
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/27be4f45147c4c8181ba324c81a958bd1526c568c31f8b8067bf7c42e018979c.jpg" alt="Fig 3" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 3 &mdash; 再流焊与 IPL 焊接工艺流程图</figcaption>
+</figure>
+
+<h3 id="s2b">2.2 焊接工艺条件（IPL 与再流焊）</h3>
+<p>IPL 工艺中，充电电压与峰值电流分别固定为 <strong>1500 V</strong> 与 <strong>1450.5 A</strong>，IPL 辐照面积为 20 × 30 cm²；采用热电偶测温系统（GL220, Graphtec, Tokyo, Japan）测量不同 IPL 条件下 BGA 组件的温度。通过预实验确定的最小 IPL 可焊条件为 <strong>3 Hz、2.75 ms、n = 30</strong>：该条件下工艺时间 10 s，单位面积总能量 299.2 J/cm²。随后将脉宽、辐照次数与频率分别提高 20%，对比各变量对微观组织与剪切力的影响：</p>
+<ul>
+  <li><strong>IPL1</strong>：最小条件（3 Hz、2.75 ms、n = 30；299.2 J/cm²、17.95 kWh）</li>
+  <li><strong>IPL2</strong>：脉宽 +20%（3 Hz、3.3 ms、n = 30；359.0 J/cm²、21.54 kWh）</li>
+  <li><strong>IPL3</strong>：辐照次数 +20%（3 Hz、2.75 ms、n = 36；359.0 J/cm²、17.95 kWh）</li>
+  <li><strong>IPL4</strong>：频率 +20%（3.6 Hz、2.75 ms、n = 30；299.2 J/cm²、21.54 kWh）</li>
+</ul>
+<p>对照组再流焊焊点使用 IR 4 温区再流焊机（RF-430-N2, Japan Pulse Laboratory Co. Ltd., Japan）制备，温度条件设定为 150 °C / 170 °C / 230 °C / 250 °C（峰值 250 °C），工艺时间 300 s。剪切力测试的焊接条件汇总于表 1。</p>
+
+<table>
+  <caption>表 1. 焊接条件与样品编号（剪切力测试，原文 Table 1(a)）</caption>
+  <thead><tr><th>样品编号</th><th>频率 (Hz)</th><th>脉宽 (ms)</th><th>辐照次数 n</th><th>总能量 (J/cm²)</th><th>时间 (s)</th></tr></thead>
+  <tbody>
+    <tr><td>IPL1</td><td>3</td><td>2.75</td><td>30</td><td>299.2</td><td>10</td></tr>
+    <tr><td>IPL2</td><td>3</td><td>3.3（+20%）</td><td>30</td><td>359.0</td><td>10</td></tr>
+    <tr><td>IPL3</td><td>3</td><td>2.75</td><td>36（+20%）</td><td>359.0</td><td>12</td></tr>
+    <tr><td>IPL4</td><td>3.6（+20%）</td><td>2.75</td><td>30</td><td>299.2</td><td>8.33</td></tr>
+    <tr><td>Reflow</td><td colspan="4">峰值温度：250 °C</td><td>300</td></tr>
+  </tbody>
+</table>
+
+<p>为考察 IMC 增厚对跌落冲击可靠性的影响，另从最小条件出发将辐照次数分别提高 20%（n = 36；359.0 J/cm²、17.95 kWh）、40%（n = 42；418.8 J/cm²、17.95 kWh）与 60%（n = 48；478.7 J/cm²、17.95 kWh）制备 IPL 焊点，并制备再流焊焊点（峰值温度 250 °C）作对比，条件汇总于表 2。</p>
+
+<table>
+  <caption>表 2. 焊接条件与样品编号（板级跌落冲击测试，原文 Table 1(b)）</caption>
+  <thead><tr><th>样品编号</th><th>频率 (Hz)</th><th>脉宽 (ms)</th><th>辐照次数 n</th><th>总能量 (J/cm²)</th><th>时间 (s)</th></tr></thead>
+  <tbody>
+    <tr><td>IPL（n = 30）</td><td>3</td><td>2.75</td><td>30</td><td>299.2</td><td>10</td></tr>
+    <tr><td>IPL（n = 36）</td><td>3</td><td>2.75</td><td>36（+20%）</td><td>359.0</td><td>12</td></tr>
+    <tr><td>IPL（n = 42）</td><td>3</td><td>2.75</td><td>42（+40%）</td><td>418.8</td><td>14</td></tr>
+    <tr><td>IPL（n = 48）</td><td>3</td><td>2.75</td><td>48（+60%）</td><td>478.7</td><td>16</td></tr>
+    <tr><td>Reflow</td><td colspan="4">峰值温度：250 °C</td><td>300</td></tr>
+  </tbody>
+</table>
+
+<h3 id="s2c">2.3 表征与测试方法</h3>
+<p>焊点微观组织与元素面分布分别采用<span class="key-term">场发射扫描电镜（FE-SEM）</span>与<span class="key-term">场发射电子探针显微分析仪（FE-EPMA）</span>表征；为分析各焊点的力学性能，进行了芯片剪切测试（die shear test）与纳米压痕测试（nanoindentation）。蚀除焊料基体后用 FE-SEM 观察 IMC 顶部形貌。BGA 封装的跌落冲击可靠性采用板级跌落冲击测试分析（峰值加速度 1500 G，脉冲持续时间 0.5 ms）；跌落失效后，用 FE-SEM 与 EPMA 分析 BGA 焊点与 PCB 界面处的裂纹，以验证裂纹模式。</p>
+
+<!-- ═══════════ 3. RESULTS ═══════════ -->
+<h2 id="s3">3. 结果与讨论</h2>
+
+<h3 id="s3a">3.1 温度响应与峰值温度</h3>
+<p>图 2 以功率-时间图展示了 IPL 辐照过程：每次脉冲辐照时，BGA 组件被脉冲能量加热，并在下一次脉冲到来前冷却。要提高脉冲能量，可以增大脉宽或峰值功率，也可以通过增加 IPL 辐照次数提高总脉冲能量；要提高温度，还可以通过提高频率来缩短脉冲辐照之间的冷却时间。</p>
+
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/71adf6ff15b459d797cebab35296fd09194000fcab1324a2f13f9e7cd84d272f.jpg" alt="Fig 2" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 2 &mdash; 带各种工艺参数的 IPL 焊接过程示意图（功率-时间图：脉冲辐照加热与间隙冷却）</figcaption>
+</figure>
+
+<p>图 4 给出各种 IPL 条件下 BGA 组件的升温曲线与峰值温度。由于焊接需要高于焊料熔点的温度，考察各条件下的温度变化至关重要。图 4(a) 以最小 IPL 可焊条件（IPL1）为基准，分别将脉宽、辐照次数与频率提高 20% 后对比升温：IPL1（299.2 J/cm²、10 s）中温度随脉冲辐照逐渐上升；IPL3（n 增至 36，359.0 J/cm²、12 s）温度升高；IPL2（脉宽增至 3.3 ms，359.0 J/cm²、10 s）脉冲能量提高 20%，温度急剧上升；IPL4（频率增至 3.6 Hz，299.2 J/cm²、8.33 s）的升温模式与 IPL2 相似。图 4(b) 为辐照次数分别增加 20%、40%、60% 的升温曲线：由于四组条件的脉宽与频率相同，升温模式基本一致，总脉冲能量与温度随辐照次数增加而升高。图 4(c) 为各条件下的峰值温度：IPL1 为 237.5 °C；IPL3（n = 36）为 255.5 °C；IPL2（脉宽 3.3 ms）为 267.9 °C；IPL4（频率 3.6 Hz）脉冲间隙冷却时间缩短，峰值温度为 244 °C，比 IPL1 高 6.5 °C。IPL2 与 IPL3 总能量相同，但 IPL2 的峰值温度更高——因为 IPL2 的总冷却时间比 IPL3 短。图 4(d) 显示峰值温度随辐照次数增加而升高。由于温度与时间是 IMC 生长的关键变量，控制 IMC 生长需要同时考虑峰值温度与时间 [16,17]。</p>
+
+<div class="figure-row">
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/3a157538a3ef82536dc7629c16232426c19b5a13cc74e7b8df51c5c1667454ca.jpg" alt="Fig 4a" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(a) 各 IPL 条件下的升温曲线</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/a68e66cd8a53ed6a017a684f803ff027e1a94496f1784c2aa1ff565d70c73878.jpg" alt="Fig 4b" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(b) 随辐照次数增加（n = 30→48）的升温曲线</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/70e1cbb25e23caec33a6e02769b8eb63fe85dcd08324c3f5b81f51edcbcf7c8a.jpg" alt="Fig 4c" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(c) 各 IPL 条件下的峰值温度</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/1b4e9dfc40ff5ed9e857ae4939a52c1e0ff8bc221ad7119a33a959f7446a3946.jpg" alt="Fig 4d" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(d) 随辐照次数增加的峰值温度</figcaption>
+  </figure>
+</div>
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 4 &mdash; (a) 各 IPL 条件下 BGA 组件的升温曲线; (b) 随辐照次数增加（n = 30→48）的升温曲线; (c) 各 IPL 条件下 BGA 组件的峰值温度; (d) 随辐照次数增加的峰值温度</figcaption>
+
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>脉冲加热的"温度-时间"博弈：</strong>IPL 的温度不是平滑斜坡，而是"脉冲升-间隙降"的锯齿。提高脉宽（IPL2）直接加大单脉冲能量、拉高每次升温的幅值；提高频率（IPL4）压缩冷却间隙，让热量来不及散失；增加次数（IPL3）只是把累积能量做大。同样的 359.0 J/cm²，IPL2 与 IPL3 的峰值温度却差 12.4 °C——因为 IMC 生长由"温度×时间"积分决定，峰值温度与高温持续时间共同起作用。这正是脉冲工艺相比连续加热更精妙的地方：可以通过占空比设计独立调节"峰值"与"总能量"两个维度。</p>
+</div>
+
+<h3 id="s3b">3.2 Ag3Sn 析出与微观组织</h3>
+<p>图 5 为 SAC305 焊料的析出反应示意图与 SAC305 焊料粉末的 EPMA 面分布。SAC305 焊膏颗粒成分为 96.5Sn–3.0Ag–0.5Cu；再流焊过程中，Sn 一般与 Ag 反应，在焊料基体内形成细小的 <span class="key-term">Ag3Sn 析出相（Ag3Sn precipitate）</span>，产生<span class="key-term">沉淀强化（precipitation strengthening）</span>效应，显著影响焊点的剪切强度、蠕变抗力等力学性能 [18–22]；因此，合理析出 Ag3Sn 对提升焊点剪切强度至关重要。上述现象适用于典型再流焊 SAC305 焊点，但 IPL 焊点中观察到了截然不同的 Ag 分布模式（图 6）。</p>
+
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/964c948955f289cb40148fa343f3e02f6465a28a5ac57421e1d96369331061c7.jpg" alt="Fig 5" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 5 &mdash; SAC305 焊料的析出反应示意图与 SAC305 焊料粉末的 EPMA 元素面分布（左：析出反应示意；右：焊料粉末 Ag/Sn 面分布）</figcaption>
+</figure>
+
+<p>图 6 为 BGA 焊点的截面显微组织与 Ag 元素面分布。由于工艺时间短（IPL1：10 s，IPL4：8.33 s）且能量不足（299.2 J/cm²），IPL1 与 IPL4 条件下部分 Ag 与 Sn 未发生反应，焊点内残留未反应的 Ag 相，Ag3Sn 析出度低——最小 IPL 条件虽足以熔化并凝固 SAC305 焊料，但时间与能量不足以让 Ag3Sn 完全析出。而在能量提高 20%（359.0 J/cm²）的 IPL2 与 IPL3 条件下，Ag3Sn 完全析出、无 Ag 残留；再流焊焊点中 Ag 同样全部以 Ag3Sn 形式析出 [19,22]。</p>
+
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/96f1fb29ce24883065b2a86c91aa4884b8704b9a92be4fb6f2af16cd1621dbe7.jpg" alt="Fig 6" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 6 &mdash; BGA 焊点的截面显微组织与 Ag 元素 EPMA 面分布（对比各 IPL 条件与再流焊的 Ag3Sn 析出程度）</figcaption>
+</figure>
+
+<h3 id="s3c">3.3 剪切力、硬度与 IMC 厚度</h3>
+<p>图 7 为 BGA 焊点与 OSP 表面处理 PCB 界面处的高倍截面显微组织及 Cu、Sn 元素 EPMA 面分布。IMC 由 Cu 电极与 SAC305 之间的<span class="key-term">互扩散（interdiffusion）</span>形成 [23]；IMC 是焊接的必要产物，但若过度生长，会成为跌落冲击可靠性、焊点韧性等力学性能劣化的主要因素 [24–26]。再流焊过程中热量经介质（氮气或空气）传递、工艺时间长，Cu 与 SAC305 长时间互扩散，形成厚达 6.1 μm 的 IMC；而 IPL 辐射在试样内部直接产热、焊接快速完成，因此 IPL 焊点的 IMC 显著薄于再流焊焊点。</p>
+
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/9c8a32d312f1d5cfed01a0dcc732ce74c5768ad671304794ea1f87daa0ab613c.jpg" alt="Fig 7" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 7 &mdash; BGA 焊点与 OSP 表面处理 PCB 界面处的高倍截面显微组织与 Cu、Sn 元素 EPMA 面分布</figcaption>
+</figure>
+
+<p>IMC 厚度实测值：最低能量条件（299.2 J/cm²）下，IPL1 与 IPL4 的 IMC 厚度分别为 <strong>1.2 μm</strong> 与 <strong>1.5 μm</strong>；能量 359.0 J/cm² 时，IPL2 与 IPL3 分别为 <strong>2.5 μm</strong> 与 <strong>2.1 μm</strong>；再流焊焊点 IMC 厚达 <strong>6.1 μm</strong>。</p>
+
+<p>图 8 汇总了评价方法示意图、力学性能（剪切力、硬度）与 IMC 厚度。如图 6 所示，IPL1 与 IPL4 因工艺时间短（10 s 与 8.33 s）且能量不足（299.2 J/cm²），Ag3Sn 析出不完全，沉淀强化效果弱，因此剪切力偏低；而 IPL2、IPL3 与再流焊条件下 Ag3Sn 完全析出，借助沉淀强化获得高剪切力 [27,28]。Ag3Sn 完全析出时硬度也达到高值，与剪切力趋势一致（纳米压痕结果见补充数据中的图 S1）。IMC 厚度与 Ag3Sn 析出趋势类似：低能量条件（IPL1、IPL4 = 299.2 J/cm²）形成极薄 IMC（1.2 μm、1.5 μm），高能量条件（IPL2、IPL3 = 359.0 J/cm²）形成略厚 IMC（2.5 μm、2.1 μm）。值得注意的是，图 4(c) 的峰值温度与图 8 的 IMC 厚度几乎成正比——由此确认 <strong>IMC 厚度由 IPL 工艺的峰值温度控制</strong>；而再流焊焊点的 IMC 为 6.1 μm，明显厚于所有 IPL 焊点。</p>
+
+<div class="figure-row">
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/ffcce84241859ec72a5b90617326276029e1fd2e0758e295d874cdfaae76c9bb.jpg" alt="Fig 8a" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(a) 剪切测试示意图</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/131b3a572c925aec94ea9e7a278703cb4d998b01778092735047afa9975eb0b2.jpg" alt="Fig 8b" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(b) 纳米压痕测试示意图</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/e46709575af05bee704b9b9b0521f2ef5ecddeb7c445d2346c27fa04517d0535.jpg" alt="Fig 8c" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(c) 各焊接条件下 BGA 焊点的剪切力与硬度</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/db03cae397ad8d09648c2bdd3c8d38b0649ea9f5139b4a814ac4409b06d55a86.jpg" alt="Fig 8d" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(d) 各焊接条件下 BGA 焊点的 IMC 厚度</figcaption>
+  </figure>
+</div>
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 8 &mdash; (a) 剪切测试示意图; (b) 纳米压痕测试示意图; (c) 各焊接条件下 BGA 焊点的剪切力与硬度; (d) 各焊接条件下 BGA 焊点的 IMC 厚度</figcaption>
+
+<h3 id="s3d">3.4 跌落冲击可靠性</h3>
+<p>上述实验确认 IMC 厚度随 IPL 能量增加而增厚，而 IMC 厚度对跌落冲击影响显著；因此从最小 IPL 条件出发将能量（辐照次数）提高 20%、40%、60% 进行板级跌落冲击测试。测试前先用 FE-SEM 观察蚀除焊料基体后各种焊接条件下的 IMC 俯视形貌（图 9）：随辐照次数增加，BGA 焊点与 PCB 间 IMC 的直径粗化；特别是再流焊形成的 IMC，其直径显著大于 IPL 工艺形成的 IMC [29,30]。</p>
+
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/dcdb518d478913329c3416240af72c2c89232929e2e16740776e7cb86b1e2a9a.jpg" alt="Fig 9" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 9 &mdash; 蚀除焊料基体后各种焊接条件下 IMC 的俯视形貌（FE-SEM，随辐照次数增加 IMC 直径粗化）</figcaption>
+</figure>
+
+<p>图 10(a) 给出失效跌落次数与 IMC 厚度的关系：随辐照次数增加，IMC 由 1.2 μm 增至 4.7 μm；最厚的 IMC（6.1 μm）出现在再流焊焊点。失效跌落次数与 IMC 厚度呈反比——IMC 越厚，脆性越大 [5,6,31]。因此，再流焊焊点的失效跌落次数为 <strong>103 次</strong>，而最小 IPL 条件下增至 <strong>277 次</strong>：IPL 焊接使 BGA 焊点的跌落冲击可靠性最高达到传统再流焊的 <strong>2.68 倍</strong>。板级跌落冲击测试的威布尔分布图中，各变量的 R² 均超过 0.9，相关性很高。图 10(b) 为失效跌落次数与 IMC 厚度之间的趋势线，经验公式可表示为式 (6)：</p>
+
+<div class="math-block">$$ y = -36.173\,x + 321.500 \tag{6} $$</div>
+<p class="math-note"><strong>解读：</strong>式中 $y$ 为失效跌落次数，$x$ 为 IMC 厚度（μm）。由式 (6) 计算的 R² 为 0.973，表明失效跌落次数与 IMC 厚度呈高度反比线性关系——IMC 每增厚约 1 μm，失效跌落次数约减少 36 次，这是量化"薄 IMC 红利"的经验标尺。</p>
+
+<div class="figure-row">
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/d9c47d9844c24f2d69281476bb1bdbd4ba7660ac1aee7a04dc7131ddeac107eb.jpg" alt="Fig 10a" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(a) 板级跌落冲击测试的威布尔分布</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/01ab8b06dbc6f7ed87330bc27d0eda08b102ad5795436a48b7747c45477b2515.jpg" alt="Fig 10b" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(b) 失效跌落次数与 IMC 厚度的散点关系</figcaption>
+  </figure>
+</div>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/9016ed5b0800b029531fe9859316464871b91eac2478888fd81401c20a252eb2.jpg" alt="Fig 10c" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>(c) 失效跌落次数与 IMC 厚度的线性趋势线（式 (6) 拟合，R² = 0.973）</figcaption>
+</figure>
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 10 &mdash; (a) 板级跌落冲击测试的威布尔分布; (b) 失效跌落次数与 IMC 厚度的散点关系; (c) 失效跌落次数与 IMC 厚度的线性趋势线</figcaption>
+
+<p>板级跌落冲击测试后的裂纹形貌如图 11 所示：裂纹发生在 BGA 焊点与 PCB 之间的脆性 IMC 处。但在最小条件（n = 30）下，IMC 很薄（约 1.2 μm），裂纹主要在 IMC 中扩展、并部分延伸至焊料基体；而 IPL（n = 36、42、48）与再流焊条件下，裂纹完全穿过 IMC 扩展。图 10 与图 11 共同证实 IMC 厚度显著影响跌落冲击可靠性，由此可以定论：<strong>IPL 焊接方法（短工艺时间 + 薄 IMC）能够提升 BGA 封装的跌落冲击可靠性</strong>。</p>
+
+<div class="figure-row">
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/9b2cfba0ed8e9c25fab405aedc97b1c1c875499f37c2c43f6d882912fd15ccc2.jpg" alt="Fig 11a" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(a) 裂纹扩展路径示意图</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P7_脉冲光焊_2023/images/9dd2db05092a422cbdc9fe0b3cf413cad1abebd92353364961306fa0df6ea290.jpg" alt="Fig 11b" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(b) 失效后 BGA 焊点与 OSP 表面处理 PCB 界面的裂纹形貌及 Cu、Sn 元素 EPMA 面分布</figcaption>
+  </figure>
+</div>
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 11 &mdash; (a) 裂纹扩展路径示意图; (b) 跌落失效后 BGA 焊点与 OSP 表面处理 PCB 界面的裂纹形貌及 Cu、Sn 元素 EPMA 面分布</figcaption>
+
+<p>实验结果表明力学性能受 IPL 条件强烈影响，因此必须根据电子产品的使用环境调控 IPL 条件。例如：对承受大量剪切应力的电子封装（如可弯折封装），应施加高于最小条件的 IPL 能量以提高剪切强度——IMC 虽略有增厚，但 Ag3Sn 完全析出，通过沉淀强化获得高剪切强度 [18–22]；而对便携设备、汽车电子等要求极高抗跌落性能的产品，可以辐照最小条件把 IMC 控制得极薄，跌落冲击可靠性极高 [5,6,31]，代价是 Ag3Sn 未完全析出、剪切强度略有降低。总之，必须结合各电子产品的服役环境控制 IPL 条件。</p>
+
+<p>此外，由于 IPL 焊接无需预热、废热少，功耗低于再流焊工艺，有助于碳中和社会的建立。从制造角度看，IPL 焊接（如 IPL4：8.33 s）相比再流焊（300 s）加工速度最高可提升 <strong>36 倍</strong>；且无需预热即可立即焊接，工艺效率高；量产性得以提高，同时 IPL 设备（1.6 m）比再流焊机（5–10 m）更短，空间效率更高。再流焊与 IPL 焊接的全面对比汇总于表 3。</p>
+
+<table>
+  <caption>表 3. 再流焊与 IPL 焊接的对比（原文 Table 2）</caption>
+  <thead><tr><th>对比项</th><th>再流焊（Reflow）</th><th>IPL 焊接</th></tr></thead>
+  <tbody>
+    <tr><td>能量来源</td><td>石英加热器（quartz heater）</td><td>氙灯（Xenon lamp）</td></tr>
+    <tr><td>传热方式</td><td>对流（convection）</td><td>辐射（radiation）</td></tr>
+    <tr><td>工艺时间</td><td>300 s</td><td>8.33–16 s</td></tr>
+    <tr><td>焊料基体</td><td>Sn、Ag3Sn</td><td>Sn、Ag3Sn、（Ag）</td></tr>
+    <tr><td>剪切力</td><td>535.57 N</td><td>493.23–578.30 N</td></tr>
+    <tr><td>IMC 厚度</td><td>6.1 μm</td><td>1.2–4.7 μm</td></tr>
+    <tr><td>跌落冲击可靠性（失效跌落次数）</td><td>103</td><td>133–277</td></tr>
+  </tbody>
+</table>
+
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>薄 IMC 红利与工艺窗口的权衡：</strong>本文给出了一个清晰的"工艺窗口"逻辑——IPL 能量越高，Ag3Sn 析出越完全、剪切力越高，但 IMC 越厚、跌落可靠性越低；能量越低则反之。以式 (6) 的经验规律（IMC 每增厚 1 μm，跌落寿命约减 36 次）为代价函数，工程师可以针对产品服役场景（剪切主导 vs 跌落主导）反推最优 IPL 参数。这与 P2 中"快热源 vs 匀热源"的选型矛盾同构：任何快速加热工艺都必须回答"我牺牲了什么均匀性/完全性"——IPL 的答案是牺牲了 Ag3Sn 的完全析出，却换来了 IMC 的大幅减薄。</p>
+</div>
+
+<!-- ═══════════ 4. CONCLUSIONS ═══════════ -->
+<h2 id="s4">4. 结论</h2>
+<ol>
+  <li><strong>可行性验证</strong>：低功率 IPL 焊接可成功用于 BGA 封装组装；峰值温度、Ag3Sn 析出度与剪切力均可通过 IPL 条件（脉宽、辐照次数、频率）精确调控。</li>
+  <li><strong>辐射传热带来的时间优势</strong>：IPL 以辐射传热、无需预热，焊接时间（8.33–16 s）远短于再流焊（300 s），由此在焊点界面形成极薄 IMC（1.2–4.7 μm，对比再流焊 6.1 μm）。</li>
+  <li><strong>可靠性提升</strong>：IPL 焊点的跌落冲击可靠性最高为再流焊焊点的 2.68 倍（失效跌落次数 277 vs 103），且无需预热、量产性高。</li>
+  <li><strong>环保效益</strong>：相比传统再流焊，IPL 焊接功耗最高可降低约 40%（17.95 vs 29.50 kWh），可减少制造过程的碳排放；作者预期该工艺将在电子封装的碳中和钎焊工艺中广泛应用。</li>
+</ol>
+
+<!-- ═══════════ KEY TAKEAWAYS ═══════════ -->
+<h2 id="sum">核心要点总结</h2>
+<ol>
+  <li><strong>快</strong>：IPL 靠辐射传热 + 光热效应在工件内直接产热，无需预热；IPL4 仅 8.33 s 完成焊接，相比再流焊 300 s，加工速度最高提升 36 倍。</li>
+  <li><strong>薄</strong>：IMC 厚度由峰值温度控制——IPL 焊点 IMC 仅 1.2 μm（最低条件），再流焊厚达 6.1 μm；峰值温度与 IMC 厚度几乎成正比。</li>
+  <li><strong>强</strong>：失效跌落次数与 IMC 厚度呈高度反比（y = −36.173x + 321.500，R² = 0.973）；IPL 焊点失效跌落次数 277 次 vs 再流焊 103 次，可靠性最高提升 2.68 倍。</li>
+  <li><strong>省</strong>：无预热、少废热，功耗 17.95 kWh vs 29.50 kWh，最高降低约 40%，契合碳中和与碳定价政策。</li>
+  <li><strong>小</strong>：IPL 设备长度 1.6 m，远短于再流焊机的 5–10 m，洁净室空间效率更高；辐照面积 20 × 30 cm²，优于激光焊接的小光斑。</li>
+  <li><strong>权衡</strong>：能量高 → Ag3Sn 完全析出、剪切力高（493.23–578.30 N 可覆盖再流焊的 535.57 N），但 IMC 增厚、跌落可靠性下降；能量低 → 极薄 IMC、跌落可靠性极高，但 Ag3Sn 析出不完全、剪切强度略降——须按产品服役环境选参数。</li>
+  <li><strong>首次填补空白</strong>：此前 IPL 研究仅停留在柔性基板可行性或焊球制备层面，本文首次针对真实 BGA 封装 + OSP PCB 组装验证了 IPL 焊接的工程可行性。</li>
+</ol>
+
+<!-- ═══════════ REFERENCES ═══════════ -->
+<h2 id="refs">参考文献</h2>
+<ol>
+  <li>Pu L, He Q, Yang Y, Zhao X, Hou Z, Tu KN, Liu Y. The microstructure and mechanical property of the high entropy alloy as a low temperature solder. In: 2019 IEEE 69th electronic components and technology conference (ECTC); 2019. p. 1716–21. https://doi.org/10.1109/ECTC.2019.00263.</li>
+  <li>Zhang P, Xue S, Liu L, Wu J, Luo Q, Wang J. Microstructure and shear behaviour of sn-3.0Ag-0.5Cu composite solder pastes enhanced by epoxy resin. Polymers 2022; 14:5303. https://doi.org/10.3390/polym14235303.</li>
+  <li>Sahasrabudhe S, Mokler S, Renavikar M, Sane S, Byrd K, Brigham E, Jin O, Goonetilleke P, Badwe N, Parupalli S. Low temperature solder - a breakthrough technology for surface mounted devices. In: 2018 IEEE 68th electronic components and technology conference (ECTC); 2018. p. 1455–64. https://doi.org/10.1109/ECTC.2018.00222.</li>
+  <li>Yi Y, Li J. The effect of governmental policies of carbon taxes and energy-saving subsidies on enterprise decisions in a two-echelon supply chain. J Clean Prod 2018; 181:675–91. https://doi.org/10.1016/j.jclepro.2018.01.188.</li>
+  <li>Tatsumi H, Kaneshita S, Kida Y, Sato Y, Tsukamoto M, Nishikawa H. Highly efficient soldering of sn-ag-cu solder joints using blue laser. J Manuf Process 2022; 82:700–7. https://doi.org/10.1016/j.jmapro.2022.08.025.</li>
+  <li>Lee DH, Jeong MS, Yoon JW. Comparative study of interfacial reaction and bonding property of laser- and reflow-soldered Sn–Ag–Cu/Cu joints. J Mater Sci Mater Electron 2022;33:7983–94. https://doi.org/10.1007/s10854-022-07948-w.</li>
+  <li>Hu X, Xu H, Chen W, Jiang X. Effects of ultrasonic treatment on mechanical properties and microstructure evolution of the Cu/SAC305 solder joints. J Manuf Process 2021;64:648–54. https://doi.org/10.1016/j.jmapro.2021.01.045.</li>
+  <li>Wang H, Hu X, Jiang X, Li Y. Interfacial reaction and shear strength of ultrasonically-assisted sn-ag-cu solder joint using composite flux. J Manuf Process 2021;62:291–301. https://doi.org/10.1016/j.jmapro.2020.12.020.</li>
+  <li>Jung KH, Min KD, Lee CJ, Jeong H, Kim JH, Jung SB. Ultrafast photonic soldering with Sn–58Bi using intense pulsed light energy. Adv Eng Mater 2020;22:2000179. https://doi.org/10.1002/adem.20200017.</li>
+  <li>Jang JH, Lee CJ, Hwang BU, Min KD, Kim JH, Jung SB. Microstructural evolution and mechanical properties of SAC305 with the intense pulsed light soldering process under high-temperature storage test. In: 2021 IEEE 71st electronic components and technology conference (ECTC); 2021. p. 2314–9. https://doi.org/10.1109/ECTC32696.2021.00362.</li>
+  <li>Arutinov G, Hendriks R, Brand JVB. Photonic flash soldering on flex foils for flexible electronic systems. In: 2016 IEEE 66th electronic components and technology conference (ECTC); 2016. p. 95–100. https://doi.org/10.1109/ECTC.2016.179.</li>
+  <li>van den Ende DA, Hendriks R, Cauchois R, Groen WA. Large area photonic flash soldering of thin chips on flex foils for flexible electronic systems: in situ temperature measurements and thermal modelling. Electron Mater Lett 2014;10:1175–83. https://doi.org/10.1007/s13391-014-4222-3.</li>
+  <li>Depiver JA, Mallik S, Amalu EH. Effective solder for improved thermo-mechanical reliability of solder joints in a ball grid Array (BGA) soldered on printed circuit board (PCB). J Electron Mater 2021;50:263–82. https://doi.org/10.1007/s11664-020-08525-9.</li>
+  <li>Yang L, Zhang Q, Zhang Z. Effects of solder dimension on the interfacial shear strength and fracture behaviors of Cu/Sn–3Cu/Cu joints. Scr Mater 2012;67:637–40. https://doi.org/10.1016/j.scriptamat.2012.07.024.</li>
+  <li>Gu J, Lin J, Lei Y, Fu H. Experimental analysis of sn-3.0Ag-0.5Cu solder joint board-level drop/vibration impact failure models after thermal/isothermal cycling. Microelectron Reliab 2018;80:29–36. https://doi.org/10.1016/j.microrel.2017.10.014.</li>
+  <li>Abdelhadi OM, Ladani L. IMC growth of sn-3.5Ag/Cu system: combined chemical reaction and diffusion mechanisms. J Alloys Compd 2012;537:87–99. https://doi.org/10.1016/j.jallcom.2012.04.068.</li>
+  <li>Li X, Li F, Guo F, Shi Y. Effect of isothermal aging and thermal cycling on interfacial IMC growth and fracture behavior of SnAgCu/Cu joints. J Electron Mater 2011;40:51–61. https://doi.org/10.1007/s11664-010-1401-3.</li>
+  <li>Ma H, Qu L, Huang M, Gu L, Zhao N, Wang L. In-situ study on growth behavior of Ag3Sn in Sn–3.5Ag/Cu soldering reaction by synchrotron radiation real-time imaging technology. J Alloys Compd 2012;537:286–90. https://doi.org/10.1016/j.jallcom.2012.05.055.</li>
+  <li>El-Daly A, Fawzy A, Mansour S, Younis M. Thermal analysis and mechanical properties of Sn–1.0Ag–0.5Cu solder alloy after modification with SiC nano-sized particles. J Mater Sci Mater Electron 2013;24:2976–88. https://doi.org/10.1007/s10854-013-1200-8.</li>
+  <li>Feng J, Xu DE, Tian Y, Mayer M. SAC305 solder reflow: identification of melting and solidification using in-process resistance monitoring. IEEE Trans Compon Packag Manuf Technol 2019;9:1623–31. https://doi.org/10.1109/TCPMT.2019.2901651.</li>
+  <li>Pietriková A, Bednarčík J, Ďurišin J. In situ investigation of SnAgCu solder alloy microstructure. J Alloys Compd 2011;509:1550–3. https://doi.org/10.1016/j.jallcom.2010.09.153.</li>
+  <li>Shen J, Chan YC, Liu S. Growth mechanism of bulk Ag3Sn intermetallic compounds in Sn–Ag solder during solidification. Intermetallics 2008;16:1142–8. https://doi.org/10.1016/j.intermet.2008.06.016.</li>
+  <li>Wang B, Li J, Gallagher A, Wrezel J, Towashirporn P, Zhao N. Drop impact reliability of Sn–1.0Ag–0.5Cu BGA interconnects with different mounting methods. Microelectron Reliab 2012;52:1475–82. https://doi.org/10.1016/j.microrel.2012.02.001.</li>
+  <li>Jeong SW, Kim JH, Lee HM. Effect of cooling rate on growth of the intermetallic compound and fracture mode of near-eutectic sn-ag-Cu/Cu pad: before and after aging. J Electron Mater 2004;33:1530–44. https://doi.org/10.1007/s11664-004-0095-9.</li>
+  <li>Yang C, Song F, Lee SR. Impact of ni concentration on the intermetallic compound formation and brittle fracture strength of Sn–Cu–Ni (SCN) lead-free solder joints. Microelectron Reliab 2014;54:435–46. https://doi.org/10.1016/j.microrel.2013.10.005.</li>
+  <li>Honarvar S, Nourani A, Karimi M. Effect of thermal treatment on fracture behavior of solder joints at various strain rates: comparison of cyclic and constant temperature. Eng Fail Anal 2021;128:105636. https://doi.org/10.1016/j.engfailanal.2021.105636.</li>
+  <li>Chang SY, Jain CC, Chuang TH, Feng LP, Tsao LC. Effect of addition of TiO2 nanoparticles on the microstructure, microhardness and interfacial reactions of Sn3.5AgXCu solder. Mater Des 2011;32:4720–7. https://doi.org/10.1016/j.matdes.2011.06.044.</li>
+  <li>Mukherjee S, Chauhan P, Osterman M, Dasgupta A, Pecht M. Mechanistic prediction of the effect of microstructural coarsening on creep response of SnAgCu solder joints. J Electron Mater 2016;45:3712–25. https://doi.org/10.1007/s11664-016-4471-z.</li>
+  <li>Ko YH, Lee JD, Yoon T, Lee CW, Kim TS. Controlling interfacial reactions and intermetallic compound growth at the Interface of a Lead-free solder joint with layer-by-layer transferred graphene. ACS Appl Mater Interfaces 2016;8:5679–86. https://doi.org/10.1021/acsami.5b11903.</li>
+  <li>Kunwar A, An L, Liu J, Shang S, Råback P, Ma H, Song X. A data-driven framework to predict the morphology of interfacial Cu6Sn5 IMC in SAC/Cu system during laser soldering. J Mater Sci Technol 2020;50:115–27. https://doi.org/10.1016/j.jmst.2019.12.036.</li>
+  <li>Xu L, Pang JHL. Effect of intermetallic and Kirkendall voids growth on board level drop reliability for SnAgCu lead-free BGA solder joint. In: 2006 IEEE 56th electronic components and technology conference (ECTC); 2006. p. 275–82. https://doi.org/10.1109/ECTC.2006.1645659.</li>
+</ol>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<p style="margin-top:40px;color:var(--text-secondary);font-size:.83rem;border-top:1px solid var(--border);padding-top:16px;">
+文献来源：Kyung Deuk Min et al. "Proposal of intense pulsed light soldering process for improving the drop impact reliability of Sn–3.0Ag–0.5Cu ball grid array package." <em>Journal of Manufacturing Processes</em> 2023. DOI: 10.1016/j.jmapro.2023.05.007. 图片由 MinerU 从原 PDF 提取。<br>
+致谢（Acknowledgements）：本研究得到三星电子（Samsung Electronics）支持，并受韩国国家研究基金会（NRF）基础科学研究计划资助（No. 2019R1A6A1A03033215）。补充数据（Appendix A，含纳米压痕结果图 S1）可在论文 DOI 链接在线获取。
+</p>
+
+</main>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('active')">
+  <span class="lightbox-close">&times;</span>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<a class="back-to-top" href="#" title="回到顶部">&uarr;</a>
+
+<script>
+document.addEventListener('keydown', e => { if(e.key==='Escape') document.getElementById('lightbox').classList.remove('active'); });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>利用近红外 LED 实现低成本电子器件的回流焊</title>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$'], ['\\[','\\]']], tags: 'none' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  :root {
+    --text: #1a1a1a; --text-secondary: #5a5a5a;
+    --bg: #fdfcfa; --surface: #ffffff;
+    --border: #e0dcd4; --accent: #8b3a3a;
+    --highlight-box: #faf6ef; --highlight-border: #d4a843;
+    --radius: 6px;
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    font-family: "Noto Serif SC", "Songti SC", Georgia, serif;
+    font-size: 16px; line-height: 1.85; color: var(--text);
+    background: var(--bg); -webkit-font-smoothing: antialiased;
+  }
+  .layout { display:flex; max-width:1200px; margin:0 auto; }
+  .toc-sidebar {
+    width: 230px; flex-shrink:0; position:sticky; top:0; height:100vh;
+    overflow-y:auto; padding:28px 18px; background:#f9f7f2;
+    border-right:1px solid var(--border); font-size:.82rem;
+  }
+  .toc-sidebar h4 { font-size:.78rem; color:var(--accent); margin-bottom:10px; text-transform:uppercase; letter-spacing:.05em; }
+  .toc-sidebar a { display:block; padding:2px 0; color:var(--text-secondary); text-decoration:none; }
+  .toc-sidebar a:hover { color:var(--accent); }
+  .toc-sidebar .toc-h3 { padding-left:14px; font-size:.78rem; }
+  .content { flex:1; min-width:0; padding:36px 44px 100px; max-width:820px; }
+
+  .page-header { border-bottom:2px solid var(--accent); padding-bottom:18px; margin-bottom:32px; }
+  .page-header h1 { font-family: "Noto Serif SC", "Songti SC", Georgia, serif; font-size:1.65rem; color:var(--accent); line-height:1.3; }
+  .page-header .sub { font-size:.87rem; color:var(--text-secondary); margin-top:6px; }
+  .page-header .cite { font-size:.8rem; color:#999; margin-top:4px; }
+  .page-header .journal-info { font-size:.8rem; margin-top:4px; }
+  .page-header .journal-info .badge { display:inline-block; padding:1px 8px; border-radius:3px; font-size:.75rem; font-weight:600; margin-right:4px; }
+  .page-header .journal-info .badge-scie { background:#e8f0fe; color:#1a56c4; }
+  .page-header .journal-info .badge-esci { background:#fef3e8; color:#c47a1a; }
+  .page-header .journal-info .badge-ei { background:#e8f8ee; color:#2a8c3e; }
+  .page-header .journal-info .badge-delisted { background:#fde8e8; color:#c41a1a; }
+  .page-header .journal-info .if-val { color:var(--accent); font-weight:600; }
+  .page-header .meta { font-size:.78rem; color:#aaa; margin-top:2px; font-family:monospace; word-break:break-all; }
+  .page-header .meta a { color:#aaa; text-decoration:none; }
+  .page-header .meta a:hover { color:var(--accent); text-decoration:underline; }
+  .page-header .keywords { font-size:.82rem; color:var(--text-secondary); margin-top:6px; }
+  .page-header .keywords strong { color:var(--accent); }
+
+  h2 { font-family: "Noto Serif SC", "Songti SC", Georgia, serif; font-size:1.2rem; color:var(--accent); margin:40px 0 10px; padding-bottom:4px; border-bottom:1px solid var(--border); }
+  h3 { font-family: "Noto Serif SC", "Songti SC", Georgia, serif; font-size:1.02rem; font-weight:600; color:#5a2d2d; margin:26px 0 8px; }
+
+  figure { margin:22px 0; text-align:center; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  figure img { max-width:100%; height:auto; border-radius:4px; cursor:zoom-in; transition:box-shadow .2s; }
+  figure img:hover { box-shadow:0 4px 16px rgba(0,0,0,.12); }
+  figcaption { margin-top:10px; font-size:.83rem; color:var(--text-secondary); font-style:italic; line-height:1.5; }
+
+  .figure-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:22px 0; }
+  .figure-row figure { margin:0; }
+
+  .math-block { margin:16px 0; padding:12px 18px; background:#f4f1ea; border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; overflow-x:auto; }
+  .math-note { font-size:.87rem; color:var(--text-secondary); margin-top:-6px; margin-bottom:12px; padding-left:8px; }
+
+  .insight { margin:18px 0; padding:16px 20px; background:var(--highlight-box); border:1px solid var(--highlight-border); border-radius:var(--radius); box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  .insight .label { display:inline-block; font-size:.78rem; font-weight:700; color:#8b6914; background:#fef3d6; padding:2px 10px; border-radius:3px; margin-bottom:10px; letter-spacing:.05em; }
+  .insight p { margin:5px 0; }
+  .insight ul, .insight ol { margin:5px 0 5px 18px; }
+  .insight li { margin-bottom:2px; }
+
+  .key-term { font-weight:600; color:#8b3a3a; }
+
+  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:.9rem; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  thead tr { background:var(--accent); color:#fff; }
+  thead th { padding:7px 12px; font-weight:600; text-align:left; }
+  tbody td { padding:7px 12px; border-bottom:1px solid var(--border); }
+  tbody tr:nth-child(even) { background:#f9f7f2; }
+  table caption { caption-side:top; font-size:.83rem; color:var(--text-secondary); font-style:italic; margin-bottom:6px; text-align:left; }
+
+  .back-to-top { position:fixed; bottom:24px; right:24px; width:40px; height:40px; background:var(--accent); color:#fff; border-radius:50%; text-align:center; line-height:40px; font-size:1.2rem; cursor:pointer; opacity:.7; transition:opacity .2s; text-decoration:none; z-index:99; }
+  .back-to-top:hover { opacity:1; }
+
+  .lightbox { display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.88); cursor:zoom-out; justify-content:center; align-items:center; padding:24px; }
+  .lightbox.active { display:flex; }
+  .lightbox img { max-width:95vw; max-height:95vh; object-fit:contain; border-radius:4px; }
+  .lightbox-close { position:absolute; top:16px; right:24px; color:#fff; font-size:2rem; cursor:pointer; opacity:.6; transition:opacity .2s; }
+  .lightbox-close:hover { opacity:1; }
+
+  @media (max-width: 860px) { .toc-sidebar { display:none; } .content { padding:24px 20px 60px; } }
+  @media print {
+    .lightbox, .back-to-top, .toc-sidebar { display:none; }
+    body { max-width:100%; font-size:12pt; background:#fff; }
+    .insight { box-shadow:none; border:1px solid #ccc; }
+    .content { padding:0; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="toc-sidebar">
+  <h4>Paper Navigator</h4>
+  <a href="#abs">摘要</a>
+  <a href="#s1">1. 引言</a>
+  <a href="#s2">2. 背景与动机</a>
+  <a href="#s3">3. 实验</a>
+  <a href="#s3a" class="toc-h3">3.1 NIR 二极管</a>
+  <a href="#s3b" class="toc-h3">3.2 基板、元件、焊膏与装配</a>
+  <a href="#s3c" class="toc-h3">3.3 NIDS 实验室装置</a>
+  <a href="#s3d" class="toc-h3">3.4 吸收率测量</a>
+  <a href="#s3e" class="toc-h3">3.5 温度测量</a>
+  <a href="#s3f" class="toc-h3">3.6 表征与加速老化</a>
+  <a href="#s4">4. 结果与讨论</a>
+  <a href="#s4a" class="toc-h3">4.1 吸收</a>
+  <a href="#s4b" class="toc-h3">4.2 辐照度分布</a>
+  <a href="#s4c" class="toc-h3">4.3 距离的影响</a>
+  <a href="#s4d" class="toc-h3">4.4 温度曲线</a>
+  <a href="#s4e" class="toc-h3">4.5 焊点</a>
+  <a href="#s4f" class="toc-h3">4.6 高温存储</a>
+  <a href="#s4g" class="toc-h3">4.7 机械强度与热循环</a>
+  <a href="#s5">5. 结论与展望</a>
+  <a href="#ack">致谢与数据可用性</a>
+  <a href="#sum">核心要点</a>
+  <a href="#refs">参考文献</a>
+</nav>
+
+<main class="content">
+
+<header class="page-header">
+  <h1>利用近红外 LED 实现低成本电子器件的回流焊</h1>
+  <p class="sub">Reflow soldering for low-cost electronics using near-infrared LEDs</p>
+  <p class="cite">Thomas Wenger et al. - Flexible and Printed Electronics 2025, Vol 10: 015006, Institute for Chemistry, Materials- and Product Development, Technische Hochschule Nürnberg Georg Simon Ohm, Nuremberg, Germany</p>
+  <p class="journal-info"><span class="badge badge-scie">SCIE Q2</span> IF=<span class="if-val">2.9</span> <span class="badge badge-ei">EI</span></p>
+  <p class="meta"><a href="https://doi.org/10.1088/2058-8585/adb0da" target="_blank">DOI: 10.1088/2058-8585/adb0da</a> | 收稿: 2024-08-05 | 修订: 2024-10-29 | 接收: 2025-01-31 | 出版: 2025-02-11</p>
+  <p class="keywords"><strong>关键词：</strong>互连技术（interconnection technology）; 焊接（soldering）; 柔性电子（flexible electronics）; 印刷电子（printed electronics）; 混合电子（hybrid electronics）</p>
+</header>
+
+<!-- ═══════════ ABSTRACT ═══════════ -->
+<h2 id="abs">研究摘要</h2>
+<p>尽管焊接技术不断进步，在聚乙烯 terephthalate（PET）等柔性、低成本基板上进行焊接（即使采用低温焊料）仍是显著挑战。本文提出一种新的能量传递途径：利用材料在<span class="key-term">近红外（near-infrared, NIR）</span>光谱段吸收率的差异，实现电子组件的选择性加热。要点如下：</p>
+<ul>
+  <li><strong>核心原理：</strong>裸 PET 与覆铜 PET 对 NIR 辐射吸收行为截然不同（850 nm 处覆铜 PET 吸收约 32%，裸 PET 与载具材料低于 5%），结合 NIR LED 辐照方案即可实现高度受控、空间受限的局部加热。</li>
+  <li><strong>工艺实现：</strong>搭建了实验室焊接装置，用 5 颗 Vishay VSMA1085400 NIR LED（波长 820–880 nm）从基板底部辐照，识别出影响工艺的关键参数（吸收率、辐照距离、辐照时间）。</li>
+  <li><strong>焊点质量：</strong>0603 片式电阻的焊点在微观结构与机械强度上与对流回流焊相当；初步可靠性测试（100 次热循环、100 °C/288 h 高温存储）表明 NIR 焊接（NIDS）可产出高质量焊点。</li>
+  <li><strong>遗留问题：</strong>焊球（solder beading）现象、更复杂元件与组件的焊接等有待后续研究。</li>
+</ul>
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>选择性加热（selective heating）的物理基础：</strong>NIR 波段是 PET 等聚合物吸收很弱的"窗口"，而铜等金属在该波段有一定吸收（覆铜 PET 在 850 nm 处吸收约 32%）。当 NIR 辐射从基板底面入射时，金属化区域（焊盘、导线）吸收能量转化为热量，再以热传导方式加热焊膏；裸露的聚合物区域几乎不吸热，从而实现了"哪里需要焊接，哪里才升温"的局部选择性加热——这正是本方法与整炉加热的对流回流焊的本质区别。</p>
+</div>
+
+<!-- ═══════════ 1. INTRODUCTION ═══════════ -->
+<h2 id="s1">1. 引言</h2>
+<p>为柔性聚合物基板上的电子元件找到合适的<span class="key-term">表面贴装技术（surface mount technology, SMT）</span>互连方案，正成为应用研究的热点——尤其是低成本基板作为柔性印刷混合电子（flexible and printed hybrid electronics）电路载体的趋势日益明显。IDTechEx 的市场评估指出，廉价基板材料在未来应用中的占比将持续上升 [1]。</p>
+<p>在诸多基板材料中，耐高温的<span class="key-term">聚酰亚胺（polyimide, PI）</span>仍是许多应用领域的主流；而基于热塑性聚氨酯、PET 和纸张的替代基板将获得越来越多的应用。在热负荷最高、寿命要求最长的场合（如汽车、航空航天），PI 在未来数年仍将广泛使用。但低成本柔性电路载体的共同特征是：其热稳定性相比 PI 显著降低。以覆铜 PET 等基板作为 SMT 组件或印刷电子的电路载体时，建立元件电接触（焊接）成为关键难题。因此，开发对材料友好、对基板热冲击小的创新连接技术至关重要。</p>
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>为什么 PET 上焊接是难题：</strong>PET 的尺寸稳定温度极限仅约 150 °C，而主流 SAC 焊料（如 Sn96Ag4Cu，熔点约 218 °C）的回流峰值温度高达 235–260 °C，远超基板承受能力。即使采用 SnBi 系低温焊料（熔点 137–142 °C、工艺温度约 160 °C），整板加热（mass reflow）仍可能使薄膜基板变形、损伤。核心矛盾是"热预算"（thermal budget）：必须在基板损伤之前完成焊料熔化与润湿，这要求能量高度集中且作用时间尽可能短。</p>
+</div>
+
+<!-- ═══════════ 2. BACKGROUND ═══════════ -->
+<h2 id="s2">2. 背景与动机</h2>
+<p>电子制造中最普遍的材料连接技术依赖原子与分子间作用力（<span class="key-term">粘附力与内聚力（adhesion and cohesion forces）</span>）同时建立电、热、机械连接。SMT 中最重要的材料连接工艺仍是使用无铅锡基合金的软钎焊。近年来，熔点约 218 °C 的 Sn96Ag4Cu（SAC 合金族）已成为全球主导焊料体系 [2, 3]。SMT 中最常用的是带传送带式对流炉的<span class="key-term">回流焊（reflow soldering）</span>工艺 [4]：组件先印刷焊膏，再整体加热到合金熔点以上，能量通过强制对流或冷凝传递。SAC 合金回流焊接的最大工艺温度因组件与工艺而异，约为 235–260 °C；相应地，电路载体与所有电子元件必须能短时承受峰值温度（典型 10 s 至约 90 s）而不受损。整板回流焊的优势是产能高、传热均匀。若需要更低的工艺温度与更温和的加热，则存在多种替代方案（图 1）。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/d6bf6336e3948c63630d92fc097ff084e8ee93ed9fa1bb8ea83611f78ecdbb05.jpg" alt="Fig 1" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 1 &mdash; 低成本电子器件中目前使用的连接技术</figcaption>
+</figure>
+<p>除低熔点焊料配合整板焊接外，还存在选择性焊点加热、导电胶粘接等替代工艺。对柔性低成本电子而言，主要挑战是基材的受限热承载能力：目标基板多为 PET 等低成本热塑性材料，其尺寸稳定温度上限为 150 °C，低于 SAC 焊料熔点。更合适的替代方案是采用 Sn42Bi57.6Ag0.4 等焊料（熔点区间 137–142 °C [5]），其回流工艺温度约 160 °C，仅略高于低成本薄膜基板可用范围的上限。尽管如此，在该温度下进行整板回流仍可能损伤基板与导体并引起变形。</p>
+<p>除工艺温度外，焊接时间也是低成本电子的关键因素。为实现更大的设计灵活性、简化生产流程并缩短上市时间，印刷电子正被越来越多地考虑作为覆铜基板的替代品；印刷电子与 SMT 结合即形成<span class="key-term">柔性混合电子（flexible hybrid electronics）</span> [6]。该领域的研究表明，除低工艺温度外，更短的焊接时间对薄印刷层同样有利——使用含银墨水时，导体可能溶解于液态焊料 [7–9]。</p>
+<p>应对这些挑战的新近方法之一是<span class="key-term">强脉冲光焊接（intense pulsed light soldering）</span>：利用氙灯短时强脉冲快速加热组件，在基板或导体受损前利用材料吸收差异实现焊料熔化，已有大量文献验证其有效性 [10–13]。然而氙灯光谱较宽，其中包含被基板吸收更强的波长，仅部分利用了材料选择性吸收。文献 [14] 通过使用近红外辐射源将发射光谱限制在 0.7–1.4 µm，并在丝网印刷银结构上取得了有前景的焊接结果。</p>
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>整板加热 vs 选择性加热的权衡：</strong>对流/冷凝式回流焊的优势是产能高、传热均匀，但整个组件被同步加热到峰值温度；对低熔点薄膜基板而言，"均匀加热"往往意味着"均匀受损"。低温焊料、选择性焊点加热、导电胶粘接等替代路线本质上都在缩减基板承受的热量。强脉冲光（IPL）焊接通过氙灯短时强脉冲快速熔化焊料，但氙灯光谱宽、选择性有限；把发射光谱收窄到 NIR 波段（0.7–1.4 µm）后选择性显著改善——本工作正是沿这一思路，把光源换成更窄带（820–880 nm）且可逐颗独立控制的 LED。</p>
+</div>
+<p>综上，现有低成本基板元件连接方案仍有提升空间，且尚无一种替代技术取得显著市场份额。本文提出一种面向单面 PET 基板的<span class="key-term">选择性回流焊（selective reflow soldering）</span>新方法：发射 820–880 nm 电磁辐射的 NIR 二极管可为 SnBi 系低熔点焊料回流提供所需热能。与以往文献不同，本方案的能量完全从组件底部经基板材料入射，从而规避了<span class="key-term">焊点阴影（solder joint shading）</span>问题；且 LED 逐颗可控，可实现布局相关、元件特定、局部选择且可扩展的辐照——可以跳过未布件的区域，降低能耗并减少高金属覆盖率表面的损伤概率。为此，先用少量 LED 搭建基础实验室装置焊接首批测试结构：目标一是基于市场调研选出潜在合适的 LED，二是搭建实验室装置评估工艺，三是通过吸收特性测量评估材料适用性，最后将 NIR 二极管焊接（NIDS）焊点与对流回流炉焊接的焊点进行对比表征。</p>
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>底照式照射（bottom irradiation）的优势：</strong>以往光焊接多从组件上方照射，元件本体可能遮挡焊点。本方案的能量从基板底面穿过 PET 入射到金属化层下表面，从下往上加热焊膏，元件不再形成阴影；且每颗 LED 独立可控，可针对具体布局只点亮需要焊接的区域，既省去未布件区域的能量，也降低了高金属覆盖率区域过热的概率。</p>
+</div>
+
+<!-- ═══════════ 3. EXPERIMENTAL ═══════════ -->
+<h2 id="s3">3. 实验</h2>
+
+<h3 id="s3a">3.1 NIR 二极管</h3>
+<p>鉴于缺乏用 NIR LED 焊接的先例，需要从其他应用领域挑选合适的 LED：研究团队从 136 个预筛选产品中选出 9 个，依据的主要特性是封装类型与尺寸、辐射强度（radiant intensity）和工作电流。最终选定 Vishay 公司的 VSMA1085400：在 1.5 A 电流、3.25 V 电压下，光束强度 1.35 W sr<sup>−1</sup>，光束角 80° [15]，其尺寸示意图见图 2。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/e05dace5c1000d37a3ff0f5562b172a0f4a8b03cf292ac43adf0179efe8a967f.jpg" alt="Fig 2" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 2 &mdash; 所选 NIR LED 的尺寸示意图（单位：mm）</figcaption>
+</figure>
+<p>该 LED 因辐射强度最高而入选，目的是考察技术上限；实际仍可通过调节电流或脉宽调制（PWM）降功率。铜金属化层下表面需要高辐射强度及其产生的辐照度，才能把导线充分加热；导线升温后再经热传导加热焊膏。因此焊料加热与辐射强度通过金属化层下表面的吸收直接相关。</p>
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>焊料加热的热传导路径：</strong>NIR LED 并不直接"照射焊膏"，而是先被铜箔下表面吸收（覆铜 PET 在 850 nm 处吸收约 32%），铜层升温后通过热传导把热量传递给上方焊膏与元件端电极。因此加热功率与辐射强度、金属化层吸收率直接相关——这也解释了为何要选择辐射强度最高的 LED（1.35 W sr<sup>−1</sup>）并尽量缩短 LED 与基板的距离。</p>
+</div>
+
+<h3 id="s3b">3.2 基板、元件、焊膏与装配</h3>
+<p>所有试验均使用 0603 SMT 片式电阻，元件金属化为纯锡镀镍。柔性基板由 100 µm 厚 PET 薄膜、胶层和 35 µm 厚铜导体箔构成；蚀刻后布局表面覆盖 0.3–0.5 µm 厚的<span class="key-term">浸银（immersion Ag）</span>镀层以改善可焊性。试验布局为 6 个元件排成一行的菊链结构（图 3）。所用焊膏为 MacDermid Alpha CVP 520（Sn42Bi57.6Ag0.4）低熔点配方。试件用 100 µm 厚不锈钢<span class="key-term">钢网（stencil）</span>手工印刷焊膏，钢网开孔各方向尺寸缩小 10%；元件用 POWATEC 贴片机半自动贴装。贴装后，一半试件在常压强制对流回流系统（SMT 200 C）中焊接，另一半用下文所述 NIDS 实验室装置焊接。</p>
+<table>
+  <caption>整理表 B. 材料与装置关键参数（据原文 §3 整理）</caption>
+  <thead><tr><th>项目</th><th>参数</th></tr></thead>
+  <tbody>
+    <tr><td>元件</td><td>0603 片式电阻，镍上纯锡金属化</td></tr>
+    <tr><td>基板</td><td>100 µm PET + 胶层 + 35 µm 铜箔，浸银 0.3–0.5 µm</td></tr>
+    <tr><td>焊膏</td><td>MacDermid Alpha CVP 520（Sn42Bi57.6Ag0.4），熔点 137–142 °C</td></tr>
+    <tr><td>LED</td><td>Vishay VSMA1085400：1.35 W sr<sup>−1</sup>、光束角 80°、1.5 A / 3.25 V、发射 820–880 nm</td></tr>
+    <tr><td>装置</td><td>5 颗 LED（中心距 4 mm）置于 IMS PCB，翅片散热器被动冷却，恒流 1.5 A（约 25 W 电 / 10 W 辐射）</td></tr>
+    <tr><td>钢网</td><td>100 µm 厚不锈钢，开孔各向缩小 10%</td></tr>
+    <tr><td>吸收测量</td><td>Lambda 19 双光束 UV–NIR：60 mm 积分球，200–2000 nm，120 nm min<sup>−1</sup></td></tr>
+    <tr><td>热循环</td><td>+80 / −20 °C，保温 15 min，约 90 min/循环，4 K min<sup>−1</sup>，100 次</td></tr>
+    <tr><td>高温存储</td><td>100 °C / 288 h</td></tr>
+    <tr><td>剪切测试</td><td>DIN EN 62137-1-2:2007：2 mm 刀头，高度 0.12 mm，0.15 mm s<sup>−1</sup></td></tr>
+  </tbody>
+</table>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/e5f27d5a49b7dd6099000b91610060c746991ce201c3c486a234f8c177375e8d.jpg" alt="Fig 3" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 3 &mdash; 测试布局：两串各 6 个 0603 片式电阻</figcaption>
+</figure>
+
+<h3 id="s3c">3.3 NIDS 实验室装置</h3>
+<p>为评估所选 LED 作为回流焊能源的适用性，设计并搭建了处理上述电阻链的实验室装置，工作原理见图 4——每次同时焊接两个元件。装置采用低 NIR 吸收的载具材料（见图 7）为柔性试件提供机械支撑；下方 5 颗 LED（中心距 4 mm）安装在<span class="key-term">绝缘金属基板（insulated metal substrate, IMS）</span>PCB 上提供能量，IMS 固定在带翅片散热器上实现被动冷却，基板托架与 LED 之间的距离可调。装置以 1.5 A 恒流运行，对应电输入功率约 25 W（最大）、辐射功率 10 W（最大）。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/cd88dec3c0cd9ce12370b21e822cf62d7e1fe4bbc7169b03ebf8a26647892f4a.jpg" alt="Fig 4" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 4 &mdash; 上：工艺工作原理（热量输入与传递）；下：测试板在 LED 上方的定位（无基板托架）</figcaption>
+</figure>
+
+<h3 id="s3d">3.4 吸收率测量</h3>
+<p>为保证把尽可能多的能量送到焊点、同时载具只略微升温，载具材料必须对 NIR 辐射吸收极小；PET 基板同样如此——无导线的区域希望吸收最小，含元件焊盘的区域则希望吸收较高。吸收测量使用 Perkin Elmer Lambda 19 双光束 UV–NIR 分光光度计：配 60 mm 积分球，量程 200–2000 nm，扫描速度 120 nm min<sup>−1</sup>。由于该仪器无法一次测量得出吸收，改为分两次测量材料的透射与反射，再按公式 (1) 计算吸收率，测量原理与顺序见图 5。该方法的优势是把反射也计入其中——文献 [14] 的测量未包含反射项。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/52843e66ae4ede7a21721a7e6b6d027f8e5ddcc01e172286be50a4c5eb17f9aa.jpg" alt="Fig 5" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 5 &mdash; 吸收测量的测量原理与测量顺序</figcaption>
+</figure>
+<p><strong>（1）吸收率计算：</strong></p>
+<div class="math-block">$$ \mathrm{Absorption} = \mathrm{Emitted\ radiation} - \mathrm{Transmission} \tag{1} $$</div>
+<p class="math-note"><strong>解读：</strong>入射（发射）辐射扣除透射部分即被材料吸收的部分。本方法的要点在于分两次测量透射与反射，把反射损失也计入吸收计算（能量守恒：吸收 = 入射 − 透射 − 反射），比文献 [14] 只按透射计算的吸收值更准确——这正是评价"选择性加热"可行性的关键数据：载具与裸 PET 吸收越低、覆铜 PET 吸收越高，选择性越好。</p>
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>为什么用"透射 + 反射"两次测量算吸收：</strong>分光光度计无法一步直接测出吸收，因为入射光除被吸收外还有透射与反射两部分。分别测透射与反射后按公式 (1) 扣除，得到更准确的吸收值。该数据直接决定选择性加热的品质因数：载具/裸 PET 吸收越低、覆铜 PET 吸收越高，则能量越集中在焊盘区域。</p>
+</div>
+
+<h3 id="s3e">3.5 温度测量</h3>
+<p>测温采用 K 型<span class="key-term">热电偶（thermocouple）</span>接触焊点，用 DATAPAQ DP5 记录温度曲线。作者接受热电偶会额外带走部分热量，因为非接触测量困难重重：红外热成像要求已知且恒定的发射系数，而组件由元件、焊料、导线、基板等多种材料构成，无法同时测量各组分温度；焊膏尤其棘手——它在回流过程中经历膏状、液态、再凝固三种状态，各自发射系数不同；给组件涂覆以统一发射率又不可行（会改变吸收特性）。对流炉内的温度曲线用同样方式固定 K 型热电偶测得。</p>
+
+<h3 id="s3f">3.6 表征与加速老化</h3>
+<p>焊点机械强度按 DIN EN 62137-1-2:2007 标准用破坏性<span class="key-term">剪切力（shear force）</span>测试表征（XYZTech Condor Sigma Lite 剪切机）：2 mm 宽剪切刀头，移动高度 0.12 mm，速度 0.15 mm s<sup>−1</sup>。剪切前柔性基板用双面胶粘接到刚性 FR-4 上。除剪切力数值外，还必须关注断裂代码（试件失效方式）。如表 1 所示，6 种断裂代码用于区分剪切测试中的失效位置；了解具体失效模式有助于判断焊接工艺与连接双方对测量结果的影响，细节见标准 DIN EN 62137-1-2:2007 [16]。</p>
+<table>
+  <caption>表 1. 剪切测试中可能的断裂模式（原文 Table 1）</caption>
+  <thead><tr><th>代码</th><th>描述</th></tr></thead>
+  <tbody>
+    <tr><td>1A</td><td>元件本体</td></tr>
+    <tr><td>1B</td><td>本体—电极之间</td></tr>
+    <tr><td>2</td><td>元件—焊料界面</td></tr>
+    <tr><td>3</td><td>焊料内部</td></tr>
+    <tr><td>4</td><td>焊料—焊盘界面</td></tr>
+    <tr><td>5</td><td>焊盘（基板剥离）</td></tr>
+  </tbody>
+</table>
+<p>初始测量后，样品在 Binder MKF 56 气候箱中进行慢速<span class="key-term">热循环（thermal cycling）</span>：温度上限 +80 °C、下限 −20 °C，每级保温 15 min，单循环约 90 min，曲线见图 6；升降温梯度 4 K min<sup>−1</sup>，共 100 次循环，随后再次测量剪切强度。此外还进行 100 °C 高温存储 288 h，以评估高温对焊点微观组织的影响。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/2a5aea1f622b514c7fb71d5822f4bca450541f254ec5ecaf5fbd1772f189ed4e.jpg" alt="Fig 6" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 6 &mdash; 加速老化用热循环曲线（上、下限温度）</figcaption>
+</figure>
+
+<!-- ═══════════ 4. RESULTS ═══════════ -->
+<h2 id="s4">4. 结果与讨论</h2>
+<p>本章结构：先讨论两个主要影响因素——NIR 吸收与工作距离；随后给出对流焊接与 NIDS 的焊接温度曲线概览；最后用显微图像、显微切片及老化前后的剪切力测量对焊点进行评估与表征。</p>
+
+<h3 id="s4a">4.1 吸收</h3>
+<p>吸收测量结果（图 7）显示：裸 PET 基板与载具在 400–500 nm 间吸收显著下降；在 LED 主导发射谱段 830–870 nm，两者吸收均低于 5%。覆铜 PET 在 LED 峰值波长 850 nm 处吸收 32%。这种吸收差异使金属化区域获得大得多的热能输入。860 nm 附近基板与载具吸收的轻微上升来自测量设备内部的探测器切换。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/46eace3b639b26a84ad1736b09c718ff8ff4a2e1916fadde135798189114559f.jpg" alt="Fig 7" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 7 &mdash; 辐照区内所用材料的吸收光谱</figcaption>
+</figure>
+
+<h3 id="s4b">4.2 辐照度分布</h3>
+<p>用 Radiant Vision Systems 的 SIG-400 测角系统与 Synopsys Light Tools 软件评估 LED，目标是确定基板下表面的<span class="key-term">辐照度（irradiance）</span>。基于单颗 LED 的测量，可叠加算出若干相邻 LED 的合成辐照度。按公式 (2)，在 LED 芯片与 PET 基板距离 s = 4 mm（即透镜顶部到基板 1.5 mm）时，用标称辐射强度 I<sub>F</sub> = 1.35 W sr<sup>−1</sup> 计算，LED 正上方中心观测点的辐照度应为 E<sub>e</sub> = 84 mW mm<sup>−2</sup>。</p>
+<p><strong>（2）点光源辐照度：</strong></p>
+<div class="math-block">$$ E_e = \frac{I_F}{s^2} \tag{2} $$</div>
+<p class="math-note"><strong>解读：</strong>辐照度与距离平方成反比（点光源近似），距离翻倍则辐照度降为 1/4。因此 LED 与基板的间距是决定热输入密度的第一要素；公式同时是后续把单颗 LED 测量值叠加为 LED 阵列辐照分布的基础。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/987a877743c06f22fe1a9a9ad89c4dccffaca7dcca1a334f1171a6e7971572ed.jpg" alt="Fig 8" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 8 &mdash; 距离 1.5 mm 处单颗 LED 的辐照度空间分布</figcaption>
+</figure>
+<p>测量前 LED 先经过 3 天老化（burn-in），以反映实际应用中的性能。单颗 LED 实测辐照度见图 8：中心最大辐照度约 68 mW mm<sup>−2</sup>，仅为计算值的 81%——差异归因于老化效应与废热导致的较高工作温度。</p>
+<p>将 5 颗中心距 4 mm 的 LED 实测值线性叠加，可估算整条 LED 线的辐照分布（图 9）：最大辐照度约 86 mW·mm<sup>−2</sup>，5 颗 LED 覆盖区域内均匀性良好，纹波约为平均辐照度的 10%。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/3e8dc8eddad8e6009d213c5d98b0215b56df9084c6e3baf242a7f955ec6ac0ca.jpg" alt="Fig 9" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 9 &mdash; 上：1.5 mm 距离处 LED 线的辐照度空间分布；下：y = 0 mm 处的辐照度剖面（标出外侧 LED 中心之间的可用区域与纹波）</figcaption>
+</figure>
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>辐照度叠加与实测偏差：</strong>实测单颗 LED 中心辐照度仅为平方反比定律计算值的 81%，原因是老化烧机与结温升高使光功率下降——工程上必须用实测数据修正理论值。5 颗 LED 线性叠加后中央区域辐照度约 86 mW·mm<sup>−2</sup>、纹波约 10%，说明多颗 LED 叠加可以在保证强度的同时改善均匀性，这正是"可扩展"布局化照明的雏形。</p>
+</div>
+
+<h3 id="s4c">4.3 LED 与基板之间距离的影响</h3>
+<p>LED 可用辐射功率有限，且随距离平方成反比衰减，因此保持 LED 与试件间的最佳距离至关重要。由于 LED 光束角较窄，距离增大可使辐照分布更均匀，但整体辐照度下降。图 10 给出了距离与 0603 电阻焊点熔化时间的关系（熔化时间反映输入焊点的能量）：距离 1 mm 时焊料 9 s 熔化，距离 4 mm 时需要 30 s。这说明保持短距离对缩短工艺时间至关重要；短距离虽实现了高度局部化辐照，但也使均匀性略有下降。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/39fa9a40880623bb97aed053e214e3aa4910d600a0a74e8ef9749032066eeb42.jpg" alt="Fig 10" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 10 &mdash; LED 透镜顶部与测试板之间距离对焊料熔化时间的影响</figcaption>
+</figure>
+
+<h3 id="s4d">4.4 温度曲线</h3>
+<p>图 11 给出两种工艺的典型温度—时间曲线：NIDS 工艺（透镜顶部到基板 1 mm、辐照 13 s）升降温梯度都很高，峰值温度约 155 °C，<span class="key-term">高于液相线时间（time above liquidus, TAL）</span>仅 5 s；对流焊接则梯度低得多，峰值 160 °C、TAL 约 60 s，其曲线与焊膏供应商推荐的工艺窗口一致。</p>
+<table>
+  <caption>整理表 A. 对流焊接与 NIDS 工艺条件对比（据原文 §4 整理）</caption>
+  <thead><tr><th>参数</th><th>对流焊接</th><th>NIDS</th></tr></thead>
+  <tbody>
+    <tr><td>峰值温度</td><td>约 160 °C</td><td>约 155 °C</td></tr>
+    <tr><td>高于液相线时间（TAL）</td><td>约 60 s</td><td>约 5 s</td></tr>
+    <tr><td>升/降温梯度</td><td>低</td><td>高</td></tr>
+    <tr><td>加热（辐照）时间</td><td>整炉曲线（分钟级）</td><td>13 s</td></tr>
+    <tr><td>LED 透镜—基板距离</td><td>—</td><td>1 mm</td></tr>
+    <tr><td>焊料熔化时间（距离 1 mm / 4 mm）</td><td>—</td><td>9 s / 30 s</td></tr>
+  </tbody>
+</table>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/07a8c5e55fad4502cc5beca3baf2bb083fa56dbbde375ebf6426f25ccdce95a9.jpg" alt="Fig 11" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 11 &mdash; 对流焊接与 NIDS 的实测温度曲线（标注高于液相线时间；熔化区间 137–142 °C）</figcaption>
+</figure>
+
+<h3 id="s4e">4.5 焊点</h3>
+<p>图 12 直观对比了对流焊接与 NIDS 焊接的 0603 片式电阻。两种工艺的焊料对 PET 基板金属化和元件电极都润湿良好；但 NIDS 元件侧面观察到更多<span class="key-term">焊球（solder ball）</span>，可能的原因是极其陡峭的升温梯度阻碍了助焊剂中挥发物的蒸发。基板底面检查未发现 PET 薄膜或胶层受损；由于试件尺寸小，两种工艺的翘曲差异不明显。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/eb4d2c470fb60bfb0e16344d2d71f054c96b296a049b05b2500e3798e0f87b41.jpg" alt="Fig 12" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 12 &mdash; 左：对流焊接焊点；右：NIDS 焊接焊点</figcaption>
+</figure>
+<p>尽管加工时间极短、温度梯度很大，NIDS 焊点的<span class="key-term">空洞（void）</span>形成极少（图 13）：焊料与 SMT 元件、焊料与 PCB 金属化之间的连接均润湿良好，未出现加热不足导致的葡萄状（graping）缺陷等异常。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/b57fe206aca479a6338ffbef5a8f9471578685769919ac3bf49d29bb197dc089.jpg" alt="Fig 13" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 13 &mdash; NIDS 焊接片式电阻的显微切片</figcaption>
+</figure>
+<p>焊料与金属化之间的界面用光学显微镜、<span class="key-term">扫描电子显微镜（scanning electron microscopy, SEM）</span>与<span class="key-term">能量色散 X 射线能谱（energy dispersive x-ray spectroscopy, EDX）</span>进一步观察。机械测试前先对各类焊点做显微切片分析。理论上，NIDS 极短的 TAL 与快速冷却应形成细晶焊料组织及较窄的 Cu–Sn 反应区；对流焊接较长的 TAL 与慢冷则可能形成较粗组织与更宽的反应区。两种工艺的显微切片见图 14：初始焊点中 Bi 与 Sn 晶体呈细小均匀分布，随工艺不同的粗化程度差异在显微照片中得到证实。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/4916748eff15a0ec4bfc1774db73f6f973cef6bd3f9ebe69c9930b72f849cdd0.jpg" alt="Fig 14" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 14 &mdash; 对流焊接与 NIDS 焊点显微切片的光学与 SEM 图像</figcaption>
+</figure>
+<p>两种工艺焊接后，Cu/焊料界面均仍保留一薄层含 Ag 层（图 15）。文献中已有类似报道，但针对的是显著更厚的烧结 Ag 金属化或更高熔点无铅焊料在块体 Ag 上的情形 [17, 18]。该层被推测由 Ag<sub>3</sub>Sn <span class="key-term">金属间化合物（intermetallic compound）</span>构成 [11, 18]；两种回流工艺中 Ag<sub>3</sub>Sn 均未形成连续致密层。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/7d5ed70c6f155802752f8284362954a434c1cc0e9c46649469b77143da01fed6.jpg" alt="Fig 15" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 15 &mdash; 浸银后 Cu 导体与焊料界面的 EDX 分析（左：对流焊接；右：NIDS）</figcaption>
+</figure>
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>短 TAL 与界面组织的关系：</strong>NIDS 的 TAL 仅约 5 s、冷却极快，Cu 与 Sn 反应时间短，理论上应形成更细的焊料组织与更窄的 Cu–Sn 反应区；对流焊接 TAL 约 60 s，组织更粗。实测微切片证实了组织粗细差异，且两种工艺在 Cu/焊料界面都保留一层薄的含 Ag 层（可能为 Ag<sub>3</sub>Sn），说明极薄的浸银层并未在极短液态时间内完全溶解进焊料。</p>
+</div>
+
+<h3 id="s4f">4.6 高温存储——初步结果</h3>
+<p>为深入理解 Ag 层随时间的演变，焊点经 100 °C、288 h 固态老化后制样并用 EDX 分析。如图 16 所示，焊料基体发生粗化，形成大块 Bi 和 Sn 相；Ag–Sn 层在焊料体积内比之前略为弥散，但仍主要位于界面。与初始界面结构相比，两种样品在 Ag 金属间化合物下方都出现了 Sn–Cu 金属间相，表明 Sn 已扩散穿过 Ag<sub>3</sub>Sn 层。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/d558d8bf175e22e62d3106794b7460f7493ac1cc34befc976b966f7e3681e1f0.jpg" alt="Fig 16" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 16 &mdash; 高温存储后界面的 SEM 图像与 EDX 分析（左：对流焊接；右：NIDS）</figcaption>
+</figure>
+
+<h3 id="s4g">4.7 机械强度与热循环行为的初步结果</h3>
+<p>除高温存储外，焊点还进行了慢速热循环。图 17 对比了对流焊接与 NIDS（TAL 5 s）元件在热循环（100 次）前后的剪切力：每种工艺、每个状态各取 24 个元件。对流焊接焊点初始平均剪切力 40.8 N（标准差 3.1 N），NIDS 为 45.4 N（标准差 5.6 N）。基于这些样本做方差分析（ANOVA）：尽管两均值差异明显，但决定系数 R² 较低（0.19），说明没有明确统计证据表明两种工艺存在真实差异。失效模式方面两者不一致：24 个对流焊点全部为焊料内部失效（代码 3，见表 1），而 NIDS 仅 11/24 为代码 3，其余 13 个为代码 5——剪切时基板与焊盘之间发生粘接失效（表 2）。</p>
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P8_低成本电子回流焊_2025/images/5ff4f59882dfe804a715eec3cffd3787cd57abd4558d0e2b3e3c27d9ed0d2e5d.jpg" alt="Fig 17" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 17 &mdash; 热循环前后对流焊接与 NIDS 焊接片式电阻的剪切力对比</figcaption>
+</figure>
+<table>
+  <caption>表 2. 剪切测试中的断裂代码（初始 vs 老化后）（原文 Table 2）</caption>
+  <thead><tr><th>代码</th><th>初始·对流</th><th>初始·NIDS</th><th>老化后·对流</th><th>老化后·NIDS</th></tr></thead>
+  <tbody>
+    <tr><td>1A</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>1B</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>2</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>3</td><td>24</td><td>11</td><td>24</td><td>24</td></tr>
+    <tr><td>4</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>5</td><td>—</td><td>13</td><td>—</td><td>—</td></tr>
+  </tbody>
+</table>
+<p>热循环后，仅对流焊接元件的平均剪切力略有上升：对流为 45.9 N（标准差 5.0 N），NIDS 为 44.9 N（标准差 3.9 N）。ANOVA（置信水平 0.95）未确认两种焊接方式存在显著差异；老化后标准差也无统计显著变化。全部 48 个剪切焊点在热循环后均为代码 3（焊料内部失效），见表 2。</p>
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>剪切力差异的统计解读：</strong>NIDS 初始平均剪切力（45.4 N）看似高于对流焊接（40.8 N），但 ANOVA 的 R² 仅 0.19，说明该差异在统计上不显著——均值差异主要来自断口模式分布不同（NIDS 有 13/24 个试样在焊盘/基板界面剥离，代码 5），而非焊点本身更强。热循环后两者趋同（44.9 vs 45.9 N）且全部转为焊料断裂（代码 3），提示初始断口差异可能与界面粘接状态有关，值得进一步研究。</p>
+</div>
+<p>总体而言，常规焊接与 NIDS 焊点的机械强度相当；老化后断裂代码一致，但初始行为存在差异，该观察的可靠性有待进一步验证。</p>
+
+<!-- ═══════════ 5. CONCLUSIONS ═══════════ -->
+<h2 id="s5">5. 结论与展望</h2>
+<ol>
+  <li>以 NIR LED 作为能源，在 PET 基柔性电路上焊接 SMT 片式元件是可行的：用仅 5 颗 LED 的基础实验室装置就演示了材料依赖的局部化辐照。</li>
+  <li>基板各层均未观察到损伤，焊点的机械与材料性能与对流焊接相当；加速老化（温度循环）后机械性能无显著变化。</li>
+  <li>后续工作：对 Cu 与焊料之间的 Ag 层做高分辨率 EDX 线扫描，验证其他研究者的观察；从工艺角度研究陡峭温度梯度对焊球形成及焊点/元件整体可靠性的影响。</li>
+  <li>需在更长时间加速老化条件下考察焊点的电学与机械退化，并研究工艺对基板变形的影响（用更大、更复杂的布局）；元件范围将扩大到更大、更复杂的 SMT 元件。</li>
+  <li>需评估该工艺对含薄 Ag 层印刷导体与低成本基板的影响；为此将开发更完善的实验室焊接系统（含冷却、辐照与基板输送方案），并建立面向更大规模 LED 阵列的布局相关控制方法。</li>
+</ol>
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>从实验室到产线的差距：</strong>本文装置仅用 5 颗 LED 焊接简单的电阻菊链，尚未解决：焊球形成（陡升温梯度使助焊剂挥发物来不及逸出）、大面积/复杂布局下的基板翘曲、印刷银导体在液态焊料中的溶解等。向应用推广需要带主动冷却与基板输送的工程化系统，以及按布局点亮/调功的 LED 阵列控制方案——这也是后续"PhotoAVT"项目继续推进的方向。</p>
+</div>
+
+<!-- ═══════════ ACKNOWLEDGEMENT ═══════════ -->
+<h2 id="ack">致谢与数据可用性</h2>
+<p><strong>数据可用性声明：</strong>本研究所有支持数据均包含在文章中（及补充文件中）。</p>
+<p><strong>致谢：</strong>本工作由德国联邦经济事务与气候行动部（Federal Ministry for Economic Affairs and Climate Action）中小企业中央创新计划（Central Innovation Programme）在项目 'PhotoAVT'（16KN098741）下资助。作者声明无利益冲突。</p>
+<p><strong>ORCID：</strong>Thomas Wenger — orcid.org/0009-0000-1565-9420; Philipp Schletterer — orcid.org/0009-0004-6859-7840; Marcus Reichenberger — orcid.org/0009-0007-3537-2786</p>
+
+<!-- ═══════════ KEY TAKEAWAYS ═══════════ -->
+<h2 id="sum">核心要点总结</h2>
+<ol>
+  <li><strong>选择性加热原理：</strong>利用 NIR 波段材料吸收差异（裸 PET 与载具 <5%，覆铜 PET 在 850 nm 处约 32%），能量集中于金属化区域，实现局部受控加热。</li>
+  <li><strong>底照式 NIR LED 方案：</strong>820–880 nm 发光二极管从基板下方辐照，规避焊点阴影；LED 独立可控，可实现布局相关、局部选择且可扩展的辐照，并跳过未布件区域。</li>
+  <li><strong>工艺窗口：</strong>NIDS 峰值约 155 °C、TAL 仅 5 s（辐照 13 s），远短于对流焊接（160 °C、TAL 约 60 s）；LED 距基板 1 mm 时焊料 9 s 即熔化，4 mm 时需要 30 s。</li>
+  <li><strong>焊点质量：</strong>微观结构与机械强度与对流焊接相当；初始剪切力 NIDS 45.4 N vs 对流 40.8 N（ANOVA 显示差异不显著，R² = 0.19）；空洞极少、润湿良好。</li>
+  <li><strong>可靠性：</strong>100 次热循环（+80/−20 °C）与 100 °C/288 h 高温存储后性能无显著退化；老化后 48 个焊点全部转为焊料内部断裂（代码 3）。</li>
+  <li><strong>界面金属学：</strong>Cu/焊料界面保留薄 Ag 层（疑为 Ag<sub>3</sub>Sn，两种工艺均不连续）；老化后 Sn 扩散穿过 Ag<sub>3</sub>Sn 层，在其下方形成 Sn–Cu 金属间相。</li>
+  <li><strong>待解决问题：</strong>焊球形成（陡升温梯度阻碍助焊剂挥发）、更复杂元件与印刷银导体的焊接、基板翘曲、LED 阵列的布局化控制等。</li>
+</ol>
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>一句话定位：</strong>本工作论证了"材料选择性 NIR 吸收 + 底照式 LED 阵列"作为柔性低成本基板选择性回流焊新路线的可行性，焊点质量与对流焊接相当，属于原理验证（proof of concept）阶段的研究。</p>
+</div>
+
+<!-- ═══════════ REFERENCES ═══════════ -->
+<h2 id="refs">参考文献</h2>
+<ol>
+  <li>IDTechEx 2019 <em>Flexible Hybrid Electronics 2020–2030: Applications, Challenges, Innovations and Forecasts</em> (IDTechEx)</li>
+  <li>Bath J 2020 <em>Lead-free Soldering Process Development and Reliability</em> (Wiley)</li>
+  <li>Pietruszka A, Górecki P, Wronski S, Illés B and Skwarek A 2021 The influence of soldering profile on the thermal parameters of insulated gate bipolar transistors (IGBTs) <em>Appl. Sci.</em> 11 5583</li>
+  <li>Illés B, Krammer O and Geczy A 2020 <em>Reflow Soldering: Apparatus and Heat Transfer Processes</em> (Elsevier)</li>
+  <li>Ribas M et al 2018 <em>The Printed Circuit Assembler's Guide to Low-Temperature Soldering</em> (BR Publishing)</li>
+  <li>Khan Y, Thielens A, Muin S, Ting J, Baumbauer C and Arias A C 2019 A new frontier of printed electronics: flexible hybrid electronics <em>Adv. Mater.</em> 32 1905279</li>
+  <li>Juric D, Hammerle S, Glaser K, Eberhardt W and Zimmermann A 2018 Assembly of components on inkjet-printed silver structures by soldering <em>IEEE Trans. Compon. Packag. Manuf. Technol.</em> 9 156–62</li>
+  <li>Werum K, Mueller E, Keck J, Jaeger J, Horter T, Glaeser K, Buschkamp S, Barth M, Eberhardt W and Zimmermann A 2022 Aerosol jet printing and interconnection technologies on additive manufactured substrates <em>J. Manuf. Mater. Process.</em> 6 119</li>
+  <li>Jager J, Buschkamp S, Werum K, Glaser K, Grozinger T, Eberhardt W and Zimmermann A 2022 Contacting inkjet-printed silver structures and SMD by ICA and solder <em>IEEE Trans. Compon. Packag. Manuf. Technol.</em> 12 1232–40</li>
+  <li>Jung K-H, Min K D, Lee C-J, Jeong H, Kim J-H and Jung S-B 2020 Ultrafast photonic soldering with Sn–58Bi using intense pulsed light energy <em>Adv. Eng. Mater.</em> 22 2000179</li>
+  <li>van den Ende D A, Hendriks R, Cauchois R, Kusters R H L, Cauwe M, Groen W A and van den Brand J 2014 Photonic flash soldering of thin chips and SMD components on foils for flexible electronics <em>IEEE Trans. Compon. Packag. Manuf. Technol.</em> 4 1879–86</li>
+  <li>Ukwuoma J, Chou H, Parsekian A, Rawson I, Pope D and Akhavan V 2024 Photonic curing and soldering to printed silver for enhanced attachment and joint quality <em>2024 Int. Conf. on Electronics Packaging (ICEP)</em> pp 1–2</li>
+  <li>Arutinov G, Hendriks R and van den Brand J 2016 Photonic flash soldering on flex foils for flexible electronic systems <em>2016 IEEE 66th Electronic Components and Technology Conf. (ECTC)</em> 10.1109/ectc.2016.179</li>
+  <li>Kasi V, Zareei A, Gopalakrishnan S, Alcaraz A M, Joshi S, Arfaei B and Rahimi R 2023 Flexible hybrid electronics via near-infrared radiation-assisted soldering of surface mount devices on screen printed circuits <em>Adv. Electron. Mater.</em> 9 2201012</li>
+  <li>Vishay Semiconductors 2022 Datasheet VSMA1085400 (available at: https://www.vishay.com/docs/80294/vsma1085400.pdf) (Accessed 09 July 2024)</li>
+  <li>DIN EN 62137-1-2:2007, Surface mounting technology - Environmental and endurance test methods for surface mount solder joint - Part 1-2: Shear strength test (IEC 62137-1-2:2007)</li>
+  <li>Ghosh G 2004 Interfacial reaction between multicomponent lead-free solders and Ag, Cu, Ni, and Pd substrates <em>J. Electron. Mater.</em> 33 1080–91</li>
+  <li>Yang T L, Huang K Y, Yang S, Hsieh H H and Kao C R 2014 Growth kinetics of Ag3Sn in silicon solar cells with a sintered Ag metallization layer <em>Sol. Energy Mater. Sol. Cells</em> 123 139–43</li>
+</ol>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<p style="margin-top:40px;color:var(--text-secondary);font-size:.83rem;border-top:1px solid var(--border);padding-top:16px;">
+文献来源：Thomas Wenger, Philipp Schletterer and Marcus Reichenberger. "Reflow soldering for low-cost electronics using near-infrared LEDs." <em>Flexible and Printed Electronics</em> 2025, Vol 10, 015006. DOI: 10.1088/2058-8585/adb0da. 图片由 MinerU 从原 PDF 提取。
+</p>
+
+</main>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('active')">
+  <span class="lightbox-close">&times;</span>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<a class="back-to-top" href="#" title="回到顶部">&uarr;</a>
+
+<script>
+document.addEventListener('keydown', e => { if(e.key==='Escape') document.getElementById('lightbox').classList.remove('active'); });
+</script>
+
+</body>
+</html>

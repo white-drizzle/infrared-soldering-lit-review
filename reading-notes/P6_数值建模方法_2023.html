@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>再流焊应用数值建模方法综述</title>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$'], ['\\[','\\]']], tags: 'none' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  :root {
+    --text: #1a1a1a; --text-secondary: #5a5a5a;
+    --bg: #fdfcfa; --surface: #ffffff;
+    --border: #e0dcd4; --accent: #8b3a3a;
+    --highlight-box: #faf6ef; --highlight-border: #d4a843;
+    --radius: 6px;
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    font-family: "Noto Serif SC", "Songti SC", Georgia, serif;
+    font-size: 16px; line-height: 1.85; color: var(--text);
+    background: var(--bg); -webkit-font-smoothing: antialiased;
+  }
+  .layout { display:flex; max-width:1200px; margin:0 auto; }
+  .toc-sidebar {
+    width: 230px; flex-shrink:0; position:sticky; top:0; height:100vh;
+    overflow-y:auto; padding:28px 18px; background:#f9f7f2;
+    border-right:1px solid var(--border); font-size:.82rem;
+  }
+  .toc-sidebar h4 { font-size:.78rem; color:var(--accent); margin-bottom:10px; text-transform:uppercase; letter-spacing:.05em; }
+  .toc-sidebar a { display:block; padding:2px 0; color:var(--text-secondary); text-decoration:none; }
+  .toc-sidebar a:hover { color:var(--accent); }
+  .toc-sidebar .toc-h3 { padding-left:14px; font-size:.78rem; }
+  .content { flex:1; min-width:0; padding:36px 44px 100px; max-width:820px; }
+
+  .page-header { border-bottom:2px solid var(--accent); padding-bottom:18px; margin-bottom:32px; }
+  .page-header h1 { font-family: "Noto Serif SC", "Songti SC", Georgia, serif; font-size:1.65rem; color:var(--accent); line-height:1.3; }
+  .page-header .sub { font-size:.87rem; color:var(--text-secondary); margin-top:6px; }
+  .page-header .cite { font-size:.8rem; color:#999; margin-top:4px; }
+  .page-header .journal-info { font-size:.8rem; margin-top:4px; }
+  .page-header .journal-info .badge { display:inline-block; padding:1px 8px; border-radius:3px; font-size:.75rem; font-weight:600; margin-right:4px; }
+  .page-header .journal-info .badge-scie { background:#e8f0fe; color:#1a56c4; }
+  .page-header .journal-info .badge-esci { background:#fef3e8; color:#c47a1a; }
+  .page-header .journal-info .badge-ei { background:#e8f8ee; color:#2a8c3e; }
+  .page-header .journal-info .badge-delisted { background:#fde8e8; color:#c41a1a; }
+  .page-header .journal-info .if-val { color:var(--accent); font-weight:600; }
+  .page-header .meta { font-size:.78rem; color:#aaa; margin-top:2px; font-family:monospace; word-break:break-all; }
+  .page-header .meta a { color:#aaa; text-decoration:none; }
+  .page-header .meta a:hover { color:var(--accent); text-decoration:underline; }
+  .page-header .keywords { font-size:.82rem; color:var(--text-secondary); margin-top:6px; }
+  .page-header .keywords strong { color:var(--accent); }
+
+  h2 { font-family: "Noto Serif SC", "Songti SC", Georgia, serif; font-size:1.2rem; color:var(--accent); margin:40px 0 10px; padding-bottom:4px; border-bottom:1px solid var(--border); }
+  h3 { font-family: "Noto Serif SC", "Songti SC", Georgia, serif; font-size:1.02rem; font-weight:600; color:#5a2d2d; margin:26px 0 8px; }
+
+  figure { margin:22px 0; text-align:center; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  figure img { max-width:100%; height:auto; border-radius:4px; cursor:zoom-in; transition:box-shadow .2s; }
+  figure img:hover { box-shadow:0 4px 16px rgba(0,0,0,.12); }
+  figcaption { margin-top:10px; font-size:.83rem; color:var(--text-secondary); font-style:italic; line-height:1.5; }
+
+  .figure-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:22px 0; }
+  .figure-row figure { margin:0; }
+
+  .math-block { margin:16px 0; padding:12px 18px; background:#f4f1ea; border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; overflow-x:auto; }
+  .math-note { font-size:.87rem; color:var(--text-secondary); margin-top:-6px; margin-bottom:12px; padding-left:8px; }
+
+  .insight { margin:18px 0; padding:16px 20px; background:var(--highlight-box); border:1px solid var(--highlight-border); border-radius:var(--radius); box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  .insight .label { display:inline-block; font-size:.78rem; font-weight:700; color:#8b6914; background:#fef3d6; padding:2px 10px; border-radius:3px; margin-bottom:10px; letter-spacing:.05em; }
+  .insight p { margin:5px 0; }
+  .insight ul, .insight ol { margin:5px 0 5px 18px; }
+  .insight li { margin-bottom:2px; }
+
+  .key-term { font-weight:600; color:#8b3a3a; }
+
+  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:.9rem; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  thead tr { background:var(--accent); color:#fff; }
+  thead th { padding:7px 12px; font-weight:600; text-align:left; }
+  tbody td { padding:7px 12px; border-bottom:1px solid var(--border); }
+  tbody tr:nth-child(even) { background:#f9f7f2; }
+  table caption { caption-side:top; font-size:.83rem; color:var(--text-secondary); font-style:italic; margin-bottom:6px; text-align:left; }
+
+  .back-to-top { position:fixed; bottom:24px; right:24px; width:40px; height:40px; background:var(--accent); color:#fff; border-radius:50%; text-align:center; line-height:40px; font-size:1.2rem; cursor:pointer; opacity:.7; transition:opacity .2s; text-decoration:none; z-index:99; }
+  .back-to-top:hover { opacity:1; }
+
+  .lightbox { display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.88); cursor:zoom-out; justify-content:center; align-items:center; padding:24px; }
+  .lightbox.active { display:flex; }
+  .lightbox img { max-width:95vw; max-height:95vh; object-fit:contain; border-radius:4px; }
+  .lightbox-close { position:absolute; top:16px; right:24px; color:#fff; font-size:2rem; cursor:pointer; opacity:.6; transition:opacity .2s; }
+  .lightbox-close:hover { opacity:1; }
+
+  @media (max-width: 860px) { .toc-sidebar { display:none; } .content { padding:24px 20px 60px; } }
+  @media print {
+    .lightbox, .back-to-top, .toc-sidebar { display:none; }
+    body { max-width:100%; font-size:12pt; background:#fff; }
+    .insight { box-shadow:none; border:1px solid #ccc; }
+    .content { padding:0; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="toc-sidebar">
+  <h4>Paper Navigator</h4>
+  <a href="#abs">摘要</a>
+  <a href="#s1">1. 引言</a>
+  <a href="#s2">2. 数值计算方法基础</a>
+  <a href="#s2a" class="toc-h3">2.1 偏微分方程（PDEs）</a>
+  <a href="#s2b" class="toc-h3">2.2 数值求解方法</a>
+  <a href="#s3">3. 各工艺的传热建模</a>
+  <a href="#s3a" class="toc-h3">3.1 激光钎焊</a>
+  <a href="#s3b" class="toc-h3">3.2 红外再流焊</a>
+  <a href="#s3c" class="toc-h3">3.3 强制对流再流焊</a>
+  <a href="#s3d" class="toc-h3">3.4 气相钎焊</a>
+  <a href="#s4">4. 热机械仿真</a>
+  <a href="#s4a" class="toc-h3">4.1 板级分析</a>
+  <a href="#s4b" class="toc-h3">4.2 元件级分析</a>
+  <a href="#s5">5. 其他建模应用</a>
+  <a href="#s6">6. 软计算方法</a>
+  <a href="#s7">7. 讨论</a>
+  <a href="#s8">8. 结论</a>
+  <a href="#sum">核心要点总结</a>
+  <a href="#nomen">符号表（Nomenclature）</a>
+  <a href="#refs">参考文献</a>
+</nav>
+
+<main class="content">
+
+<header class="page-header">
+  <h1>再流焊应用数值建模方法综述</h1>
+  <p class="sub">Overview of Different Approaches in Numerical Modelling of Reflow Soldering Applications</p>
+  <p class="cite">István Bozsóki, Attila Géczy, Balázs Illés - Energies 2023, 16(16), 5856 — Budapest University of Technology and Economics, Hungary; Łukasiewicz Research Network—Institute of Microelectronics and Photonics, Kraków, Poland</p>
+  <p class="journal-info"><span class="badge badge-scie">SCIE Q3</span> IF=<span class="if-val">3.9</span> <span class="badge badge-ei">EI</span> 中科院 4 区</p>
+  <p class="meta"><a href="https://doi.org/10.3390/en16165856" target="_blank">DOI: 10.3390/en16165856</a> | 收稿: 2023-05-31 | 接收: 2023-08-03 | 出版: 2023-08-08</p>
+  <p class="keywords"><strong>关键词：</strong>再流焊技术（reflow soldering technology）; 数值建模（numerical modelling）; 热机械应力（thermomechanical stress）; 传热（heat transfer）; 机器学习（machine learning）</p>
+</header>
+
+<!-- ═══════════ ABSTRACT ═══════════ -->
+<h2 id="abs">研究摘要</h2>
+<p>本文是面向<span class="key-term">再流焊（reflow soldering）</span>技术数值建模的系统性综述，由布达佩斯技术与经济大学电子技术系团队撰写，覆盖近年该领域的各类应用。全文从"物理背景 → 数学方程 → 数值方法 → 分工艺建模 → 热机械仿真 → 软计算方法"的主线展开：</p>
+<ul>
+  <li><strong>工艺全景</strong>：再流焊是<span class="key-term">表面贴装技术（surface mount technology, SMT）</span>的核心连接技术——焊膏先经钢网印刷到焊盘，贴装表面贴装器件（SMD）后整体加热至焊料合金熔点以上，焊料熔化形成焊点。按传热方式区分，主流工艺包括红外（IR）、强制对流（FC）、气相（VPS）与激光再流焊。</li>
+  <li><strong>数学基座</strong>：系统梳理了连续介质建模的 8 组基础方程（傅里叶导热、菲克扩散、Navier–Stokes、线弹性热力学、von Mises 应力、断裂力学等），以及有限差分法（FDM）、有限元法（FEM）、有限体积法（FVM）三大离散方法的适用边界。</li>
+  <li><strong>分工艺建模结论</strong>：红外炉须耦合辐射传递（DO 法）与湍流（RANS）；强制对流炉广泛采用集总模型（Bi &lt; 0.1）与 2D 热阻网络；气相钎焊因过程环境严苛，须用逆传热问题反演换热系数。</li>
+  <li><strong>软计算方法</strong>：综述了 ANN、GA 及其混合框架在再流曲线优化、钢网印刷、元件自对准预测中的应用——训练后的神经网络可在毫秒量级给出结果，而 PDE 求解需数秒到数天。</li>
+</ul>
+
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>为什么这篇文献值得读：</strong>它是整个红外焊接文献管线（P2–P9）的"建模方法学总纲"——P2 的有限元热场仿真、P4 的台式红外炉流场、P8 的低成本再流焊曲线优化，其背后的方程体系（式 (1)–(13)）与离散方法选择逻辑都在本文中被完整交代。读懂本文，即可把前面各篇"用 SolidWorks/ANSYS 仿真"的黑盒操作翻译成"傅里叶方程 + FEM + 特定边界条件"的显式数学表达，也为后续阅读热机械可靠性文献（翘曲、分层、爆米花效应）提供了标准术语表。</p>
+</div>
+
+<!-- ═══════════ 1. INTRODUCTION ═══════════ -->
+<h2 id="s1">1. 引言</h2>
+<p>再流焊的完整工序为：将膏状<span class="key-term">焊膏（solder paste）</span>经钢网印刷到 PCB 焊盘上 → 贴装表面贴装器件（SMD）→ 将整个组装件加热至焊料合金熔点以上，焊料熔化并形成焊点。焊膏中的<span class="key-term">助焊剂（flux）</span>在 100–150°C 被激活，清除焊盘上的氧化物与残留物，使焊点得以形成。按传热方式划分，最常用的再流方法有红外（IR）、强制对流（FC）与气相钎焊（VPS）三种 [1,2]，另有激光再流焊用于特殊场景。</p>
+
+<p><strong>激光再流焊</strong>：通常采用 CO₂ 或 Nd:YAG 光源，施加聚焦且连续的照射；气体、固态与二极管激光器（甚至脉冲模式）都被证实可用于钎焊。元件引脚与焊膏由吸收的光能加热，过程耗时（取决于激光功率与材料属性）从几毫秒到零点几秒不等。由于热量只作用于成形接头区域，它适合高密度封装与热敏感器件 [1,3]。</p>
+
+<p><strong>红外再流焊</strong>：红外炉采用波长介于近红外（约 1 µm）与远红外（约 1000 µm）之间的红外辐射发射器。与激光加热类似，能量不仅在焊膏表面、也在体积内部被吸收（与 VPS 和 FC 炉相同）。穿透性红外辐射可在焊料颗粒之间反射，实现均匀加热。红外再流是<span class="key-term">非平衡加热过程（non-equilibrium heating process）</span>：热源温度显著高于目标件；组装件的加热梯度由其吸收特性、辐射源与组装件间距、辐射功率及周围介质的物理性质共同决定。加热腔内引入气流可改善加热的均匀性与强度（图 1）[1,2]。</p>
+
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P6_数值建模方法_2023/images/1120dcd4dd5fb65afa998ba1df5299aff9d3407989ac87a58961f0c724cdbe22.jpg" alt="Fig 1" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 1 &mdash; 对流式红外炉内的气流与辐射机制（加热腔中气流对辐射加热均匀性及强度的改善作用）[4]</figcaption>
+</figure>
+
+<p><strong>强制对流（FC）再流焊</strong>：FC 炉利用强制对流加热，配有 4 至 14 个温控区（通常分为预热、保温、峰值与冷却区），由传送带系统连接（图 2）。对流传热通过被加热气体（通常为空气或惰性气体）的运动分子实现；过程需要大流量气体以提供高效加热，气体通常由风扇驱动。流速与气体温度受控，被加热样品最终达到与热源相同的温度，故 FC 是<span class="key-term">平衡过程（equilibrium process）</span> [1,2]。</p>
+
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P6_数值建模方法_2023/images/547627d05a0efc66fa1b3fdc677aabb3d5ce86572f63aa0b15977728fa3cae2e.jpg" alt="Fig 2" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 2 &mdash; 传送带式强制对流再流焊系统（箭头表示各编号分区中加热（红）与冷却（蓝）气体的循环）[5]</figcaption>
+</figure>
+
+<p><strong>气相钎焊（VPS）</strong>：VPS 基于瞬态膜状冷凝——传热流体被蒸发，在密闭罐内形成致密蒸气空间；组装件浸入蒸气中，冷凝在组装件表面发生（图 3），形成的冷凝液膜传递相变潜热，为焊膏再流提供能量。更先进的系统通过温度与压力测量控制蒸气产生 [6]。VPS 确保最均匀的加热，加热梯度高，最高温度被限制为流体的沸点（平衡过程）；冷凝液膜的存在还能隔绝氧气、防止再流期间氧化。直到 21 世纪初，VPS 的推广一直被缺乏环保传热流体（当时仅有危险的氟碳流体）所阻碍，惰性且环保的全氟聚醚流体（Galden 液体）的问世使其成为微电子工业的合适替代方案 [1,2]。</p>
+
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P6_数值建模方法_2023/images/c214e5afc5b67d0486e9cf9a13a3751fc3dc01319e2d0253fd91f292b8a81bf3.jpg" alt="Fig 3" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 3 &mdash; 气相钎焊腔体（组装件浸入蒸气空间，冷凝液膜传递相变潜热）[6]</figcaption>
+</figure>
+
+<p>由于生产率最高，传送带式 FC 炉是电子制造中应用最广的再流设备，现有研究也大多集中于此。然而随着无铅产品（及其在电力电子中的日益广泛使用）的工艺转变，VPS 技术因其相当或更优的质量与节能特性而开始扩张。</p>
+
+<p>再流工艺的成功实施取决于低缺陷率。总体而言，缺陷根因可归因于材料属性或工艺参数——后者取决于所采用的再流方法与 PCB 设计 [1]。识别并消除这些根因是再流故障排查的必要环节。传统上通过参数优化的启发式试验来解决问题的路径，可以被<span class="key-term">数值建模（numerical modelling）</span>显著改进：它是一种成熟而灵活的工具，能提供对再流炉严苛、封闭/隔离环境中难以甚至无法测量的有趣现象的深入理解。</p>
+
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>四种工艺的传热本质速览：</strong>激光=点源聚焦（毫秒级、局部）；红外=非平衡辐射体（体积吸收、可被气流匀化）；FC=平衡对流传热（样品最终与热源同温）；VPS=膜状冷凝相变（最高温度=沸点、隔绝氧气）。"平衡 vs 非平衡"是理解后文各建模方法差异的第一把钥匙——平衡过程可用简单的牛顿冷却定律（式 (10)），而非平衡过程必须求解辐射传递与内部导热。</p>
+</div>
+
+<!-- ═══════════ 2. BASICS ═══════════ -->
+<h2 id="s2">2. 数值计算方法基础</h2>
+
+<h3 id="s2a">2.1 偏微分方程（PDEs）</h3>
+<p>数学物理建立在线性和非线性<span class="key-term">偏微分方程（partial differential equations, PDEs）</span>之上。各种化学、物理与生物机制可以通过以适当方式连接并求解相关 PDE 来建模，具体取决于问题的复杂度与抽象层级 [7]。以下各小节汇总连续介质建模的基本方程，它们通常用于再流焊及相关问题的建模。</p>
+
+<p>傅里叶导热方程描述由温度梯度驱动的热传导 [8,9]：</p>
+<div class="math-block">$$ \rho \cdot c \cdot \frac{\partial T}{\partial t} = \nabla \cdot ( \lambda \cdot \nabla T ) - \rho \cdot c \cdot \underline{v} \cdot \nabla T + Q \tag{1} $$</div>
+<p class="math-note"><strong>解读：</strong>式中 $c$ 为比热容 [J/(kg·K)]，$\rho$ 为密度 [kg/m³]，$\lambda$ 为空间导热系数张量 [W/(m·K)]，$t$ 为时间 [s]，$T$ 为温度 [K]，$\nabla$ 为纳布拉算子。对流项仅在介质中存在流动时必要，$\underline{v}$ 为流速矢量 [m/s]（见式 (4)）。加热既可用体积热源 $Q$ [W/m³]、也可用表面热流 [W/m²] 作为边界条件表示——这正是后续红外/对流/激光各工艺建模时选择"源项形式"的依据。</p>
+
+<p>菲克扩散方程描述由浓度梯度驱动的布朗质量输运，电子封装中的含湿量测定是其重要应用之一 [10,11]：</p>
+<div class="math-block">$$ \frac{\partial C}{\partial t} = \nabla \cdot \left( \pmb{D} \cdot \nabla C \right) - \underline{v} \cdot \nabla C \tag{2} $$</div>
+<p class="math-note"><strong>解读：</strong>$D$ 为扩散系数张量 [m²/s]，$C$ 为浓度 [kg/m³]；有流动时需加对流项。扩散方程是"湿气–爆米花效应"建模（4.2 节）的基础——封装吸湿后，再流高温下水蒸气压力使塑料体开裂。</p>
+
+<p>式 (2) 的基本形式并非对所有情况都足够。例如浓度场在材料界面处可以不连续；另一问题是可变饱和水平会在材料内部诱发质量输运。解决思路是变量归一化并附加一个与饱和度变化成正比的源项 [12]：</p>
+<div class="math-block">$$ \frac{\partial w}{\partial t} = \nabla \cdot \left( \pmb{D} \cdot \nabla w \right) - \frac{w}{C_{\mathrm{sat}}} \cdot \frac{\partial C_{\mathrm{sat}}}{\partial t} \tag{3} $$</div>
+<p class="math-note"><strong>解读：</strong>$w$ [-] 为湿气饱和度（wetness）或分数饱和度，$w = C / C_{\mathrm{sat}}$，$C_{\mathrm{sat}}$ 为饱和浓度。表面饱和（$w=1$）配合内部干燥的初始状态可用于计算吸湿；表面完全干燥（$w=0$）则对应解吸。已知塑料封装中的疏水组分（如硅芯片）会阻碍解吸速率 [13]。$D$ 与 $C_{\mathrm{sat}}$ 均随温度显著增大，通常用阿伦尼乌斯方程描述：$D(T) = D_{0} \cdot \exp(-E_{a}/(R \cdot T))$，其中 $E_{a}$ 为激活能，$R$ 为普适气体常数；扩散系数也可能依赖局部浓度 [14]。</p>
+
+<p>经典 Navier–Stokes 方程描述不可压缩流体（气体或液体）的黏性流动 [11]：</p>
+<div class="math-block">$$ - \frac{1}{\rho} \cdot \nabla p = \frac{\partial \underline{v}}{\partial t} + \underline{v} \cdot \nabla \underline{v} - \frac{\mu}{\rho} \cdot \nabla^{2} \underline{v} - \underline{f} \tag{4} $$</div>
+<p class="math-note"><strong>解读：</strong>$v$ 为流速矢量 [m/s]，$p$ 为压力 [Pa]，$\mu$ 为动力黏度 [kg/(m·s)]，$f$ 为作用在流体上的力 [N/kg]。扩散方程（式 (2)）与热方程（式 (1)）可以按式 (4) 与 Navier–Stokes 方程耦合——例如激光熔化焊料时熔池流动与传热的联合求解。</p>
+
+<p>热膨胀引起的机械应力可用线弹性热力学方程描述 [15,16]。一般而言，弹性波方程处理机械应力传播；但加热过程中惯性项大多可忽略，对电子组装件建模而言，假定每个时间步内满足静态力平衡通常就足够了 [17,18]：</p>
+<div class="math-block">$$ \nabla \cdot \boldsymbol{\sigma} + \underline{F} = \underline{0} \tag{5} $$</div>
+<p class="math-note"><strong>解读：</strong>$\underline{F}$ 为体积源矢量 [N/m³]（如重力），$\sigma$ 为柯西应力张量 [Pa]。这是"准静态"热机械分析的基本方程——忽略加速度项后，每一时刻的结构都处于力平衡。</p>
+
+<p>因温度升高引起的热膨胀、以及因局部湿气浓度引起的湿气膨胀（hygroscopic swelling），构成弹性应变（广义胡克定律）之外的附加非弹性分量：</p>
+<div class="math-block">$$ \boldsymbol{\varepsilon} = S : \boldsymbol{\sigma} + \boldsymbol{\alpha} \cdot ( T - T_{0} ) + \boldsymbol{\beta} \cdot ( C - C_{0} ) \tag{6} $$</div>
+<p class="math-note"><strong>解读：</strong>$S$ 为柔度张量 [Pa⁻¹]，$\varepsilon$ 为总应变张量 [-]，$\alpha$ 为热膨胀系数（CTE）张量 [K⁻¹]，$\beta$ 为湿气膨胀系数（CME）张量 [m³/kg]，$T_{0}$ 为初始温度，$C_{0}$ 为参考浓度。热–湿–力三场耦合的完整表达，正是翘曲与分层分析的起点。</p>
+
+<p>材料因局部总应变产生的变形由位移矢量给出。假设仅发生小变形时，表达式为：</p>
+<div class="math-block">$$ \boldsymbol{\varepsilon} = \frac{1}{2} \left( \nabla \underline{u} + \left( \nabla \underline{u} \right)^{\mathrm{T}} \right) \tag{7} $$</div>
+<p class="math-note"><strong>解读：</strong>$u$ 为位移矢量 [m]。已知机械约束、温度曲线与边界力时，即可联立式 (5)–(7) 求解位移场；随温度演化，应力与应变可由位移场逐时间步增量推得。温度曲线可以直接全程给定，也可由热方程计算。多数情况下初始条件取无应力参考态：焊料取固相线温度以上、塑料取玻璃化转变温度以上、松弛材料取室温。</p>
+
+<p>塑性流动（屈服）是基本模型的重要非线性扩展，用于描述塑性变形、计算残余应力 [17,19]。塑性与弹性行为均可采用与黏性相关的率相关应力–应变关系。应力张量与畸变应变能相关的标量不变量对材料失效预测很重要，即<span class="key-term">von Mises 应力</span>（等效应力），机械分析中通常用它寻找对开裂或屈服敏感的位置 [20]，可由应力张量分量计算 [17]：</p>
+<div class="math-block">$$ \sigma_{\mathrm{VM}} = \sqrt{ \frac{ \left( \sigma_{11} - \sigma_{22} \right)^{2} + \left( \sigma_{22} - \sigma_{33} \right)^{2} + \left( \sigma_{33} - \sigma_{11} \right)^{2} + 6 \left( \sigma_{12} + \sigma_{23} + \sigma_{31} \right) }{2} } \tag{8} $$</div>
+<p class="math-note"><strong>解读：</strong>$\sigma_{\mathrm{VM}}$ [Pa] 为 von Mises 等效应力。将三维应力状态压缩为单标量，便于在仿真云图上直接定位"最容易开裂/屈服"的区域——后文板级与元件级研究中的"最大有效应力位置"即指此量。</p>
+
+<p>最后，裂纹扩展与分层可通过引入断裂力学进行分析 [21,22]。此时在被研究结构中放置一条小裂纹，它可放大机械应力。在线弹性模型内，应力在裂纹尖端解析奇异、在尖端周围有限，并随距离衰减；有限应变、应力与位移场在裂纹区被数值近似。根据这些场可计算裂纹模式混合度（涉及拉伸及面内、面外剪切）与总<span class="key-term">能量释放率（energy release rate）</span> [J/m²]。能量释放率描述假定裂纹扩展时每单位裂纹表面耗散的能量；若该值大于与模式混合度相关的极限（断裂韧性），裂纹将扩展。</p>
+
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>八组方程的分工图谱：</strong>式 (1) 热 → 所有再流工艺的温度场；式 (2)(3) 湿 → 封装含湿/解吸（爆米花效应的输入）；式 (4) 流 → 炉内气流、熔池流动；式 (5)–(7) 力 → 翘曲/应力；式 (8) 失效判据 → 开裂/屈服位置；断裂力学 → 分层扩展。红外焊接主题论文（如 P2 的热场仿真）只用到其中的 (1) 与辐射边界条件，而可靠性文献则需要全部。</p>
+</div>
+
+<h3 id="s2b">2.2 数值求解方法</h3>
+<p>对复杂问题往往难以甚至无法用上述 PDE 获得解析解。借助现代计算机的快速计算能力，复杂模型可由数值方法分析。<span class="key-term">有限元法（finite element method, FEM）</span>与<span class="key-term">有限差分法（finite difference method, FDM）</span>是两大主流方法；此外，<span class="key-term">有限体积法（finite volume method, FVM）</span>（多用于流体动力学，在特定问题上解更稳定）也常见于现代仿真平台。这些方法均以各种技术对问题在时间与空间上离散。</p>
+
+<p><strong>FDM</strong>：用基于给定阶泰勒级数近似的有限差分算子替换微分算子，在有限差分网格上实现。与 FEM 相比，FDM 形式相对容易推导与编程，尤其在多个 PDE 需要耦合时；开发过程中尝试与修改模型非常灵活。缺点是非矩形几何难以处理，且低误差解需要精细的网格分辨率。</p>
+
+<p><strong>FEM</strong>：将研究几何划分为离散且互不重叠的子域（称为"单元"），由此形成网格。单元可包含多个具有连续权重参数与形函数的节点；形函数的加权求和给出单元上的近似解。权重参数通过将模型域上的加权残差误差趋于零来确定——即伽辽金法（Galerkin method）[23,24]。基于 PDE 弱形式的有限元公式可降低微分阶数，从而使线性形函数可用于二阶方程。FEM（以及 FVM）能处理复杂几何，且达到精确解所需的单元数低于 FDM 网格分辨率（因为近似能力还严重依赖形函数阶数）；另一方面，单元方程的准备在数学上要苛刻得多。</p>
+
+<p>FDM 与 FEM 最终都会得到庞大的代数方程组（完全显式、完全隐式或介于两者之间），稳态问题求解一次、瞬态问题在离散后的每个时间步各解一次。常用的缩减技巧是沿对称轴切割模型并施加适当边界条件（结构缩减）。无论用哪种方法，当数值格式稳定（误差在时间步间衰减）且与精确 PDE 相容（细化时间步、空间网格即可降低误差）时，结果将收敛到问题的真实解。除了纯数学因素，仿真的精度还严重依赖材料属性的抽象层级与准确性：当制造商未给出或难以测量时，只能依赖数据往往有限的材料数据库，甚至在可能范围内微调所用数值。目标始终是获得足够精度与预测能力，使模型对特定目的适用——这由直接或间接测量验证，并结合建模经验与工程判断来决定。</p>
+
+<p>商用的 FEM/FVM 平台（非穷尽列表）包括 Abaqus、ADINA、ANSYS 与 Comsol；开源替代有 Elmer、FreeFEM 或 OpenFOAM。</p>
+
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>方法选型的工程直觉：</strong>FDM 简单灵活但"怕复杂几何"（规则网格）；FEM 是"几何通吃"的万金油（弱形式降阶是关键机制）；FVM 在流体问题（守恒律）中最稳。再流焊主题的规律是：传热+应力用 FEM、炉内气流用 FVM/FDM、湍流一律 RANS 平均。这与 P2 用 SolidWorks 2012 Flow Simulation（FVM 内核）做红外炉热场仿真、P4 用 CFD 做台式炉流场是一致的。</p>
+</div>
+
+<!-- ═══════════ 3. HEAT TRANSFER METHODS ═══════════ -->
+<h2 id="s3">3. 各工艺的传热建模</h2>
+<p>本节呈现不同再流方法的工艺建模路径，聚焦传热方面。传热能力是再流炉的主要属性，表征可施加到样品上的加热功率及其分布；加热效率与均匀性对焊点可靠性至关重要，不均匀的温度分布会导致各种焊接失效。因此大量实验与数值研究关注传热、温度分布与气流表征。</p>
+
+<h3 id="s3a">3.1 激光钎焊</h3>
+<p>由于激光源聚焦，激光钎焊期间热量局部化，元件本体不受热载荷。激光束的热量通常建模为空间高斯分布；体积源项可由朗伯–比尔吸收定律生成。设 $I(x, y, t)$ 为激光束在表面上的热流 [W/m²]，则源项可沿深度方向微分得到：</p>
+<div class="math-block">$$ Q = \alpha \cdot I(x, y, t) \cdot e^{- \alpha \cdot z} \tag{9} $$</div>
+<p class="math-note"><strong>解读：</strong>$x$、$y$ [m] 给出表面位置，$\alpha$ 为吸收系数 [m⁻¹]，$z$ 为垂直深度 [m]。指数衰减项体现"光在材料内按距离被吸收"的物理——激光能量不是只在表面，而是在薄层体积内沉积，这与红外辐射的体积吸收同源。</p>
+
+<p>激光束也可从侧面、甚至在 PCB 或 SMD 元件对所涉波长透明时穿透其本体施加。该布置被应用于 0.8 mm 厚银-玻璃基板上的倒装芯片，光斑直径 100 µm，连续波 Ar⁺ 激光源 [25]，并用 3D FEM 模型分析热分布；结果证实受热加载的区域仅限于焊膏与焊盘。</p>
+
+<p>焊点可靠性可受<span class="key-term">金属间化合物（intermetallic compound, IMC）</span>影响，例如 $( \mathrm{Cu}, \mathrm{Ni} )_{x} \mathrm{Sn}_{5}$ 与 $\mathrm{Ag}_{3} \mathrm{Sn}$——它们在焊盘（底层 Cu 和/或 Ni 镀层）与熔化焊料之间形成。IMC 的存在对保证接头成形是必要的，但过度生长会导致脆性。该问题通过 Sn–Cu 与 SnAgCu–Cu 界面的 3D FEM 模型研究 [26,27]：采用红外脉冲激光、多种扫描速度、25 µm 光斑；热方程与 Navier–Stokes 方程耦合以研究熔化焊料中的传热，相变潜热以等效热容计入计算；主导的 Cu 质量输运被建模为扩散并与熔融流动耦合。结论：与纯 Sn 相比，熔化温度更低的 SAC 焊料合金具有增强的对流分量——即更高的温度、流速与扩散速率。</p>
+
+<p>文献 [28] 用 3D FEM 研究激光工艺参数对 SAC 焊点温度分布与热应力的影响。结果显示焊点的温度、应力与变形与激光功率及钎焊时间跨度成正比；温度分布与接头微观组织之间存在关联，并经截面检查与显微维氏硬度测量验证——由功率与时长增加导致的高钎焊温度产生更细化的接头微观组织与更高的硬度。</p>
+
+<h3 id="s3b">3.2 红外再流焊</h3>
+<p>文献 [4,29] 对带强制对流辅助的红外再流炉进行了复杂的 3D FVM 研究。湍流可能引起数值不稳定，为此采用时间平均——即<span class="key-term">雷诺平均 Navier–Stokes（Reynolds averaged Navier–Stokes, RANS）</span>方程配合 K-epsilon（或同类）方法；用<span class="key-term">离散坐标法（discrete ordinates, DO）</span>求解控制局部发射、吸收与散射现象的一般辐射传递；局部吸收能量引起的温升由热方程描述。结果表明：与仅对流传热相比，考虑辐射时组装件温度升高 40–50°C；且在较低风扇转速、较弱湍流时，辐射传热是主导热源。</p>
+
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>40–50°C 的工程含义：</strong>这是红外炉建模的"辐射权重"量化——忽略辐射的纯对流模型会系统性低估组装件温度，误差可达 50°C 量级，足以改变焊料熔化判据。对红外焊接设备设计（P2–P8 的共同主题）而言，辐射项不是可选项而是必选项；同时它提示：低风速工况下辐射主导，高风速下对流反超——风扇选型直接改变传热机制配比。</p>
+</div>
+
+<h3 id="s3c">3.3 强制对流再流焊</h3>
+<p>对强制对流再流焊，牛顿定律描述从加热流体（气体或液体）到表面的传热，加热功率 $P$ [W] 计算如下 [2,9]：</p>
+<div class="math-block">$$ P = h \cdot A \cdot \left( T_{F} - T_{S} \right) \tag{10} $$</div>
+<p class="math-note"><strong>解读：</strong>$h$ 为<span class="key-term">换热系数（heat transfer coefficient）</span> [W/(m²·K)]，$A$ 为受热面积 [m²]，$T_{F}$ 为远离表面的未扰动流体温度，$T_{S}$ 为表面温度。这是把"流体侧"整体压缩为一个系数的便捷手段，无需计算受热面周围流体的完整温度与速度场——集总建模的核心工具。</p>
+
+<p>式 (10) 可改写为热方程的对流边界条件，给出表面热流 [W/m²] [9]：</p>
+<div class="math-block">$$ \underline{n} \cdot \left( \lambda \cdot \nabla T \right) = h \cdot \left( T_{F} - T_{S} \right) \tag{11} $$</div>
+<p class="math-note"><strong>解读：</strong>$\underline{n}$ 为指向外部的单位法向矢量。扩散方程也可施加类似边界条件（用环境浓度与传质系数）。于是"炉子"对"板"的作用被抽象为纯粹的热通量输入，这是 2D/3D 板级热模型的标准做法。</p>
+
+<p>当强制对流炉中存在不可忽略的红外效应时，热流按面-面热辐射处理。对不透明、灰体、漫射表面，有 [9]：</p>
+<div class="math-block">$$ \underline{n} \cdot ( \lambda \cdot \nabla T ) = \frac{1}{A_{S}} \cdot \frac{ \sigma \cdot \left( T_{H}^{4} - T_{S}^{4} \right) }{ \frac{1 - \varepsilon_{H}}{A_{H} \cdot \varepsilon_{H}} + \frac{1}{A_{H} \cdot F_{HS}} + \frac{1 - \varepsilon_{S}}{A_{S} \cdot \varepsilon_{S}} } \tag{12} $$</div>
+<p class="math-note"><strong>解读：</strong>$\sigma$ [W/(m²·K⁴)] 为斯特藩–玻尔兹曼常数，$\varepsilon$ [-] 为发射率，下标 $H$、$S$ 分别表示加热器与目标表面，$F_{HS}$ [-] 为加热器到目标表面的<span class="key-term">视角因子（view factor）</span>。注意互易关系 $A_{H} \cdot F_{HS} = A_{S} \cdot F_{SH}$；多表面之间辐射被看作空间电阻网络 [9]。分母三项分别对应"加热器表面电阻""空间电阻""目标表面电阻"——这是辐射网络法的经典结构，与 P2 中"角系数 $F_s$ 决定热场均匀性"的讨论完全同构。</p>
+
+<p>当被加热体表现为集中热质量、内部温度近似均匀时，可采用<span class="key-term">集总建模（lumped modelling）</span>。此时推荐小毕渥数（$Bi &lt; 0.1$）——$Bi = (h \cdot L_{c}) / \lambda$ 为表面对流与内部导热之比，$L_{c}$ 为特征长度（体积与受热表面积之比）。特定物体（对流传热）的温度瞬态由下式给出 [2,9]：</p>
+<div class="math-block">$$ c \cdot m \cdot \frac{dT}{dt} = h \cdot A \cdot \left( T_{F} - T \right) \tag{13} $$</div>
+<p class="math-note"><strong>解读：</strong>$T$ 为物体温度，$m$ [kg] 为物体质量。此简化的主要优点是：已知 $h$ 时式 (13) 解析或数值求解 $T$ 都容易，反之亦可——它适用于热电偶：根据瞬态温度数据反求 $h$ 值。换热系数高度依赖流动特性且通常只能近似已知；显式公式或解析 Nusselt 型解仅对某些简单情形存在。测量与数值仿真都可帮助确定 $h$。强制对流再流中可假定：传感器得到的 $h$ 值同样适用于 PCBA（或更具体地适用于其元件），前提是传感器对流动的扰动最小；然而热传导与流体流动耦合的复杂模型揭示了不少"测得值需修正"的情形。</p>
+
+<p>文献 [30] 针对多温区传送带式 FC 再流站引入一种简化建模技术：将贴装后的 PCBA 建模为 2D 热阻容（RC）网络——各温度节点分配热质量，节点之间为热阻（与 FDM 思路类似），并用毕渥数分析论证其合理性；每个节点同时定义热辐射与对流传热源。文献 [31] 提出另一种简化路径：集总模型配合 FDM 确定加热样品温度。</p>
+
+<p>文献 [32] 给出一个复杂的传送带式炉模型：用 3D FEM 确定同时受辐射与对流加热的 PCBA 上的最低与最高温度，气流用基于实验的函数给出换热系数。</p>
+
+<p>文献 [2] 展示带喷嘴矩阵鼓风系统与传送线的强制对流炉：由多点实测温度数据经集总模型计算换热系数的 3D 特征；气流用 RANS 型模型与 2D FVM 近似；研究 SMC 对流动的影响——扁平封装（如 BGA、QFP）对流动无明显影响，而大体积元件（如电解电容）会局部改变流动、引起湍流，降低流速与换热系数。</p>
+
+<p>文献 [33] 用 FVM 与 FEM 联合进行 3D 气流与热仿真，确定贴装板穿过 FC 炉时的详细换热系数分布图。大元件之间的遮蔽效应与板运动产生的涡流导致某些区域传热能力下降；结论是较低传送速度改善温度均匀性，但有过热风险。</p>
+
+<p>文献 [34] 同样用 3D FVM 对 FC 炉做复杂仿真：分析高复杂度、小元件尺寸的贴装 FR4 PCB 组装件在再流期间的热行为，建模范围包括入口对流的整个空间、PCBA 随传送线移动；以氮气为对流流体，湍流用 RANS 模型处理。结果：最大温差出现在沿传送方向的 PCB 长边，而沿短边垂直方向只有微小差异。</p>
+
+<h3 id="s3d">3.4 气相钎焊</h3>
+<p>VPS 具有最严苛的工艺区，使任何测量都变得复杂；被加热样品本身的热行为被视为与过程不可分割的方面。冷凝液膜的形成严重依赖几何、润湿与表面温度发展；液膜形成还会消耗蒸气，引起蒸气浓度波动、影响传热效率。因此无法从传感器获得恰当数据——传感单元应置于样品内部，然后记录热瞬态，从而基于边界热流计算、通过求解<span class="key-term">逆传热问题（inverse heat transfer problem）</span>获得换热系数。</p>
+
+<p>文献 [2] 用 FDM 研究气相钎焊中 FR4 基板的热瞬态：基板被假定为集中热质量，此时换热系数指 VPS 期间形成的冷凝膜上的传热；膜状冷凝的换热系数公式建立在 Nusselt 原始理论之上。</p>
+
+<p>文献 [2] 还引入对热物性不同的裸 PCB 基板上蒸气冷凝的更详细 3D FDM 仿真：炉内温度变化由热方程支配；蒸发产生浓度差与质量输运（用扩散描述）；冷凝蒸气的潜热引入膜状冷凝液，热量以固有热流经液体传导到体表面；传热流体的冷凝由经测量验证的自定义露点模型驱动；蒸气消耗引起显著的质量扩散以补偿质量损失；冷凝液层的层流用 Navier–Stokes 方程描述。结果显示换热系数在前两秒内突然下降，随后缓慢上升直至过程结束，且速率高度依赖基板材料；样品热扩散率与换热系数之间存在相关性——热扩散率越大，系数越大。</p>
+
+<p>文献 [35] 引入气相钎焊分布式系统的逆热传导求解方法，并进行 3D 元件级温度分析：表面贴装聚合物电容用快速 FDM 方案建模；元件中心钻孔内测量插入气相钎焊炉期间的温度瞬态，记录数据成为计算换热系数的关键。与该复杂路径一致：换热系数先快速下降、随后中等幅度上升，与液层厚度成反比；还得出结论——PCB 能比元件保持更厚的液层。</p>
+
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>气相钎焊建模的三条硬约束：</strong>① 环境严苛 → 传感器无法直接测得 $h$，必须"样品内埋传感器 + 逆问题反演"；② 冷凝膜厚度随几何/润湿动态变化 → $h$ 先骤降后缓升、非定值；③ 尚无商用专用模块 → 必须手动耦合导热 + 扩散 + 层流 + 露点模型。这也是本文在讨论节（第 7 节）明确指出的"VPS 是建模成熟度最低的工艺"。</p>
+</div>
+
+<!-- ═══════════ 4. THERMOMECHANICAL ═══════════ -->
+<h2 id="s4">4. 热机械仿真</h2>
+<p>本节呈现聚焦再流过程热机械应力的建模路径。<span class="key-term">热机械应力（thermomechanical stress）</span>（即热应力）是微电子封装耐久性中公认的问题：时空温度梯度与复合结构内不同的热膨胀系数（CTE）共同作用，产生贯穿整个体积的不同热膨胀或收缩；当其中任何一项受到外部或内部约束时，即产生热应力。板级分析处理组装件的大尺度变形；元件级研究关注因板与元件间 CTE 失配引起的接头应力；还有因热膨胀伴随含湿量湿气效应引起的内应力，以及小裂纹中的蒸气压力积聚在再流过程中导致的裂纹快速扩展。为降低计算需求，热机械建模常省略非均匀温度分布引起的瞬态应力，而按标准再流曲线在结构中统一给定温度。</p>
+
+<h3 id="s4a">4.1 板级分析</h3>
+<p>文献 [36] 在再流期间聚焦板沿长度方向的<span class="key-term">翘曲（warpage）</span>（面外变形）进行非线性规划研究：非晶树脂基覆铜板在加热中经历玻璃化转变，弹性下降、热膨胀系数增大；半固化片层与铜之间的 CTE 失配和重力是 PCB 表面翘曲的两个根因。研究用多层层合板理论获取 PCB 横向中心点的曲率；结论：附加的假铜图形（dummy copper patterns）与增厚的树脂层可抑制变形速率，代价是更大的重量与体积、以及布线设计的修改。文献 [37] 基于同一多层板理论路径做类似的翘曲预测：每层用体积分数的混合规则视为铜-环氧复合材料——这是常用近似方法 [38]。</p>
+
+<p>重力对较厚、较小的板影响轻微，对微电子元件可忽略；但薄板的弯曲刚度下降可能因再流期间的附加机械应力引发可靠性问题。文献 [39] 对 0.6 mm 厚、在过渡导轨上移动的大尺寸 PCB 阵列做重力变形分析，半固化片与铜层用体积分数建模为线弹性复合材料。</p>
+
+<p>文献 [40] 研究双面 FR4 印制板与拼板 PCB 阵列的翘曲，以确定最优路由耳（router tab）与阵列夹具设计：3D FEM 考虑焊点成形后施加足够约束的高引脚数大封装对总翘曲的影响；所有材料模型为线弹性（含玻璃化转变与正交异性 CTE）；模型用光学 Shadow Moiré 技术测量的翘曲验证。</p>
+
+<p>文献 [41] 研究陶瓷基板微波 SiP（系统级封装）模块：QFN 与 QFP 封装及其他无源元件装在由镍钴铁合金（Kovar）柱互连的两层陶瓷基板上，模块再装在 FR4 PCB 上；通过 3D FEM 仿真分析再流过程中的翘曲与应力变化，SAC 焊球用粘塑性 Anand 模型——结果显示翘曲随峰值温度升高而增大，有效应力与残余应力在最外对角焊球根部达到最大。</p>
+
+<p>文献 [5] 在带红外元件的 FC 再流中，用 3D FEM 在板级预测翘曲：贴装 BGA 等大封装的层压 PCB 采用简化模型；热传导与含玻璃化转变的热应力计算耦合，对流与辐射边界条件合并为传热，对流部分由 Nusselt 型理论确定。翘曲随温度上升而增大、在峰值温度达到最大；除环境温度与传送速度外，板厚对翘曲百分比的影</p>
+<p>响最大。</p>
+
+<p>文献 [42] 在不同热载荷下对带双列直插内存模块（DIMM）插座的 PCB 做实验研究与建模：插座与 PCB 间 CTE 差引起的变形用简化线弹性模型的 3D FEM 计算，板与插座均按复合材料处理；材料的弹性属性与 CTE 值由现场测量与弯曲试验确定；另基于梁弯曲理论提出解析解。</p>
+
+<p>文献 [43] 研究绝缘栅双极晶体管（IGBT）功率模块再流诱导的翘曲与残余应力：模块含厚铜基底，其上钎焊薄直接覆铜（DBC）板；DBC 板有陶瓷芯、铜层图形化，元件在 DBC 板上贴装并引线键合，基底另一侧可配大散热器——这种结构为高功率电流开关提供有效冷却。该模块需要专用再流工艺：用受控热表面以直接接触方式向基板传热；液相线温度以上在密闭腔内施加真空以消除焊料空洞。预测残余翘曲对实现优良散热器接触至关重要。3D FEM 模型包含材料塑性与粘塑性焊料行为；最大应力（残余与有效）出现在陶瓷板中（因与铜基底的 CTE 失配）。结论：减小陶瓷板厚度或采用预翘曲铜基底可安全降低变形与应力。该模型在文献 [44] 中扩展为涂层 AlSiC 金属基复合材料基底以减小 CTE 差，并计入温度相关材料属性与相变潜热效应。</p>
+
+<h3 id="s4b">4.2 元件级分析</h3>
+<p>聚合物材料在储存不当情况下的湿气扩散可能引起封装中的"爆米花"开裂效应（popcorn cracking）：再流炉传热期间蒸气压力积聚，在电子元件塑料体内引起裂纹；此类情况下封装结构中通常可见封装料与引线框架之间的界面分层。分层源于制造过程中材料界面上的微小空洞或缺陷，并因热应力而扩展。这一复杂现象在文献 [45] 中建模：二维薄 QFP 封装模型含引线框架、环氧塑封料（EMC）与硅芯片，采用 2D FEM；框架与 EMC 之间放置 0.2 mm 长的分层界面；计算聚焦瞬态温度、湿气浓度与蒸气压力，并将这些参数耦合到应力场；基于"修正虚拟裂纹闭合"（MVCCT）技术确定总能量释放率。结果显示：弹性模量较低的 EMC 材料含较低热应力；较低的 CME 与扩散系数导致湿应力（hygrostress）降低。</p>
+
+<p>文献 [46] 在薄 QFP 封装中进行类似的 2D 双材料裂纹分析：焊盘与 EMC 之间放置 0.5 mm 裂纹。观察到：高度较低的封装中能量释放率与湿气浓度更高；此外，CTE 失配引起的热应变只贡献总能量释放率的 40–50%，该比例随封装厚度增大。</p>
+
+<p>文献 [47] 用 2D FEM 进一步深化含湿气扩散的双材料裂纹分析：两级叠层芯片封装含两枚硅芯片、塑封料、芯片贴装胶与环氧基板；用 MVCCT 分析两级中芯片/贴装胶与芯片/塑封料界面的预制裂纹。裂纹表面内侧的蒸气压力沿外法线方向作用，与局部含湿量及饱和水蒸气压力成正比。结果显示：底层芯片的能量释放率大于顶层且随裂纹长度增大；在峰值温度下增长趋势更显著——表明蒸气压力对大裂纹的重要性；裂纹尖端附近以剪切为主导模式，源于 CTE 与 CME 失配。</p>
+
+<p>文献 [48] 用 3D FEM 分析多层陶瓷电容金属引线中铜/铜-环氧层界面处的裂纹：从初始微空洞起的裂纹扩展被模拟为相邻层间不均匀热膨胀（作为拉伸载荷）导致的</p>
+<p>分层，并用扫描电镜（SEM）对界面微裂纹与空洞的截面检查验证理论。文献 [49] 进一步在模型中添加湿气扩散引起的湿应力效应。</p>
+
+<p>文献 [50] 研究塑料 BGA 封装在再流与热循环中的残余应变与翘曲：结合 Shadow Moiré 测量与 3D FEM 仿真，计入 EMC 材料中的玻璃化转变效应；结果显示残余应变随玻璃化转变温度升高而增大。文献 [51] 进一步改进：温度相关 CTE 与粘塑性 SAC 焊球材料；加热用指定换热系数与环境温度的对流边界条件建模以模拟再流曲线；最大凸翘曲出现在冷却初始阶段，其幅度随 PCB 增厚而减小。</p>
+
+<p>文献 [52,53] 分析 BGA 焊球阵列冷却期间的热应力与翘曲：慢冷速导致焊点晶粒粗大与金属间化合物过度生长、疲劳抗力弱；快冷速则导致高热应力、接头内部开裂或焊盘分层。先用 RANS + 3D FVM 在粗网格 FR4 PCBA 上计算进气流（氮气）与换热系数；板级热响应被传递到更细的子模型，用 FEM 确定 SAC 焊点的热应力。发现入口流速对过程影响最大，其次是冷却温度、传送速度与 PCB 密度；最大有效应力出现在焊球根部——此处板与封装基板以不同 CTE 充当约束。</p>
+
+<p>文献 [54] 用 3D FEM 对贴装倒装芯片的芯片与 FR4 板间 CTE 差引起的热应力与翘曲建模：仅模拟冷却段，视凝固前的高温态为无应力；使用恒定换热系数；结果为凸翘曲（FR4 比硅芯片收缩更多）。</p>
+
+<p>文献 [55] 研究再流期间 QFP 元件的内应力：QFP 封装中最关键的材料界面是引线框架/芯片贴装胶与硅芯片/EMC 之间。采用线弹性 3D FEM，聚焦材料界面并做详细结构定义；最大有效应力出现在芯片贴装胶与铜焊盘的界面——在约束（与焊料连接）与自由两种构型中皆如此，约束构型下该应力几乎增至三倍。</p>
+
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>热机械仿真链条的共性套路：</strong>板级看翘曲（多层板理论 / 3D FEM + Shadow Moiré 验证），元件级看界面（CTE/CME 失配 + 湿气 + 蒸气压力 → MVCCT 算能量释放率）。反复出现的三个判据：最大 von Mises 应力位置（焊球根部/界面）、能量释放率 vs 断裂韧性、翘曲随峰值温度单调增大。对红外焊接研究而言，这套框架回答了"不均匀热场最终如何损伤焊点"——P2 的 45–55°C 不均匀度要翻译成可靠性语言，靠的就是这里的方程。</p>
+</div>
+
+<!-- ═══════════ 5. OTHER MODELLING ═══════════ -->
+<h2 id="s5">5. 其他建模应用</h2>
+<p>食品工业也应用基于强制对流与红外辐射炉的传热过程，其模型示例与再流模型非常相似——用相同的 PDE、源项与相关边界条件描述热量和附加/可选的质量输运过程。带红外加热与联合强制对流的烘焙与干燥炉用 FEM 方法建模 [56–59]。食品工业示例与钎焊应用的主要区别在于主导的湿气蒸发：湿气以质量流形式从样品表面释放、引起热损失；在加热的多孔介质中，大量吸收湿气的流动可能由压力梯度驱动，此类情况应在方程中加入对流与平流项 [59]。</p>
+
+<p>带引脚-膏体（pin-in-paste）技术的钢网印刷是与再流过程相关的最关键生产步骤之一——大部分焊接失效可归因于此；数值建模优化在该领域也发挥重要作用，如近期工作 [60–63] 所述：印刷速度与压力、刮刀几何、焊膏黏度、钢网孔径与再流曲线的影响均被研究。</p>
+
+<!-- ═══════════ 6. SOFT COMPUTING ═══════════ -->
+<h2 id="s6">6. 软计算方法</h2>
+<p>软计算指不依赖常规（即"硬"）数学模型（如 PDE）而近似复杂系统的计算技术，其概念基于从包含待近似行为模式的大量实验数据中学习。模型构建是自适应、灵活的过程，但所得结构不能提供对底层物理原理的建设性洞察。<span class="key-term">遗传算法（genetic algorithm, GA）</span>与<span class="key-term">人工神经网络（artificial neural networks, ANNs）</span>是实现过程建模非线性近似的主要（且常被组合使用的）机器学习技术 [64,65]。</p>
+
+<p>ANN 是分布式数值系统，由简单非线性处理单元的网络构成，具有足够大的自由度来通用近似真实系统的行为；学习通过迭代误差最小化（即训练）完成。训练后的模型能以平滑过渡对未训练的响应进行内插或外推，速度比基于 PDE 的建模快数个数量级。另一方面，选择并训练合适类型的 ANN 到达全局最优点是一项计算量与时间都很大的任务，需要经验性策略。GA 是受自然选择启发的稳健启发式优化算法：每一代（迭代）中，个体（候选解）接受变异、交叉与基于预定义适应度函数的选择算子；算法在固定代数后或达到指定适应度水平时终止 [65]。</p>
+
+<p>文献 [66] 提出一种结合<span class="key-term">反向传播神经网络（back propagation neural network, BPNN）</span>与 GA 的混合框架优化 FC 再流曲线：数据集由测量获取；输入工艺参数为各温区峰值温度、传送速度与 PCB 密度；输出为 PCB 的预测保温与峰值温度、各阶段时长及冷却斜率；GA 利用训练好的网络优化输入参数以实现规定输出。文献 [67] 以更广的工艺变量范围深化该混合方法，与其他常见优化程序比较后被证明更优、统计误差最低。文献 [68] 也用 GA 寻找最优曲线参数以最小化 IMC 生长。</p>
+
+<p>文献 [69] 用机器学习研究引脚-膏体再流应用的钢网印刷：压入镀通孔的焊膏目标体积必须严格控制以避免焊接缺陷；ANN 输入为镀孔直径与印刷速度，输出为孔填充率（用 X 射线研究）；训练数据取自 FR4 板上多种通孔尺寸与印刷速度的实验测量。</p>
+
+<p>集成化必然带来元件尺寸收缩与对精密贴片机的需求。SMC 在再流焊中自我对准，但程度取决于多种因素：焊接方法、原始偏移、表面张力与焊膏体积。文献 [70] 用 BPNN 与实验数据集预测 FR4 上 0603 尺寸 SMC 电阻的自对准；IR 与 VPS 被比较，后者因更强烈的加热产生更高表面张力而展现更强的自对准能力；网络输入为 x-y 偏移与再流方法，输出为焊接后的偏移。文献 [71] 进一步细化：0402、0603、1005 三种尺寸的 SMC 电阻与电容，48 个输入参数分为元件几何、焊盘几何、焊膏体积与放置、元件贴装四类；自对准问题的常规 PDE 公式可见 [72]。</p>
+
+<p>IMC 形貌影响焊点的力学行为与可靠性。文献 [27] 在激光再流焊期间研究脆性 Cu₆Sn₅ 的形貌：用多种功率水平与扫描速度做实验；IMC 形貌间的转变取决于界面温度；用 2D FEM 计算不同扫描速度、激光功率与 SAC 合金成分组合下的界面温度；FEM 生成的数据集用于训练 BPNN 预测 IMC 形貌。</p>
+
+<p>文献 [73] 将由常规数值建模生成的数据集与机器学习结合以优化再流过程：FC 炉的 3D FEM 模型考虑对流与辐射换热系数；由模型输出为各工艺区生成不同换热系数与峰值温度的多维响应面，用多目标遗传算法（MOGA）遍历响应面优化这些值。生成的数据集也被 [74,75] 使用：思路是用较少测量验证物理模型，再以其生成大数据集训练 ANN。为带 BGA 封装的 PCB 建立带对流加热的 3D 流体流动仿真；Si 芯片、Si 过孔与底填料等小封装特征被集总为复合热质量；用热电偶测温验证；训练输入为材料属性与各温区温度曲线，输出为 SAC 焊球的峰值温度与液相线以上时间；训练好的系统能准确预测不同炉设定下焊点的温度曲线，并在数秒内评估数万组输入数据找到最优再流设定。该方法后来扩展到传送速度、PCB 与元件尺寸。</p>
+
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>软计算在本领域的定位：</strong>不是取代 PDE 建模，而是"数据飞轮"——用仿真/实验生成大数据集 → 训练 ANN → 毫秒级预测与优化。混合框架（GA 找最优 + BPNN 当快速代理）在曲线优化上已证明优于传统方法。对低成本再流焊设备（如 P8 主题）而言，这是把"试错调炉"变成"数据集搜索"的现实路径。</p>
+</div>
+
+<!-- ═══════════ 7. DISCUSSION ═══════════ -->
+<h2 id="s7">7. 讨论</h2>
+<p>不同再流焊方法的数值建模有悠久历史。回顾该重要领域以往与近期的成果，可揭示所需的研究方向。根据这些研究，可以归纳出针对给定问题选择建模方向的多条准则。</p>
+
+<p><strong>激光钎焊</strong>：确定热影响区（heat-affected zone）可能是主要关注点。热方程与扩散方程非常适合用 FDM 或 FEM/FVM 实现；2D 建模通常足以获得给定时间跨度内扩展热量可达范围的有关信息。近年含烧蚀的激光加热计算已在某些 FEM/FVM 仿真器中成为专用例程，将电磁波与固体传热耦合。激光钎焊集中于单个或少量接头，因此建模范围可包括详细熔化过程研究——相变潜热对相变的影响应计入；当大面积覆盖焊膏时，相变期间对周围区域温度的影响足以改变翘曲行为，这也是必要的。存在熔化焊料流动时，建议采用能同时处理热传导与扩散的 FVM。</p>
+
+<p><strong>红外再流焊建模</strong>需要耦合辐射传热、强制气流与热传导；相关 DO 与 RANS 模型通常已内置在现有 FEM/FVM 求解器中。存在湍流时应选 FVM 以获得稳定解。</p>
+
+<p>表 1 按建模类型分组汇总了与再流焊最相关问题的精选文献。</p>
+
+<table>
+  <caption>表 1. 精选文献汇总（按建模类型、数值方法与文献编号分组，对应论文 Table 1）</caption>
+  <thead><tr><th>建模类型（研究对象）</th><th>数值方法</th><th>文献</th></tr></thead>
+  <tbody>
+    <tr><td colspan="3"><strong>激光钎焊</strong></td></tr>
+    <tr><td>温度分布、热影响区</td><td>3D FEM</td><td>[25]</td></tr>
+    <tr><td>温度分布、金属间化合物扩散</td><td>3D FEM</td><td>[26,27]</td></tr>
+    <tr><td>温度分布、机械应力</td><td>3D FEM</td><td>[28]</td></tr>
+    <tr><td colspan="3"><strong>红外再流焊</strong></td></tr>
+    <tr><td>温度分布、气流、炉结构影响</td><td>3D FVM</td><td>[4,29]</td></tr>
+    <tr><td colspan="3"><strong>强制对流再流焊</strong></td></tr>
+    <tr><td>温度分布、再流曲线优化</td><td>2D FDM/集总</td><td>[30,31]</td></tr>
+    <tr><td>温度分布、板面温度梯度</td><td>3D FEM</td><td>[32]</td></tr>
+    <tr><td>气流、元件引起的涡流</td><td>2D FVM</td><td>[2]</td></tr>
+    <tr><td>温度分布、气流、换热系数分布图</td><td>3D FEM, FVM</td><td>[33]</td></tr>
+    <tr><td>温度分布、贴装板上方气流与涡流</td><td>3D FVM</td><td>[34]</td></tr>
+    <tr><td colspan="3"><strong>气相钎焊</strong></td></tr>
+    <tr><td>温度瞬态、FR4 基板</td><td>FDM/集总</td><td>[2]</td></tr>
+    <tr><td>温度分布、质量输运、冷凝液流动</td><td>3D FDM</td><td>[2]</td></tr>
+    <tr><td>温度分布、聚合物电容、逆热传导</td><td>3D FDM</td><td>[35]</td></tr>
+    <tr><td colspan="3"><strong>热机械</strong></td></tr>
+    <tr><td>板级翘曲、多层 PCB</td><td>2D 板理论</td><td>[36,37]</td></tr>
+    <tr><td>板级翘曲、薄板、重力影响</td><td>3D FEM</td><td>[39]</td></tr>
+    <tr><td>板级翘曲、带封装的大板阵列</td><td>3D FEM</td><td>[40]</td></tr>
+    <tr><td>模块级翘曲、SiP、焊球应力</td><td>3D FEM</td><td>[41]</td></tr>
+    <tr><td>板级翘曲、大封装</td><td>3D FEM</td><td>[5]</td></tr>
+    <tr><td>板级翘曲、DIMM 插座</td><td>3D FEM</td><td>[42]</td></tr>
+    <tr><td>板级翘曲、IGBT 模块、残余翘曲</td><td>3D FEM</td><td>[43,44]</td></tr>
+    <tr><td>元件级分层、QFP 封装、裂纹分析</td><td>2D FEM</td><td>[45,46]</td></tr>
+    <tr><td>元件级分层、叠层芯片封装、裂纹分析</td><td>2D FEM</td><td>[47]</td></tr>
+    <tr><td>元件级分层、陶瓷电容、裂纹分析</td><td>3D FEM</td><td>[48,49]</td></tr>
+    <tr><td>元件级翘曲、BGA 封装</td><td>3D FEM</td><td>[50,51]</td></tr>
+    <tr><td>元件级翘曲、气流仿真、BGA 封装</td><td>3D FVM</td><td>[52,53]</td></tr>
+    <tr><td>元件级翘曲、倒装芯片封装</td><td>3D FEM</td><td>[54]</td></tr>
+    <tr><td>元件级翘曲、QFP 封装</td><td>3D FEM</td><td>[55]</td></tr>
+    <tr><td colspan="3"><strong>其他模型类型</strong></td></tr>
+    <tr><td>再流相关炉模型——带强制对流的红外、食品科学</td><td>2D/3D FEM, FVM</td><td>[56–59]</td></tr>
+    <tr><td>钢网印刷与引脚-膏体模型——焊膏、钢网与印刷特性影响</td><td>2D/3D FVM</td><td>[60–63]</td></tr>
+    <tr><td>软计算方法——过程预测与优化</td><td>ANN, GA</td><td>[27,66–71,73–75]</td></tr>
+  </tbody>
+</table>
+
+<p>大量强制对流研究强调工艺参数优化，这要求快速计算，集总模型常为此目的采用。然而 PCBA 仅在低换热系数与均匀加热条件下才能近似为集总质量，此时设定温度并不能准确代表元件与焊盘的温度；更现实的做法是仅沿厚度方向集总，得到面受热的 2D 分布板模型。另一问题是：不额外计算整个气流场及其温度分布，难以确定对流换热系数。凡有测量可用处，建议用测量——因为显式换热系数公式仅限简单情形，迁移到不同装置时可能产生重大误差。</p>
+
+<p>据我们所知，当前仿真器中尚无专用模块建模气相钎焊的复杂过程，方程的引入与耦合必须手工完成。VPS 建模应用热传导、扩散与流体流动，并扩展露点计算等自定义模型；因冷凝液层流动限于层流，整个过程甚至可用 FDM 建模。</p>
+
+<p>对机械与热机械仿真，FEM 是传统路径，相关经验与知识储备最多。温度场与应力场通常可用同一网格计算；但由于应变与应力值依赖位移的梯度，位移场需要高于线性的形函数阶数。以缺陷预测与最小化为目标时，线弹性（即使在 2D 下）对板级与封装级的翘曲与应力预测都能满足定性乃至定量要求；3D 研究增多是算力可及与追求精细精度的结果。然而，计算残余应力必须包含塑性流动（它可在多次再流中累积），塑性流动与粘塑性模型在多个结构力学求解器中可用；线弹性模型的结果在有效应力保持在材料典型屈服强度以下时视为有效。</p>
+
+<p>断裂力学的裂纹分析要求裂纹区高度细化且结构化的网格与高阶单元。为控制计算需求，多数研究采用问题的 2D 抽象；结果表明该路径足以研究电子封装中的分层问题。断裂力学是连续介质力学最复杂、最困难的扩展之一，建议选择带专用例程或完整模块的 FEM 求解器。</p>
+
+<p>审视过去十年及更早的结果，可对改进未来工作提出几点意见。简化数值问题的主要抽象（如集总建模）并不总是被严格论证，尽管对模型所服务的应用可能足够——此类情况应说明模型局限。热机械应力计算中预设均匀温度分布对缓慢升温似乎有效；但对产生高热载荷的再流方法（如 VPS）需要完整的瞬态温度场计算。VPS 在再流炉中仍是相对较新的技术，应用研究较少，需要更多研究使其成熟度达到 FC 再流的水平。大多数热与热机械仿真以 FC 为再流方法，且只研究最普及的少数元件类型——这可以理解，因为 FC 是主要再流方法、过程控制直接适合量产；但采用不同传热类型的其他再流过程可能出现独特问题：独特的瞬态热与温度梯度贯穿组装结构，导致沉积焊料不同的熔化模式、不同的热膨胀与应力。此外，应更多关注集成度与复杂度更高的新型封装与模块（如 SiP）——更高的集成度意味着更多可能在再流中失效的材料界面。</p>
+
+<div class="insight">
+  <div class="label">Note</div>
+  <p><strong>讨论节的选型决策树：</strong>① 目的=曲线优化/节拍评估 → 集总/2D RC 网络（快）；② 目的=温度场与应力 → FEM（线弹性起步，算残余应力必须加塑性）；③ 炉内气流/湍流 → FVM/RANS；④ 裂纹/分层 → 2D 断裂力学 + 高阶单元；⑤ 传感器拿不到 $h$（VPS）→ 逆问题。每条准则都直接对应前文各节的代表性文献。</p>
+</div>
+
+<!-- ═══════════ 8. CONCLUSIONS ═══════════ -->
+<h2 id="s8">8. 结论</h2>
+<ol>
+  <li><strong>综述范围</strong>：本文总结了再流焊技术数值建模路径并突出热机械问题，建立在作者此前会议论文 [76] 的基础上，将综述扩展到更广的主题与文献。</li>
+  <li><strong>PDE 基座</strong>：耦合 PDE 系统为该主题提供了坚实基础；随计算可能性（算力与仿真工具）增长，模型复杂度与规模不断扩展；基础 PDE 系统被改造以提升与数值方法的兼容性；实验结果被引入，以扩展此前被忽略行为的计算。</li>
+  <li><strong>计算-速度权衡</strong>：基于 PDE 的数值建模是成熟求解方案，但总有引入新原理的空间。工业在线炉再流曲线优化的时间要求始终关键，相关研究常采用不同程度的集总建模提供快速计算；而借助快速演进的机器学习方法，PDE 模型可保持其复杂度——数值模型求解依复杂度需数秒到数天，训练好的 ANN 通常实时（毫秒量级）出结果。</li>
+  <li><strong>未来方向</strong>：两学科结合有望实现"高保真 + 快速评估"——按 PDE 仿真结果训练 ANN，可在关键工艺参数与输出间建立定量行为联系，用于快速优化；该组合方法还满足正规训练的大样本数据需求，而无需多次测量扰动工业过程。</li>
+</ol>
+
+<!-- ═══════════ KEY TAKEAWAYS ═══════════ -->
+<h2 id="sum">核心要点总结</h2>
+<ol>
+  <li><strong>建模工具箱全景</strong>：13 条基础方程（傅里叶导热、菲克扩散、Navier–Stokes、线弹性热力学、von Mises 判据、断裂力学）构成再流焊数值建模的数学基座，任何工艺建模都是这些方程的某种耦合与边界条件组合。</li>
+  <li><strong>三大离散方法分工</strong>：FDM 简单灵活、适合规则网格与多方程耦合；FEM 适合复杂几何（弱形式降阶是关键）；FVM 在湍流流体问题中最稳——按问题选方法，而非迷信单一平台。</li>
+  <li><strong>四大工艺建模差异</strong>：激光=高斯分布点源 + 体积吸收源项（式 (9)）；红外=辐射传递 DO 法 + RANS 湍流；强制对流=牛顿冷却（式 (10)(11)）+ 集总/RC 网络；气相=膜状冷凝 + 逆问题反演换热系数。</li>
+  <li><strong>红外辐射权重量化</strong>：考虑辐射使组装件温度比纯对流高 40–50°C；低风扇转速下辐射是主导热源——红外炉建模中辐射项不可省略，这正是本系列文献（P2–P8）的共同前提。</li>
+  <li><strong>集总模型的红线</strong>：Bi &lt; 0.1 才可用集总近似；PCBA 全板集总无法代表元件真实温度，沿厚度集总（2D 板模型）是更现实折中；换热系数尽量用测量（显式公式仅限简单情形）。</li>
+  <li><strong>热机械失效链</strong>：CTE 失配 + 湿气（CME）+ 蒸气压力 → 翘曲、界面分层、爆米花效应；能量释放率 vs 断裂韧性是开裂判据，MVCCT 是元件级标准工具；算残余应力必须加塑性/粘塑性模型。</li>
+  <li><strong>板级 vs 元件级</strong>：板级看翘曲（多层板理论、3D FEM、Shadow Moiré 验证），最大有效应力常落在焊球根部/界面处；元件级看界面（Anand 粘塑性焊球 + 断裂力学）。</li>
+  <li><strong>机器学习路线图</strong>：GA+BPNN 混合框架在再流曲线优化中优于传统方法（统计误差最低）；用 PDE 仿真生成数据集训练 ANN，可在毫秒级评估数万组设定——"PDE 保真 + 数据驱动速度"是明确的未来方向。</li>
+</ol>
+
+<!-- ═══════════ NOMENCLATURE ═══════════ -->
+<h2 id="nomen">符号表（Nomenclature）</h2>
+<p>以下为论文附录符号表的完整转录（见表 2、表 3），供阅读公式时速查。</p>
+
+<table>
+  <caption>表 2. 符号表（一）：导热方程与扩散方程相关量</caption>
+  <thead><tr><th>符号</th><th>含义</th></tr></thead>
+  <tbody>
+    <tr><td>ρ [kg/m³]</td><td>密度</td></tr>
+    <tr><td>c [J/(kg·K)]</td><td>比热容</td></tr>
+    <tr><td>t [s]</td><td>时间</td></tr>
+    <tr><td>T [K]</td><td>温度</td></tr>
+    <tr><td>λ [W/(m·K)]</td><td>导热系数张量</td></tr>
+    <tr><td>Q [W/m³]</td><td>体积热源项</td></tr>
+    <tr><td>I(x,y,t) [W/m²]</td><td>光学强度（激光热流）</td></tr>
+    <tr><td>α [m⁻¹]</td><td>吸收系数</td></tr>
+    <tr><td>h [W/(m²·K)]</td><td>换热系数</td></tr>
+    <tr><td>A [m²]</td><td>表面积</td></tr>
+    <tr><td>ε [-]</td><td>发射率</td></tr>
+    <tr><td>σ [W/(m²·K⁴)]</td><td>斯特藩–玻尔兹曼常数</td></tr>
+    <tr><td>F_HS [-]</td><td>视角因子（加热器→目标表面）</td></tr>
+    <tr><td>m [kg]</td><td>质量</td></tr>
+    <tr><td>C [kg/m³]</td><td>浓度</td></tr>
+    <tr><td>D [m²/s]</td><td>扩散系数张量</td></tr>
+    <tr><td>w [-]</td><td>湿气饱和度（wetness）</td></tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>表 3. 符号表（二）：Navier–Stokes 方程与热机械方程相关量</caption>
+  <thead><tr><th>符号</th><th>含义</th></tr></thead>
+  <tbody>
+    <tr><td>p [Pa]</td><td>压力</td></tr>
+    <tr><td>v [m/s]</td><td>流速</td></tr>
+    <tr><td>μ [kg/(m·s)]</td><td>动力黏度</td></tr>
+    <tr><td>f [N/kg]</td><td>单位质量力</td></tr>
+    <tr><td>σ [Pa]</td><td>柯西应力张量</td></tr>
+    <tr><td>F [N/m³]</td><td>体积力矢量</td></tr>
+    <tr><td>ε [-]</td><td>总应变张量</td></tr>
+    <tr><td>S [Pa⁻¹]</td><td>柔度张量</td></tr>
+    <tr><td>α [K⁻¹]</td><td>热膨胀系数张量</td></tr>
+    <tr><td>β [m³/kg]</td><td>湿气膨胀系数张量</td></tr>
+    <tr><td>u [m]</td><td>位移矢量</td></tr>
+    <tr><td>σ_VM [Pa]</td><td>von Mises 等效应力</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════ REFERENCES ═══════════ -->
+<h2 id="refs">参考文献</h2>
+<ol>
+  <li>Lee, N.-C. <em>Reflow Soldering Processes and Troubleshooting: SMT, BGA, CSP and Flip Chip Technologies</em>, 1st ed.; Newnes: Boston, MA, USA, 2002.</li>
+  <li>Illés, B.; Krammer, O.; Géczy, A. <em>Reflow Soldering: Apparatus and Heat Transfer Processes</em>, 1st ed.; Elsevier: Amsterdam, The Netherlands, 2020.</li>
+  <li>Tian, Y.H.; Wang, C.Q. 12—Laser soldering. In <em>Microjoining and Nanojoining</em>; Zhou, Y., Ed.; Woodhead Publishing: Cambridge, UK, 2008.</li>
+  <li>Ahmad, M.I.; Aziz, M.S.A.; Abdullah, M.Z.; Salleh, M.A.A.M.; Ishak, M.H.H.; Rahiman, W.; Nabiałek, M. Investigations of Infrared Desktop Reflow oven with FPCB Substrate during Reflow Soldering Process. <em>Metals</em> 2021, 11, 1155. [CrossRef]</li>
+  <li>Guo, Y.; Liu, M.; Yin, M.; Yan, Y. Reliability Sensibility Analysis of the PCB Assembly concerning Warpage during the Reflow Soldering Process. <em>Mathematics</em> 2022, 10, 3055. [CrossRef]</li>
+  <li>Alaya, M.A.; Illés, B.; Bušek, D.; Géczy, A. Validation of Heat-Level Vapor Phase Soldering Process and Workspace Leakage Detection with Applied Pressure Sensors. <em>Appl. Sci.</em> 2021, 11, 1755. [CrossRef]</li>
+  <li>Morton, K.W.; Mayers, D.F. <em>Numerical Solution of Partial Differential Equations</em>, 2nd ed.; Cambridge University Press: Cambridge, UK, 2005.</li>
+  <li>Özişik, M.N. <em>Heat Conduction</em>; John Wiley &amp; Sons: Hoboken, NJ, USA, 1993.</li>
+  <li>Çengel, Y.A.; Ghajar, A.J. <em>Heat and Mass Transfer: Fundamentals &amp; Applications</em>; McGraw-Hill: New York, NY, USA, 2015.</li>
+  <li>Lapidus, L.; Pinder, G.F. <em>Numerical Solution of Partial Differential Equations in Science and Engineering</em>; John Wiley &amp; Sons: Hoboken, NJ, USA, 1999.</li>
+  <li>Reddy, J.N. <em>An Introduction to Continuum Mechanics</em>, 2nd ed.; Cambridge University Press: Cambridge, UK, 2013.</li>
+  <li>Wang, J.; Liu, R.; Liu, D.; Park, S. Advancement in simulating moisture diffusion in electronic packages under dynamic thermal loading conditions. <em>Microelectron. Reliab.</em> 2017, 73, 42–53. [CrossRef]</li>
+  <li>Heng, E.; Abdullah, M.Z. Influence of moisture concentration and hydrophobic material on induced stress in FCBGA package under reflow. <em>Solder. Surf. Mt. Technol.</em> 2022, 34, 103–115. [CrossRef]</li>
+  <li>Jang, C.; Han, B.; Yoon, S. Comprehensive Moisture Diffusion Characteristics of Epoxy Molding Compounds over Solder Reflow Process Temperature. <em>IEEE Trans. Compon. Packag. Technol.</em> 2010, 33, 809–818. [CrossRef]</li>
+  <li>Hsu, T.-R. <em>The Finite Element Method in Thermomechanics</em>, 1st ed.; Allen &amp; Unwin, Inc.: London, UK, 1986.</li>
+  <li>Noda, N.; Hetnarski, R.B.; Tanigawa, Y. <em>Thermal Stresses</em>, 2nd ed.; Taylor &amp; Francis: Abingdon, UK, 2003.</li>
+  <li>Lau, J.H. <em>Thermal Stress and Strain in Microelectronics Packaging</em>, 1st ed.; Van Nostrand Reinhold: New York, NY, USA, 1993.</li>
+  <li>Zhang, G.Q.; Van Driel, W.D.; Fan, X.J. <em>Mechanics of Microelectronics, Solid Mechanics and Its Applications Volume 141</em>, 1st ed.; Springer: Cham, Switzerland, 2006.</li>
+  <li>Chen, W.F.; Han, D.J. <em>Plasticity for Structural Engineers</em>, 1st ed.; Springer: Cham, Switzerland, 1988.</li>
+  <li>Christensen, R.M. <em>The Theory of Materials Failure</em>, 1st ed.; Oxford University Press: Oxford, UK, 2013.</li>
+  <li>Tay, A.A.O. Analysis of Reliability of IC Packages Using the Fracture Mechanics Approach. In <em>Micro- and Opto-Electronic Materials and Structures: Physics, Mechanics, Design, Reliability, Packaging</em>; Suhir, E., Lee, Y.C., Wong, C.P., Eds.; Springer: Boston, MA, USA, 2007.</li>
+  <li>Banks-Sills, L. <em>Interface Fracture and Delaminations in Composite Materials</em>, 1st ed.; Springer: Cham, Switzerland, 2018.</li>
+  <li>Pepper, D.W.; Heinrich, H.C. <em>The Finite Element Method</em>, 3rd ed.; CRC Press: Boca Raton, FL, USA, 2017.</li>
+  <li>Lewis, R.W.; Nithiarasu, P.; Seetharamu, K.N. <em>Fundamentals of the Finite Element Method for Heat and Fluid Flow</em>, 1st ed.; John Wiley &amp; Sons Ltd.: Hoboken, NJ, USA, 2004.</li>
+  <li>Kordás, K.; Pap, A.E.; Tóth, G.; Pudas, M.; Jääskeläinen, J.; Uusimäki, A.; Vähäkangas, J. Laser soldering of flip-chips. <em>Opt. Lasers Eng.</em> 2006, 44, 112–121. [CrossRef]</li>
+  <li>Kunwar, A.; Shang, S.; Råback, P.; Wang, Y.; Givernaud, J.; Chen, J.; Ma, H.; Song, X.; Zhao, N. Heat and mass transfer effects of laser soldering on growth behavior of interfacial intermetallic compounds in Sn/Cu and Sn-3.5Ag0.5/Cu joints. <em>Microelectron. Reliab.</em> 2018, 80, 55–67. [CrossRef]</li>
+  <li>Kunwar, A.; An, L.; Liu, J.; Shang, S.; Råback, P.; Ma, H.; Song, X. A data-driven framework to predict the morphology of interfacial Cu6Sn5 IMC in SAC/Cu system during laser soldering. <em>J. Mater. Sci. Technol.</em> 2020, 50, 115–127. [CrossRef]</li>
+  <li>Yang, Z.; Li, L.; Chen, W.; Jiang, X.; Liu, Y. Numerical and experimental study on laser soldering process of SnAgCu lead-free solder. <em>Mater. Chem. Phys.</em> 2021, 273, 125046. [CrossRef]</li>
+  <li>Najib, A.M.; Abdullah, M.Z.; Khor, C.Y.; Saad, A.A. Experimental and numerical investigation of 3D gas flow temperature field in infrared heating reflow oven with circulating fan. <em>Int. J. Heat Mass Transf.</em> 2015, 87, 49–58. [CrossRef]</li>
+  <li>Whalley, D.C. A simplified reflow soldering process model. <em>J. Mater. Process. Technol.</em> 2004, 150, 134–144. [CrossRef]</li>
+  <li>Li, B.-Y.; Lin, S.-Y.; Chen, L.-S.; Zhao, M.-Y. Temperature Curve of Reflow Furnace Based on Newton's Law of Cooling. <em>Symmetry</em> 2023, 15, 661. [CrossRef]</li>
+  <li>Inoue, M.; Koyanagawa, T. Thermal Simulation for Predicting Substrate Temperature during Reflow Soldering Process. In <em>Proceedings of the Electronic Components and Technology Conference</em>, Lake Buena Vista, FL, USA, 31 May–3 June 2005; Volume 1, pp. 1021–1026. [CrossRef]</li>
+  <li>Lau, C.-S.; Abdullah, M.Z. Three-dimensional thermal investigations at board level in a reflow oven using thermal-coupling method. <em>Solder. Surf. Mt. Technol.</em> 2012, 24, 167–182. [CrossRef]</li>
+  <li>Deng, S.-S.; Hwang, S.-J.; Lee, H.-H. Temperature prediction for system in package assembly during the reflow soldering process. <em>Int. J. Heat Mass Transf.</em> 2016, 98, 1–9. [CrossRef]</li>
+  <li>Bozsóki, I.; Illés, B.; Géczy, A. Compact numerical modelling of transient condensate layer formation on small components during vapour phase soldering. <em>Int. Commun. Heat Mass Transf.</em> 2022, 135, 106071. [CrossRef]</li>
+  <li>Nakagawa, Y.; Yokoyama, R. Optimum design of printed circuit board to reduce deformation in reflow process by a global optimization method. <em>Mater. Des.</em> 2012, 33, 164–174. [CrossRef]</li>
+  <li>Tan, W.; Ume, I.C. Application of Lamination Theory to Study Warpage Across PWB and PWBA During Convective Reflow Process. <em>IEEE Trans. Compon. Packag. Manuf. Technol.</em> 2012, 2, 217–223. [CrossRef]</li>
+  <li>Daniel, I.M.; Ishai, O. <em>Engineering Mechanics of Composite Materials</em>, 2nd ed.; Oxford University Press: Oxford, UK, 2006.</li>
+  <li>Chung, S.; Oh, S.; Lee, T.; Park, M. Thermo-mechanical Analyses of Printed Board Assembly during Reflow Process for Warpage Prediction. In <em>Proceedings of the 15th International Conference on Thermal, Mechanical and Multi-Physics Simulation and Experiments in Microelectronics and Microsystems (EuroSimE)</em>, Ghent, Belgium, 7–9 April 2014; pp. 1–5. [CrossRef]</li>
+  <li>Lau, C.-S.; Tan, Y.C.; Lee, C.K. A Numerical Technique to Evaluate Warpage Behavior of Double Sided Rigid-Flex Board Assemblies during Reflow Soldering Process. In <em>Proceedings of the IEEE 70th Electronic Components and Technology Conference (ECTC)</em>, Orlando, FL, USA, 3–30 June 2020; pp. 554–560. [CrossRef]</li>
+  <li>Chen, C.; Hou, F.; Liu, F.; She, Q.; Cao, L.; Wan, L. Thermo-mechanical reliability analysis of a RF SiP module based on LTCC substrate. <em>Microelectron. Reliab.</em> 2017, 79, 38–47. [CrossRef]</li>
+  <li>Tsai, M.-Y.; Wang, Y.-W.; Lu, Y.-J.; Lu, T.-M.; Chung, S.-T. Measurements and Modelling of Thermally Induced Warpages of DIMM Socket Server PCB Assembly after Solder Reflow Processes. <em>Materials</em> 2023, 16, 3233. [CrossRef]</li>
+  <li>Zhou, Y.; Xu, L.; Liu, S. Optimization for warpage and residual stress due to reflow process in IGBT modules based on pre-warped substrate. <em>Microelectron. Eng.</em> 2015, 136, 63–70. [CrossRef]</li>
+  <li>Gao, S.; Wang, R.; Wang, H.; Kang, R. Warping model of high-power IGBT modules subjected to reflow soldering process. <em>Int. J. Mech. Sci.</em> 2023, 251, 108350. [CrossRef]</li>
+  <li>Guojun, H.; Rossi, R.; Jing-En, L.; Baraton, X. Interface delamination analysis of TQFP package during solder reflow. <em>Microelectron. Reliab.</em> 2010, 50, 1014–1020. [CrossRef]</li>
+  <li>Ho, S.L.; Tay, A.A.O. Moisture Diffusion Modeling and its Impact on Fracture Mechanics Parameters with regard to a PQFP. In <em>Proceedings of the 12th International Conference on Thermal, Mechanical &amp; Multi-Physics Simulation and Experiments in Microelectronics and Microsystems</em>, Linz, Austria, 18–20 April 2011; pp. 1/8–8/8. [CrossRef]</li>
+  <li>Wang, J.; Niu, Y.; Shao, S.; Wang, H.; Xu, J.; Pham, V.; Park, S. A comprehensive solution for modeling moisture induced delamination in electronic packaging during solder reflow. <em>Microelectron. Reliab.</em> 2020, 112, 113791. [CrossRef]</li>
+  <li>Ng, F.C.; Abas, A.; Ramli, M.R.; Sharif, M.F.M.; Ani, F.C. Numerical modelling of the delamination in multi-layered ceramic capacitor during the thermal reflow process. <em>Solder. Surf. Mt. Technol.</em> 2023, 35, 166–174. [CrossRef]</li>
+  <li>Apalowo, R.K.; Abas, A.; Bachok, Z.; Sharif, M.F.M.; Ani, F.C.; Ramli, M.R.; bin Muhamed Mukhtar, M.A.F. Investigation of hygrothermally induced failures in multilayer ceramic capacitors during thermal reflow process. <em>Microelectron. Reliab.</em> 2023, 146, 115028. [CrossRef]</li>
+  <li>Tsai, M.Y.; Ting, C.W.; Huang, C.Y.; Lai, Y.-S. Determination of residual strains of the EMC in PBGA during manufacturing and IR solder reflow processes. <em>Microelectron. Reliab.</em> 2011, 51, 642–648. [CrossRef]</li>
+  <li>Xia, W.; Xiao, M.; Chen, Y.; Wu, F.; Liu, Z.; Fu, H. Thermal warpage analysis of PBGA mounted on PCB during reflow process by FEM and experimental measurement. <em>Solder. Surf. Mt. Technol.</em> 2014, 26, 162–171. [CrossRef]</li>
+  <li>Lau, C.-S.; Abdullah, M.Z. Computational fluid dynamic and thermal analysis for BGA assembly during forced convection reflow soldering process. <em>Solder. Surf. Mt. Technol.</em> 2012, 24, 77–91. [CrossRef]</li>
+  <li>Lau, C.-S.; Abdullah, M.Z.; Ani, F.C. Optimization modeling of the cooling stage of reflow soldering process for ball grid array package using the gray-based Taguchi method. <em>Microelectron. Reliab.</em> 2012, 52, 1143–1152. [CrossRef]</li>
+  <li>Addagarla, A.; Prasad, N.S. Finite element analysis of flip–chip on board (FCOB) assembly during reflow soldering process. <em>Solder. Surf. Mt. Technol.</em> 2012, 24, 92–99. [CrossRef]</li>
+  <li>Rovitto, M.; Morelli, A.; Passagrilli, C.; Villa, C.M. Dynamic Warpage Analysis of QFP Packages during Soldering Reflow Process and Thermal Cycle. In <em>Proceedings of the IEEE 68th Electronic Components and Technology Conference (ECTC)</em>, San Diego, CA, USA, 29 May–1 June 2018; pp. 1893–1898. [CrossRef]</li>
+  <li>Ploteau, J.P.; Nicolas, V.; Glouannec, P. Numerical and experimental characterization of a batch bread baking oven. <em>Appl. Therm. Eng.</em> 2012, 48, 289–295. [CrossRef]</li>
+  <li>Onwude, D.I.; Hashim, N.; Abdan, K.; Janius, R.; Chen, G.; Kumar, C. Modelling of coupled heat and mass transfer for combined infrared and hot-air drying of sweet potato. <em>J. Food Eng.</em> 2018, 228, 12–24. [CrossRef]</li>
+  <li>Kokolj, U.; Škerget, L.; Ravnik, J. A numerical model of the shortbread baking process in a forced convection oven. <em>Appl. Therm. Eng.</em> 2016, 111, 1304–1311. [CrossRef]</li>
+  <li>Blikra, M.J.; Skipnes, D.; Feyissa, A.H. Model for heat and mass transport during cooking of cod loin in a convection oven. <em>Food Control</em> 2019, 102, 29–37. [CrossRef]</li>
+  <li>Amalu, E.H.; Lau, W.K.; Ekere, N.N.; Bhatti, R.S.; Mallik, S.; Otiaba, K.C.; Takyi, G. A study of SnAgCu solder paste transfer efficiency and effects of optimal reflow profile on solder deposits. <em>Microelectron. Eng.</em> 2011, 88, 1610–1617. [CrossRef]</li>
+  <li>Krammer, O. Finite volume modelling of stencil printing process. In <em>Proceedings of the 2014 IEEE 20th International Symposium for Design and Technology in Electronic Packaging (SIITME)</em>, Bucharest, Romania, 23–26 October 2014; pp. 79–82. [CrossRef]</li>
+  <li>Krammer, O.; Dušek, K. Numerical investigation on the effect of the printing force and squeegee geometry on stencil printing. <em>J. Manuf. Process.</em> 2019, 45, 188–193. [CrossRef]</li>
+  <li>Al-Ma'aiteh, T.I.; Krammer, O.; Illés, B. Transient Numerical Modelling of the Pin-in-Paste Technology. <em>Appl. Sci.</em> 2021, 11, 4670. [CrossRef]</li>
+  <li>Kecman, V. <em>Learning and Soft Computing: Support Vector Machines, Neural Networks, and Fuzzy Logic Models</em>, 1st ed.; MIT Press: Cambridge, MA, USA, 2001.</li>
+  <li>Ruan, D. (Ed.) <em>Intelligent Hybrid Systems: Fuzzy Logic, Neural Networks, and Genetic Algorithms</em>; Kluwer Academic Publishers: Boston, MA, USA, 1997.</li>
+  <li>Cang, T.; Pan, E.S.; Zhang, M.X. Optimization Study of Reflow Soldering Profile for Surface Mount Technology. In <em>Proceedings of the 2011 International Conference on Computer Science and Network Technology</em>, Harbin, China, 24–26 December 2011; pp. 1772–1775. [CrossRef]</li>
+  <li>Tsai, T.-N. Thermal parameters optimization of a reflow soldering profile in printed circuit board assembly: A comparative study. <em>Appl. Soft Comput.</em> 2012, 12, 2601–2613. [CrossRef]</li>
+  <li>Jing, S.; Li, M.; Li, X.; Yin, P. Optimization of reflow soldering temperature curve based on genetic algorithm. <em>Energy Rep.</em> 2021, 7, 772–782. [CrossRef]</li>
+  <li>Martinek, P.; Krammer, O. Analysing machine learning techniques for predicting the hole-filling in pin-in-paste technology. <em>Comput. Ind. Eng.</em> 2019, 136, 187–194. [CrossRef]</li>
+  <li>Krammer, O.; Martinek, P.; Illes, B.; Jakab, L. Machine learning-based prediction of component self-alignment in vapour phase and infrared soldering. <em>Solder. Surf. Mt. Technol.</em> 2019, 31, 163–168. [CrossRef]</li>
+  <li>Parviziomran, I.; Cao, S.; Yang, H.; Park, S.; Won, D. Data-Driven Prediction Model of Components Shift during Reflow Process in Surface Mount Technology. <em>Procedia Manuf.</em> 2019, 38, 100–107. [CrossRef]</li>
+  <li>Najib, A.M.; Abdullah, M.Z.; Saad, A.A.; Samsudin, Z.; Ani, F.C. Numerical simulation of self-alignment of chip resistor components for different silver content during reflow soldering. <em>Microelectron. Reliab.</em> 2017, 79, 69–78. [CrossRef]</li>
+  <li>Yin, Y.; Zhou, H.; Chen, C. Model updating of a temperature field simulation of a printed circuit board assembly based on the Kriging model. <em>Solder. Surf. Mt. Technol.</em> 2021, 34, 45–57. [CrossRef]</li>
+  <li>Lai, Y.; Pan, K. An intelligent system for reflow oven temperature settings based on hybrid physics-machine learning model. <em>Solder. Surf. Mt. Technol.</em> 2022, 34, 266–276. [CrossRef]</li>
+  <li>Lai, Y.; Park, S. Reflow profiling with the aid of machine learning models. <em>Solder. Surf. Mt. Technol.</em> 2023, ahead-of-print. [CrossRef]</li>
+  <li>Bozsóki, I.; Géczy, A.; Illés, B. Numerical modelling approaches to current reflow soldering applications: A brief overview. In <em>Proceedings of the 2023 46th International Spring Seminar on Electronics Technology (ISSE)</em>, Timisoara, Romania, 10–14 May 2023; pp. 1–6. [CrossRef]</li>
+</ol>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<p style="margin-top:40px;color:var(--text-secondary);font-size:.83rem;border-top:1px solid var(--border);padding-top:16px;">
+文献来源：István Bozsóki, Attila Géczy, Balázs Illés. "Overview of Different Approaches in Numerical Modelling of Reflow Soldering Applications." <em>Energies</em> 2023, 16, 5856. DOI: 10.3390/en16165856. 图片由 MinerU 从原 PDF 提取。
+</p>
+
+</main>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('active')">
+  <span class="lightbox-close">&times;</span>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<a class="back-to-top" href="#" title="回到顶部">&uarr;</a>
+
+<script>
+document.addEventListener('keydown', e => { if(e.key==='Escape') document.getElementById('lightbox').classList.remove('active'); });
+</script>
+
+</body>
+</html>

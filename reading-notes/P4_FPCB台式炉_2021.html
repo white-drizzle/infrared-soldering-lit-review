@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>红外桌面回流焊炉 FPCB 回流焊接研究 - 文献笔记</title>
+<title>红外台式再流焊炉中 FPCB 基板的再流焊工艺研究</title>
 <script>
 MathJax = {
-  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$'], ['\\[','\\]']], tags: 'ams' }
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$'], ['\\[','\\]']], tags: 'none' }
 };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -108,433 +108,401 @@ MathJax = {
   <a href="#abs">摘要</a>
   <a href="#s1">1. 引言</a>
   <a href="#s2">2. 数值方法</a>
-  <a href="#s2" class="toc-h3">2.1 控制方程</a>
+  <a href="#s2a" class="toc-h3">2.1 控制方程</a>
   <a href="#s2b" class="toc-h3">2.2 流体域建模</a>
-  <a href="#s2c" class="toc-h3">2.3 网格无关性</a>
+  <a href="#s2c" class="toc-h3">2.3 网格无关性测试</a>
   <a href="#s2d" class="toc-h3">2.4 模型验证</a>
-  <a href="#s3">3. 实验设置</a>
-  <a href="#s3a" class="toc-h3">3.1 桌面回流焊炉</a>
-  <a href="#s3b" class="toc-h3">3.2 炉腔温度</a>
-  <a href="#s3c" class="toc-h3">3.3 FPCB 测温</a>
-  <a href="#s3d" class="toc-h3">3.4 拉伸试验</a>
+  <a href="#s3">3. 实验装置</a>
+  <a href="#s3a" class="toc-h3">3.1 台式再流焊炉</a>
+  <a href="#s3b" class="toc-h3">3.2 炉腔温度测量</a>
+  <a href="#s3c" class="toc-h3">3.3 FPCB 测试板温度测量</a>
+  <a href="#s3d" class="toc-h3">3.4 FPCB 拉伸试验</a>
   <a href="#s4">4. 结果与讨论</a>
-  <a href="#s4a" class="toc-h3">炉腔温度分布</a>
-  <a href="#s4b" class="toc-h3">风速与位置</a>
-  <a href="#s4c" class="toc-h3">材料属性</a>
-  <a href="#s4d" class="toc-h3">FPCB 厚度</a>
-  <a href="#s4e" class="toc-h3">区域选择</a>
+  <a href="#s4a" class="toc-h3">4.1 炉腔温度分布</a>
+  <a href="#s4a1" class="toc-h3">4.1.1 实测温度分布</a>
+  <a href="#s4a2" class="toc-h3">4.1.2 温度云图对比</a>
+  <a href="#s4b" class="toc-h3">4.2 风扇转速与 PCB 位置的影响</a>
+  <a href="#s4c" class="toc-h3">4.3 材料性能</a>
+  <a href="#s4d" class="toc-h3">4.4 FPCB 厚度的影响</a>
+  <a href="#s4e" class="toc-h3">4.5 再流焊炉区位选择</a>
   <a href="#s5">5. 结论</a>
-  <a href="#sum">核心要点</a>
-  <a href="#app">附录数据</a>
+  <a href="#sum">核心要点总结</a>
+  <a href="#app">附录 A：实验数据</a>
+  <a href="#refs">参考文献</a>
 </nav>
 
 <main class="content">
 
 <header class="page-header">
-  <h1>红外桌面回流焊炉中 FPCB 基板回流焊接过程研究</h1>
+  <h1>红外台式再流焊炉中 FPCB 基板的再流焊工艺研究</h1>
   <p class="sub">Investigations of Infrared Desktop Reflow Oven with FPCB Substrate during Reflow Soldering Process</p>
-  <p class="cite">Ahmad, Abdul Aziz, Abdullah, et al. - <em>Metals</em> 2021, 11(8): 1155, Universiti Sains Malaysia</p>
-  <p class="journal-info"><span class="badge badge-scie">SCIE Q2</span> IF=<span class="if-val">2.5</span> <span class="badge badge-ei">EI</span></p>
-  <p class="meta"><a href="https://doi.org/10.3390/met11081155" target="_blank">DOI: 10.3390/met11081155</a> | 收稿: 2021-05-23 | 接收: 2021-07-17 | 出版: 2021-07-21</p>
-  <p class="keywords"><strong>关键词：</strong>表面贴装技术（Surface Mount Technology）; FPCB; 回流焊接（Reflow Soldering）; 计算流体力学（Computational Fluid Dynamics）</p>
+  <p class="cite">Muhammad Iqbal Ahmad 等（通讯作者：Mohd Sharizal Abdul Aziz） - Metals 2021, 11(8), 1155 - Universiti Sains Malaysia / Universiti Malaysia Kelantan / Universiti Malaysia Perlis / Czestochowa University of Technology</p>
+  <p class="journal-info"><span class="badge badge-scie">SCIE</span> JCR Q2 IF=<span class="if-val">3.1</span> <span class="badge badge-ei">EI</span> 中科院 3 区 | CiteScore 5.7</p>
+  <p class="meta"><a href="https://doi.org/10.3390/met11081155" target="_blank">DOI: 10.3390/met11081155</a> | 收稿: 2021-05-23 | 接收: 2021-07-17 | 出版: 2021-07-21 | MDPI 开放获取（CC BY 4.0）</p>
+  <p class="keywords"><strong>关键词：</strong>表面贴装技术（surface mount technology）; 柔性印刷电路板（flexible printed circuit board, FPCB）; 再流焊（reflow soldering）; 计算流体力学（computational fluid dynamics, CFD）</p>
 </header>
 
 <!-- ═══════════ ABSTRACT ═══════════ -->
 <h2 id="abs">研究摘要</h2>
-
-<p>本文针对<span class="key-term">柔性印制电路板（FPCB）</span>在<span class="key-term">红外（IR）桌面回流焊炉</span>中的回流焊接过程，构建了与真实炉体一致的计算机仿真模型，并用实验数据验证。核心方法与发现：</p>
+<p>本文针对<span class="key-term">柔性印刷电路板（flexible printed circuit board, FPCB）</span>在再流焊工艺中的适用工况，研究红外台式再流焊炉的加热特性。作者建立了模仿真实台式炉的计算机模型，并采用实际边界条件；由于再流过程中<span class="key-term">辐射效应（radiation effect）</span>占主导，仿真选用<span class="key-term">离散坐标模型（discrete ordinate, DO model）</span>。实验作为基准数据，再流曲线按 JSTD-020E 标准设定。仿真与实验结果高度一致，主要发现：</p>
 <ul>
-  <li>因辐射效应在回流过程中占主导，选用<span class="key-term">离散坐标模型（DO）</span>模拟辐射传热；气流用 <span class="key-term">RNG k-ε 湍流模型</span>刻画；实验回流曲线遵循 <strong>JSTD-020E</strong> 标准</li>
-  <li>仿真与实验高度吻合（偏差 &lt;2%），发现<strong>温度分布沿各阶段呈非均匀性</strong>，FPCB 表面温度高于炉内空气温度</li>
-  <li>炉腔温度分布受三因素共同影响：<strong>风扇转速、FPCB 位置、FPCB 厚度</strong>--旋转风扇产生非定常流动在不同位置诱发温度不均</li>
-  <li>低雷诺数（Re）下辐射主导，FPCB 表面温度偏高 &gt;540 K；Re = 1.33×10⁵ 时前端中间区为最优放置位置（523~533 K 落入 SAC 焊料窗口）</li>
-  <li>FPCB 推荐厚度区间 <strong>40~100 µm</strong>，薄板吸热散热优于厚板</li>
+  <li><strong>温度分布不均匀</strong>：炉腔温度在再流过程的各个阶段（预热、浸泡、再流）均呈现不均匀分布；FPCB 表面温度高于炉内空气温度。</li>
+  <li><strong>三个关键影响因素</strong>：深入仿真研究表明，台式再流焊炉的温度分布取决于风扇转速、FPCB 放置位置与 FPCB 厚度三个因素。</li>
+  <li><strong>机理</strong>：旋转风扇产生非定常流动，诱发炉腔内不同位置温度不均；辐射传热在低速工况下主导加热过程。</li>
 </ul>
 
 <div class="insight">
   <div class="label">Note</div>
-  <p><strong>论文定位与研究价值：</strong>本文首次将"桌面级红外回流焊炉 + FPCB 软板"这一组合系统地用 CFD 仿真刻画。传统研究多聚焦于<span class="key-term">刚性印制电路板（RPCB）</span>与 FR-4 基材，而 FPCB 因薄、柔、热容小的特性在红外辐射下热响应截然不同。作者用 DO 辐射模型 + RNG k-ε 湍流模型耦合求解，并通过 60 根热电偶阵列实验验证，建立了"风扇-辐射-位置-厚度"四维度的温度分布图谱，为工艺工程师选择 FPCB 安放位置与厚度区间提供量化依据。</p>
+  <p><strong>为什么这篇文献值得读：</strong>它是本系列文献中少见的以 FPCB（而非刚性 FR-4 板）为对象的台式红外再流焊炉热-流耦合研究：P2（红外热源对比）解决"选什么热源"，P3（热流方向）关注板内热流方向，而本篇完整回答了"炉腔内的空气-辐射热场如何在空间上分布不均、以及如何通过风扇转速/放置位置/基板厚度来调节"。对红外焊接设备设计而言，"辐射为主 + 风扇强制对流为辅"的台式炉正是低成本维修与中小批量生产的主力机型，其温度均匀性问题直接决定 FPCB 翘曲、焊点不润湿（nonwetting）与未焊透（unbaked）缺陷率。</p>
 </div>
 
 <!-- ═══════════ 1. INTRODUCTION ═══════════ -->
 <h2 id="s1">1. 引言</h2>
+<p>过去十年间，工业界与研究者将目光集中于电子设备的小型化。智能手机、电子小件与控制系统等产品期望满足严苛的消费需求，硬件作为实现复杂功能的有效接口与耐用部件扮演关键角色 [1]。然而，由于制造工艺的影响，提升其可靠性始终是不断演进的挑战 [2]。在再流焊工艺中，除元件印刷与贴装外，<span class="key-term">热源（heat source）</span>被视为工艺中的关键环节之一 [3]。理解热再流曲线（thermal reflow profile）对控制焊接工艺及其参数至关重要：它直接影响钎料的性能——可能改变焊点微观结构、增加金属间化合物（intermetallic compound, IMC）层厚度 [4]，并提升焊点可承受的剪切力 [5]。</p>
 
-<p>近十年来电子设备小型化成为研究热点。在回流焊工艺里，除锡膏印刷与贴片外，<span class="key-term">热源</span>是关键环节之一。理解热回流曲线（thermal reflow profile）对控制焊点微观结构、增加<span class="key-term">金属间化合物（IMC）</span>厚度、提升剪切强度至关重要。</p>
+<p><span class="key-term">气相焊接（vapour phase soldering, VPS）</span>是成熟的再流焊方法之一，利用冷凝相换热效应：将装配好的板浸入蒸气空间发生冷凝 [6]。Illés 等 [7] 最初建立该方法的模型并研究了其对焊点装配的影响，发现板浸入会改变蒸气空间并控制 VPS 热曲线形状；Illés 等 [8] 进一步研究低蒸气压/浓度方法，发现低浓度可减少焊点中的气孔数量；Géczy 等 [9] 用显式模型基于努塞尔理论解决膜状冷凝换热问题；Illés 等 [10] 又引入动态冷凝层以改进静态冷凝层模型的精度不足。</p>
 
-<p>文献中回流焊方法分两类主流：<span class="key-term">气相焊（VPS）</span>利用蒸汽冷凝相变传热，Illés 等人开发系列模型研究板件浸入蒸汽空间对热曲线形状的影响，并指出低蒸汽浓度可减少焊点气孔；<span class="key-term">辐射回流焊</span>通过中/长波红外发射板或石英加热器从顶/底部辐射加热 PCB 组装件。</p>
+<p>另一类广泛使用却较少被科学研究的工艺是<span class="key-term">辐射再流焊炉（radiation reflow oven）</span>。它利用热波传递原理加热 PCB 组件，炉腔顶部或底部安装由红外发射板或石英加热器产生的中波/长波辐射 [11]。焊接过程传热的既有文献可按辐射与强制对流分类：Park 等 [12] 用离散坐标（DO）模型在炉腔内模拟热辐射；Verboven 等 [13] 建议用面到面（surface to surface, S2S）模型研究试验工厂烤箱传热；Chhanwal 等 [14] 将前两者与离散传递辐射模型（DTRM）对比。基于发现的多样性，本研究全程选用 DO 模型与实验数据对比。Lau 等 [15] 认为 DO 模型适合红外这类局部热源工况——DO 在四面体角度离散化上计算成本适中、内存占用适度。Son 和 Shin [16] 最早提出通过多孔板加热器向焊接过程引入空气（即强制对流）以抑制红外炉温度波动，但该研究限于二维焊接模型；Verboven 等 [17] 将该工作扩展到自然对流与强制对流组合的三维模型，该组合能维持换热均匀性并减少炉内水分积聚。Khatir 等 [18] 强调：低风速时辐射是主要传热方式，而高风速时传热转为强制对流主导。</p>
 
-<p>辐射传热建模方面，文献采用过 <span class="key-term">DO 模型</span>、<span class="key-term">S2S 模型</span>与 <span class="key-term">DTRM 模型</span>。本研究选用 DO 模型，因其适用于局部热源（如红外灯）场景，且在四面体角离散下计算开销适中。Khatir 等人指出：低风速下辐射主导，高风速下则转为强制对流。</p>
+<p>FPCB 是颇具前景的技术：它是柔性薄膜，柔软、可弯曲且轻量化，被视作刚性印刷电路板（rigid printed circuit board, RPCB）在电子应用中的替代方案。FPCB 具有节省空间的设计潜力、增强系统内部布局并降低重量与安装成本 [19,20]。FPCB 采用不同材料以获得独特的导热、化学与力学性能，最常用的是塑料（medium-based mechanism 提供柔性与力学完整性）[21]，另一类材料是聚合物薄膜族：<span class="key-term">聚萘二甲酸乙二醇酯（PEN）</span>、<span class="key-term">聚酯（PET）</span>与<span class="key-term">聚酰亚胺（PI）</span>是 FPCB 最常用的聚合物薄膜，其高杨氏模量（$E$）与玻璃化转变温度（$T_g$）不同导致 FPCB 设计性能各异。例如 Gang 等 [22] 测得 PEN、PET、PI 的 $T_g$ 分别为 78、123、300 °C。目前已有多种电子设备采用 RPCB 与 FPCB 耦合：Yoon 等 [23] 用热压键合法连接两种基板并确定最优键合条件（力、时间、温度）；Yoon 等 [24] 用高温存储试验分析键合方法对连接可靠性的影响——在 125 °C 下，PCB 接头界面失效模式从聚酰亚胺-电极失效转变为脆性 IMC 失效；Lee 等 [25] 则采用超声振动键合电极，无需粘合剂即可在低温短时间内完成。</p>
 
-<div class="insight">
-  <div class="label">Note</div>
-  <p><strong>为什么选 DO 模型而非 S2S/DTRM？</strong>DO 模型把辐射强度在离散方向上积分求解，对"局部集中热源 + 参与性介质（吸收/散射气体）"问题尤其合适；S2S 假设介质非参与性（只考虑表面间辐射），不适于含热空气的炉腔；DTRM 计算成本高且对复杂几何鲁棒性差。Lau 等人已证明 DO 适合红外局部加热案例。</p>
-</div>
+<p>深入理解 FPCB 再流焊炉有助于制造商在焊接过程中控制再流曲线。Lau 和 Abdullah [15] 用 DO 模型对 FR-4 材料组件做了热效应解析研究，指出 PCB 边缘与角落最先被加热；Lau 等 [26] 用基于灰关联的田口（Taguchi）方法优化工艺，确定减少焊点缺陷的最优参数；Yamane 等 [27] 通过改变热风面板布局重新设计炉体热风单元，以红外+风扇对流作为加热元件提升加热能力；Najib 等 [28] 对不同再流设置进行仿真并确定 RPCB 的过热（overheat）情况——但该研究未考虑 FPCB 及炉内最优放置位置，而这正是本研究的核心关注点。</p>
 
-<p>FPCB 作为 RPCB 的替代方案，具有柔性、轻量、节省空间、降低重量与安装成本等优势。常用基材包括<span class="key-term">聚酰亚胺（PI）</span>、<span class="key-term">聚萘二甲酸乙二醇酯（PEN）</span>、<span class="key-term">聚酯（PET）</span>等聚合物薄膜，其<span class="key-term">玻璃化转变温度（T<sub>g</sub>）</span>差异显著：PEN ≈ 78 ℃、PET ≈ 123 ℃、PI ≈ 300 ℃。</p>
+<p>本文致力于建立台式再流焊炉内 FPCB 基板再流焊过程的数值表征：工作温度设定按 JSTD-020E 设定；分别用<span class="key-term">RNG k-epsilon（RNGKE）湍流模型</span>与 DO 辐射模型建模炉内气流与辐射效应；仿真数据与实验温度曲线验证；通过对炉腔温度与基板热物性的理解，控制台式炉内固定位置的再流热曲线。</p>
 
-<p>已有研究多针对 FR-4/RPCB（如 Lau & Abdullah 用 DO 模型发现板边角最先受热；Najib 等人仿真不同回流设置并定位 RPCB 过热点），但<strong>未涉及 FPCB 与炉内最优放置位置</strong>--这正是本文研究空白。</p>
-
-<!-- ═══════════ 2. NUMERICAL ═══════════ -->
+<!-- ═══════════ 2. NUMERICAL APPROACH ═══════════ -->
 <h2 id="s2">2. 数值方法</h2>
 
 <h3 id="s2a">2.1 控制方程</h3>
+<p>为研究红外加热器热流密度与三维再流焊炉气流对热特性的影响，采用数值与实验两种方法，仿真模型在进一步炉腔分析前完成验证。数值方法基于<span class="key-term">有限体积法（finite volume method, FVM）</span>，采用 ANSYS Fluent 软件（ANSYS Inc., Canonsburg, PA, USA）。炉内空气假定不可压缩。控制方程描述单相流体流动遵循质量与动量守恒，软件在微分控制体上使用笛卡尔空间坐标，以无量纲形式求解以下方程域 [29]。</p>
 
-<p>仿真基于<span class="key-term">有限体积法（FVM）</span>，在 ANSYS Fluent 中求解。炉内空气假设为不可压缩单相流体，遵循质量与动量守恒。</p>
+<p>连续性方程描述不可压流中任意输运量的守恒。单相不可压流体连续性方程写作：</p>
+<div class="math-block">$$ \frac{\partial \rho u_i}{\partial x_i} = 0 \tag{1} $$</div>
+<p class="math-note"><strong>解读：</strong>其中 $u_i$ 为 $x_i$ 方向的速度分量（$i = 1,2,3$ 分别对应 $x$、$y$、$z$ 轴）。不可压假设使密度不再进入时间项，这是炉内低速空气流动的合理简化——马赫数极低、压力变化不足以引起可压缩效应。</p>
 
-<p><strong>(1) 连续性方程</strong>（不可压缩单相流）：</p>
-<div class="math-block">$$ \frac{\partial \rho u_{i}}{\partial x_{i}} = 0 \tag{1} $$</div>
-<p class="math-note"><strong>解读：</strong>不可压缩流密度 ρ 为常数，流入控制体的质量等于流出，即散度为零。u<sub>i</sub> 为 x<sub>i</sub> 方向速度分量（i=1,2,3 对应 x,y,z）。</p>
+<p>动量守恒描述粒子间碰撞。忽略浮力项后方程如下：</p>
+<div class="math-block">$$ \frac{\partial}{\partial t}(\rho u_i) + \frac{\partial}{\partial x_j}\left(\rho u_i u_j\right) = -\frac{\partial P}{\partial x_i} + \frac{\partial \tau_{ij}}{\partial x_j} + \rho g_i b + F_i \tag{2} $$</div>
+<p class="math-note"><strong>解读：</strong>$\rho$ 为流体密度，$P$ 为静压，$g$ 为重力加速度（9.81 m/s²），$\tau_{ij}$ 为黏性应力张量，$F_i$ 为 $i$ 方向外部体积力。左侧为时间项与对流项，右侧依次为压力梯度、黏性扩散、重力与外力项——这就是纳维-斯托克斯方程的通用形式，为后续 $k$–$\varepsilon$ 湍流模型提供平均流动框架。</p>
 
-<p><strong>(2) 动量守恒方程</strong>（忽略浮力项）：</p>
-<div class="math-block">$$ \frac{\partial}{\partial t}(\rho u_{i}) + \frac{\partial}{\partial x_{j}}(\rho u_{i} u_{j}) = -\frac{\partial P}{\partial x_{i}} + \frac{\partial \tau_{ij}}{\partial x_{j}} + \rho g_{i} b + F_{i} \tag{2} $$</div>
-<p class="math-note"><strong>解读：</strong>左侧为局部加速度 + 对流加速度；右侧依次为压力梯度、粘性应力张量、重力体积力与外部体积力。τ<sub>ij</sub> 表征流体内摩擦，P 为静压。</p>
+<p>考虑炉腔空间中的热能，能量方程可写成式 (3)：</p>
+<div class="math-block">$$ \frac{\partial}{\partial t}\left(\rho C_p T\right) + \frac{\partial}{\partial x_i}\left(\rho u_i C_p T\right) = -\frac{\partial}{\partial x_i} + \frac{\partial}{\partial x_j}\left(\lambda \frac{\partial T}{\partial x_i}\right) + S_h \tag{3} $$</div>
+<p class="math-note"><strong>解读：</strong>$C_p$、$T$、$\lambda$ 分别为热空气的比热、温度与导热系数。源项 $S_h$ 中包含来自红外加热器的热流密度与辐射源项——这是把"辐射加热"耦合进流场能量方程的桥梁：辐射吸收多少能量，就通过 $S_h$ 直接注入空气与固体单元。</p>
 
-<p><strong>(3) 能量方程</strong>：</p>
-<div class="math-block">$$ \frac{\partial}{\partial t}(\rho C_{p} T) + \frac{\partial}{\partial x_{i}}(\rho u_{i} C_{p} T) = -\frac{\partial}{\partial x_{i}} + \frac{\partial}{\partial x_{j}}\left(\lambda \frac{\partial T}{\partial x_{i}}\right) + S_{h} \tag{3} $$</div>
-<p class="math-note"><strong>解读：</strong>C<sub>p</sub>、T、λ 分别为热空气比热、温度、导热系数；S<sub>h</sub> 为源项，包含 IR 热流与辐射贡献--这是辐射耦合进入能量守恒的入口。</p>
+<p>红外加热器辐射在炉腔内产生非定常温度。选用 DO 模型描述发生的辐射换热，该模型求解笛卡尔空间坐标下辐射强度 $I$ 的变化 [30]。因此，发射-吸收-散射介质的瞬态<span class="key-term">辐射输运方程（radiative transfer equation, RTE）</span>写作式 (4)，并与式 (3) 耦合求解：</p>
+<div class="math-block">$$ \frac{\partial I}{\partial x_i} = -(\alpha + \sigma_s) I(\mathbf{r} \cdot \mathbf{s}) + \alpha n^2 \frac{\sigma T^4}{\pi} + \frac{\sigma_s}{4\pi} \int_0^{4\pi} I(\mathbf{r} \cdot \mathbf{s}') \Phi(\mathbf{s} \cdot \mathbf{s}') \, d\Omega' \tag{4} $$</div>
+<p class="math-note"><strong>解读：</strong>右侧三项分别对应辐射强度的局部吸收、发射与散射输运机制。辐射强度 $I$ 沿方向矢量（$\mathbf{r}\cdot\mathbf{s}$）传播，由吸收系数 $\alpha$ 与散射系数 $\sigma_s$ 决定；强度可因红外灯表面发射的入射散射而增加。$T$ 为局部温度，$\sigma$ 为斯特藩-玻尔兹曼常数（5.672 × 10⁻⁸ W/(m²·K⁴)）。正因如此，DO 模型被认为适合带局部热源的台式再流焊炉焊接过程。</p>
 
-<p><strong>(4) 辐射传输方程（RTE）</strong>--DO 模型核心：</p>
-<div class="math-block">$$ \frac{\partial I}{\partial_{x_{i}}} = -(\alpha + \sigma_{s}) I(r,s) + \alpha n^{2} \frac{\sigma T^{4}}{\pi} + \frac{\sigma_{s}}{4\pi} \int_{0}^{4\pi} I(r,s) \Phi(s,s') d\Omega' \tag{4} $$</div>
-<p class="math-note"><strong>解读：</strong>等号右侧三项分别为局部吸收、发射（黑体辐射 ∝ T⁴，斯特藩-玻尔兹曼律）、散射。α 为吸收系数，σ<sub>s</sub> 为散射系数，σ = 5.672×10⁻⁸ W/m²K⁴ 为斯特藩-玻尔兹曼常数。方程与能量方程(3)耦合求解。</p>
+<p>炉腔内气流比例上从风扇笼垂直向下引导，来自旋转离心风扇，并与壁面流动循环相互作用后变为湍流。按上述流动性质，所得 $Re$ 处于湍流区，因此选用适合旋流主导流动的 RNG k-epsilon（RNGKE）湍流模型，含两个输运方程：</p>
+<div class="math-block">$$ \frac{\partial}{\partial t}(\rho k) + \frac{\partial}{\partial x_i}(\rho k u_i) = \frac{\partial}{\partial x_j}\left[\left(u + \frac{u_t}{\sigma_k}\right)\frac{\partial k}{\partial x_j}\right] + G_k - \rho \varepsilon \tag{5} $$</div>
+<p class="math-note"><strong>解读：</strong>$G_k$ 为由平均速度梯度产生的湍动能生成项，负项 $\rho\varepsilon$ 为耗散项。这是湍动能 $k$ 的输运方程，RNG 变体在标准 $k$–$\varepsilon$ 基础上增加重整化群修正，使旋流预测更准。</p>
 
-<div class="insight">
-  <div class="label">Note</div>
-  <p><strong>为什么辐射在回流焊中"压倒"对流？</strong>斯特藩-玻尔兹曼定律 E = σT⁴ 表明辐射能量随温度四次方增长--温度翻倍辐射涨 16 倍。回流区温度高达 500+ K，红外灯局部热源表面温度更高，辐射通量远大于风扇强制对流所能提供的对流换热系数 × 温差。因此低风速下辐射主导，高风速下对流才追平--这正是后文揭示的现象。</p>
-</div>
+<div class="math-block">$$ \frac{\partial}{\partial t}(\rho \varepsilon) + \frac{\partial}{\partial x_i}(\rho \varepsilon u_i) = \frac{\partial}{\partial x_j}\left[\left(u + \frac{u_t}{\sigma_\varepsilon}\right)\frac{\partial \varepsilon}{\partial x_j}\right] + C_{1\varepsilon}\frac{\varepsilon}{k}(G_k + C_{3\varepsilon}G_b) - C_{2\varepsilon}\rho\frac{\varepsilon^2}{k} - R_\varepsilon \tag{6} $$</div>
+<p class="math-note"><strong>解读：</strong>这是湍流耗散率 $\varepsilon$ 的输运方程，与式 (5) 联立闭合湍流方程组。$R_\varepsilon$ 项是 RNG 模型的特色修正项。模型闭合常数取 $C_{1\varepsilon} = 1.42$、$C_{2\varepsilon} = 1.68$。</p>
 
-<p>因风扇旋转产生旋流（swirl dominated flow），雷诺数处于湍流区，选用 <span class="key-term">RNG k-ε 模型</span>（含两个输运方程）：</p>
+<p>RNGKE 中，旋流效应通过附加表征适当修正湍流黏度来计入：</p>
+<div class="math-block">$$ \mu_t = \mu_{t0} f\left(\alpha_s, \Omega, \frac{k}{\varepsilon}\right) \tag{7} $$</div>
+<p class="math-note"><strong>解读：</strong>$\mu_{t0}$ 为不加旋流修正时计算的湍流黏度；旋流常数 $\alpha_s = 0.07$。$\Omega$ 表征旋转强度。对离心风扇这类旋转器件，旋流修正显著影响风扇出口下游的涡结构预测，是台式炉内"回风涡"能否被正确模拟的关键。</p>
 
-<p><strong>(5) k 方程</strong>（湍动能）与 <strong>(6) ε 方程</strong>（耗散率）：</p>
-<div class="math-block">$$ \frac{\partial}{\partial t}(\rho k) + \frac{\partial}{\partial x_{i}}(\rho k u_{i}) = \frac{\partial}{\partial x_{j}}\left[\left(\mu + \frac{\mu_{t}}{\sigma_{k}}\right)\frac{\partial}{\partial x_{j}}\right] + G_{k} - \rho \varepsilon \tag{5} $$</div>
-<div class="math-block">$$ \frac{\partial}{\partial t}(\rho \varepsilon) + \frac{\partial}{\partial x_{i}}(\rho \varepsilon u_{i}) = \frac{\partial}{\partial x_{j}}\left[\left(\mu + \frac{\mu_{t}}{\sigma_{\varepsilon}}\right)\frac{\partial \varepsilon}{\partial x_{j}}\right] + C_{1\varepsilon}\frac{\varepsilon}{k}(G_{k} + C_{3\varepsilon} G_{b}) - C_{2\varepsilon}\rho\frac{\varepsilon^{2}}{k} - R_{\varepsilon} \tag{6} $$</div>
-<p class="math-note"><strong>解读：</strong>G<sub>k</sub> 为平均速度梯度产生的湍流生成项，负项为能量耗散。RNG k-ε 通过额外项 R<sub>ε</sub> 改善对快速应变/旋流的响应，比标准 k-ε 更适合风扇旋流。闭合常数 C<sub>1ε</sub> = 1.42、C<sub>2ε</sub> = 1.68。</p>
-
-<p><strong>(7) 旋流修正的湍流粘度</strong>：</p>
-<div class="math-block">$$ \mu_{t} = \mu_{t0} f\left(\alpha_{s}, \Omega, \frac{k}{\varepsilon}\right) \tag{7} $$</div>
-<p class="math-note"><strong>解读：</strong>μ<sub>t0</sub> 为无旋流修正时的湍流粘度；旋流常数 α<sub>s</sub> = 0.07。</p>
-
-<p><strong>(8) 理想气体密度</strong>：</p>
+<p>空气物性按理想气体方程定义，密度 $\rho$ 计算如下：</p>
 <div class="math-block">$$ \rho = \frac{R}{T} \tag{8} $$</div>
-<p class="math-note"><strong>解读：</strong>R 为比气体常数，T 为温度。密度随温度升高而下降，热空气上浮形成自然对流趋势。</p>
-
-<div class="insight">
-  <div class="label">Note</div>
-  <p><strong>RNG k-ε vs 标准 k-ε：</strong>RNG（重正化群）版本通过理论推导额外引入 R<sub>ε</sub> 项，对高应变率与旋流流动精度更高。本案例中离心风扇产生强旋流，标准 k-ε 会过度预测湍流粘度，RNG 的旋流修正（式7）正是为此而设。</p>
-</div>
+<p class="math-note"><strong>解读：</strong>其中 $R$ 为比气体常数，$T$ 为温度。尽管流动被假定不可压缩，密度仍随温度按理想气体关系变化（Boussinesq 风格的热-密度耦合），使自然对流效应得以体现。</p>
 
 <h3 id="s2b">2.2 流体域建模</h3>
-
-<p>3D 流体域在 ANSYS Design Modeler 中生成：半炉几何尺寸 <strong>310 × 195 × 190 mm</strong>（取对称面省算力），扣除 <strong>50 × 50 mm</strong> 的固体 FPCB 基板。边界条件如下：</p>
-<ul>
-  <li><strong>风扇：</strong>旋转壁面函数，实验测得平均角速度 <strong>150 rad/s</strong>（负 y 轴方向），SKF TKRT 10 转速计测量</li>
-  <li><strong>红外加热器：</strong>多项式热流边界，每灯功率 100 W、表面积 0.017 m²，对称热流约 <strong>5400 W/m²</strong>，通过 UDF 加载</li>
-  <li><strong>出口：</strong>底部一组出口设为压力出口，1 atm</li>
-  <li><strong>壁面：</strong>炉壁与 PCB 发射率分别取 <strong>0.1</strong> 与 <strong>0.9</strong>，无滑移条件</li>
-</ul>
+<p>流体域三维装配体用 ANSYS Workbench v.18（ANSYS Inc, Canonsburg, PA, USA）中的 Design Modeler 建模：生成模拟真实台式炉的半炉几何，尺寸 (310 × 195 × 190) mm，并扣除 (50 × 50) mm 的固体基板实体，如图 1 所示。选取半几何的非对称平面以节省计算时间——该平面上温度梯度与空气速度均极小，满足对称边界条件 $\frac{\partial u}{\partial x} = \frac{\partial T}{\partial x} = 0$。FLUENT 中设置不可压、瞬态与湍流黏性模型。</p>
 
 <figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/22310730efeaff18935591013433f4497834510b2878b385323274e82f58ed86.jpg" alt="Fig 1" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/32f423973536e08f52ad1cc466eb86db9de5624fba65a9678866366fdf5dce6f.jpg" alt="Fig 1" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 1 &mdash; 含 FPCB 的回流焊炉 3D 模型整体视图。半炉几何通过对称面简化以降低计算成本</figcaption>
+  <figcaption>图 1 &mdash; 带 FPCB 的台式再流焊炉三维模型总览</figcaption>
 </figure>
 
-<p>固体基板为单面型 FPCB（单层聚酰亚胺 + 单层铜，总厚 <strong>53 µm</strong>），热物性见表 1。求解器采用 <span class="key-term">SIMPLE 算法</span>，质量流收敛 10⁻³，能量与 DO 强度收敛 10⁻⁶，二阶迎风格式。</p>
+<p>仿真采用的边界条件如下：</p>
+<ul>
+  <li><strong>风扇（fan）</strong>：用旋转壁函数建模，旋转运动按实测转速给定——用 SKF TKRT 10 转速计（SKF, Stockholm, Sweden）实测，平均角速度为 150 rad/s（y 轴负方向）。</li>
+  <li><strong>红外加热器（infrared heaters）</strong>：作为热源施加实验记录的多项式热流密度曲线；热流密度按表面积与平均功率计算，每根加热灯功率 100 W、表面积 0.017 m²，每根灯产生对称的约 5400 W/m² 热流；随后在 FLUENT 中于加热灯外表面设置多项式热流密度的 UDF（用户自定义函数）代码。</li>
+  <li><strong>出口（outlets）</strong>：炉底一组出口定义为压力出口边界，工作条件设为大气压 1 atm。</li>
+  <li><strong>壁面（walls）</strong>：炉壁与 PCB 分别定义发射率 0.1 [31] 与 0.9 [32]，壁面施加无滑移条件。</li>
+</ul>
+
+<p>选用商业化固体基板：单面型 FPCB，含单层聚酰亚胺与单层铜，总厚度 53 µm [33]，热物性见表 1。红外加热灯安装于顶部，FPCB 基板置于钢笼内、位于出口区上方 46 mm。数值求解采用 SIMPLE 算法 [34–36] 耦合速度与压力；质量流收敛判据设为 10⁻³，能量与 DO 强度判据设为 10⁻⁶；全部设置采用二阶迎风格式以保证高精度。</p>
 
 <table>
-  <caption>表 1. FPCB 的力学与热物性</caption>
+  <caption>表 1. FPCB 的力学与热学性能</caption>
   <thead><tr><th>属性类型</th><th>参数</th><th>数值</th></tr></thead>
   <tbody>
-    <tr><td>力学</td><td>密度 (kg/m³)</td><td>3839</td></tr>
-    <tr><td>热</td><td>导热系数 (W/mK)</td><td>0.3</td></tr>
-    <tr><td>热</td><td>比热容 (J/kg·K)</td><td>421</td></tr>
-    <tr><td>热</td><td>热膨胀系数 (ppm/K)</td><td>30</td></tr>
+    <tr><td>力学</td><td>密度（kg/m³）</td><td>3839</td></tr>
+    <tr><td rowspan="3">热学</td><td>导热系数（W/mK）</td><td>0.3</td></tr>
+    <tr><td>比热容（J/kg·K）</td><td>421</td></tr>
+    <tr><td>热膨胀系数（ppm/K）</td><td>30</td></tr>
   </tbody>
 </table>
 
 <div class="insight">
   <div class="label">Note</div>
-  <p><strong>FPCB 热物性解读：</strong>密度 3839 kg/m³ 偏高（铜贡献），但导热系数仅 0.3 W/mK--远低于铜的 400 W/mK，因为基材主体是聚酰亚胺薄膜。这意味着 FPCB 在厚度方向热阻大、温度梯度敏感，是后文"厚度效应"研究的物理基础。比热 421 J/kg·K 较小，热容低，对辐射热响应快。</p>
+  <p><strong>边界条件设置的工程含义：</strong>三条细节值得注意。其一，炉壁发射率仅 0.1、PCB 发射率 0.9——炉壁近乎"反射镜"，而深色 PCB 近乎黑体，辐射能量被"锁"在板面与灯之间，这正是 FPCB 表面温度高于炉内空气温度的直接原因；其二，热流以多项式 UDF 施加，说明真实卤素灯的辐射输出随温度非线性变化，不能简化为恒定功率；其三，150 rad/s（约 1433 rpm）的风扇转速是实验实测而非名义值，湍流旋流修正（式 (7)）正是为这种离心风扇而设。</p>
 </div>
 
 <h3 id="s2c">2.3 网格无关性测试</h3>
-
-<p>对流体域进行网格无关性检验。Model 3（674,521 单元）在固定执行时间下偏差 &lt;0.1%，达到饱和；与 Ng 等人、Khor 等人"&lt;3% 可接受"判据一致。时间步长取 0.005 s。</p>
+<p>表 2 给出流体域网格无关性测试结果：优选测量参数（如温度、变形）误差最小的网格模型。5 套模型中选 Model 3 用于后续流体域分析，其被测参数的幅值偏差误差小于 0.1% 且执行时间固定。Ng 等 [37] 与 Khor 等 [38] 的类似研究指出 3% 及以下偏差对本类研究可接受。此外选择 0.005 s 时间步长作为最优时间，计算成本低且预测最接近实际。</p>
 
 <table>
   <caption>表 2. 流体域网格无关性测试</caption>
-  <thead><tr><th>模型</th><th>单元数</th><th>温度 (K)</th><th>差值 (%)</th></tr></thead>
+  <thead><tr><th>模型</th><th>单元数</th><th>温度（K）</th><th>偏差（%）</th></tr></thead>
   <tbody>
     <tr><td>1</td><td>479,270</td><td>525.2</td><td>0.57</td></tr>
     <tr><td>2</td><td>535,276</td><td>524.4</td><td>0.42</td></tr>
-    <tr><td>3（选用）</td><td>674,521</td><td>522.7</td><td>0.09</td></tr>
+    <tr><td>3</td><td>674,521</td><td>522.7</td><td>0.09</td></tr>
     <tr><td>4</td><td>801,301</td><td>521.7</td><td>0.10</td></tr>
-    <tr><td>5（基准）</td><td>1,024,285</td><td>522.2</td><td>-</td></tr>
+    <tr><td>5</td><td>1,024,285</td><td>522.2</td><td>—</td></tr>
   </tbody>
 </table>
 
 <h3 id="s2d">2.4 模型验证</h3>
-
-<p>图 2 对比预热阶段（0~60 s）FPCB 与炉内空气的实验-仿真曲线。回流时间 &gt;30 s 后两者出现轻微间隙，归因于红外辐射在不同介质上的吸收差异。整体偏差 <strong>&lt;2%</strong>，吻合良好。</p>
+<p>图 2 给出流体域验证研究的证据：对 FPCB 与空气两个域在预热阶段（0~60 s）分别进行两种验证方法。两个域的重复实验数据均取平均并计算误差棒。注意到再流时间超过 30 s 后，实验与数值方法在炉空气与 FPCB 之间存在小间隙——这可能源于红外加热器辐射能量按介质不同吸收量相对变化。总体而言，流体域实验与仿真之间的偏差低于 2%，一致性良好。该模型验证可作为再流过程数值仿真（即预测分析）的初始验证。炉空气温度与 FPCB 表面温度的实验数据见附录 A。</p>
 
 <figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/c3d75a7c22aa8a6fa9bd233a21921489eef513427a25cc3eb21345bbea0af83f.jpg" alt="Fig 2" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/08864ddac046486ecda1aebfd3e8d3da993408b8e771873efa432957bee502bf.jpg" alt="Fig 2" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 2 &mdash; 流体分析中实验与仿真的对比验证。FPCB 与炉内空气温度曲线在预热阶段高度吻合（偏差 &lt;2%）</figcaption>
+  <figcaption>图 2 &mdash; 流体域分析中实验与仿真的对比（预热阶段，0–60 s，空气与 FPCB 两域）</figcaption>
 </figure>
 
-<!-- ═══════════ 3. EXPERIMENTAL ═══════════ -->
-<h2 id="s3">3. 实验设置</h2>
+<!-- ═══════════ 3. EXPERIMENTAL SETUP ═══════════ -->
+<h2 id="s3">3. 实验装置</h2>
 
-<h3 id="s3a">3.1 桌面回流焊炉</h3>
-
-<p>炉内配备红外加热灯与循环风扇以实现内部空气再循环。炉腔装有两片钢制风扇（叶片厚 2 mm、直径 115 mm）及一组串联出口槽。风扇为<span class="key-term">离心式</span>，径向流动主导，将气流推向上方辐射灯区。热源由 6 盏玻璃外壳红外加热灯（外径 12.8 mm）串联产生。</p>
+<h3 id="s3a">3.1 台式再流焊炉</h3>
+<p>图 3a 显示台式再流焊炉内部组件：配备红外加热灯与循环风扇，使空气在炉内循环；焊接用热曲线施加到被测 FPCB 上。炉腔配备两个钢制风扇（叶片厚度 2 mm、直径 115 mm）与一组串联出口槽。由于是离心式风扇，径向流主要朝向上方辐射灯，同时被强迫流向钢笼。热源来自六根直列红外加热灯，玻璃材质，外表面直径 12.8 mm。图 3b 为整体实验布置。</p>
 
 <div class="figure-row">
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/4655e6e9745a880baaec78a4baca4fcaa51b0582bc222967f5efcf9a4fbcaeea.jpg" alt="Fig 3a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/6ab9c168377d91f440cfd8295b17fb4cd98af002bc3da3e0f789fa39a21f2e0f.jpg" alt="Fig 3a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(a) 内部组件</figcaption>
+    <figcaption>(a) 炉内组件</figcaption>
   </figure>
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/31776330e91ad1893f585b147efca93f9d964dfe277db43102885a3249f221a1.jpg" alt="Fig 3b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/e495aeba88bd6c9f1d0a1e60832c928bb27acf4b43445962168efeb7e8b24342.jpg" alt="Fig 3b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(b) 整体装置</figcaption>
+    <figcaption>(b) 台式再流焊炉整体布置</figcaption>
   </figure>
 </div>
-<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 3 &mdash; (a) 桌面回流焊炉内部组件；(b) 整体实验装置。含红外灯阵列、离心风扇与钢架</figcaption>
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 3 &mdash; 台式再流焊炉: (a) 炉内组件; (b) 整体布置</figcaption>
 
-<p>热电偶阵列连接数据记录仪，数据送至炉软件 Reflow Center 1.03E（Madell Technology），软件内 <span class="key-term">PID 控制器</span>维持炉腔温度于目标值，加热系统以开关循环方式调节。</p>
+<p>实验装置如图 3b 所示，一系列热电偶测量指定位置的温度用于验证，热电偶连接数据记录仪并传送至炉软件。图 4 给出实验装置原理图：数据采集软件 Reflow Center 1.03E（Madell Technology, Ontario, CA, USA）与台式炉相连；软件内置<span class="key-term">比例-积分-微分（PID）控制器</span>，在热曲线过程中保持炉腔温度在期望水平；炉加热系统以开关（on/off）循环方式调制以维持相对温度。</p>
 
 <figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/faaa1edf60e63c18635092e9e03b8b242c1569916f498b2286b2273fea1d9795.jpg" alt="Fig 4" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/b4800874a05cdc627e08185a231a18a69292543804d3f947c216b63b5d4cc57d.jpg" alt="Fig 4" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 4 &mdash; 桌面回流焊炉的原理示意图。展示热电偶、数据采集与 PID 控制回路</figcaption>
+  <figcaption>图 4 &mdash; 台式再流焊炉实验装置原理图</figcaption>
 </figure>
 
-<p>回流曲线基于 <span class="key-term">JEDEC JSTD-020E</span> 标准（图 5），含四段：<strong>预热、均热、回流、冷却</strong>。均热与焊接推荐时长 60~120 s 与 60~150 s；<span class="key-term">SAC 焊料</span>峰值温度 200~220 ℃；回流段升温率 &lt;3 ℃/s、降温率 &lt;6 ℃/s。</p>
+<p>实验中再流曲线按 JEDEC JSTD-020E 标准 [28] 设定，如图 5 所示。曲线由预热（preheating）、浸泡（soaking）、再流（reflow）与冷却（cooling）四段构成；浸泡与焊接阶段推荐时长分别为 60~120 s 与 60~150 s；SAC 钎料峰值温度设定在 200~220 °C；再流段升温速率与降温速率分别小于 3 °C/s 与 6 °C/s。</p>
 
 <figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/2387f32fdd8b05a19e677a802d1bf753a71fdfe0296e209374080bf7b70197b8.jpg" alt="Fig 5" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/bee9206106b40b6bfd59b06892d115922e23e63f463f3a19cc18ab7dd025d953.jpg" alt="Fig 5" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 5 &mdash; 回流焊炉中的热曲线设置（四阶段：预热 / 均热 / 回流 / 冷却），遵循 JSTD-020E</figcaption>
+  <figcaption>图 5 &mdash; 再流焊炉中设定的热曲线（JSTD-020E，四段式）</figcaption>
 </figure>
 
 <div class="insight">
   <div class="label">Note</div>
-  <p><strong>四阶段曲线的工艺意义：</strong>预热段缓慢升温以蒸发锡膏溶剂、避免塌陷与飞溅；均热段使整板温度趋于均匀、活化助焊剂；回流段峰值熔化焊料形成 IMC；冷却段控制冷却速率以获得细晶粒焊点。各段斜率与停留时间直接决定焊点可靠性--过冲会增厚 IMC 致脆，过低则焊料未熔（unbaked soldering）。</p>
+  <p><strong>台式红外炉的"软件即工艺"特征：</strong>与 P2 中自研钎焊台（MSP430 微控制器 + 电磁继电器）不同，本炉由商品软件 Reflow Center 1.03E 通过 PID 对加热灯做开关调制。这意味着"热曲线"不再是硬件直接产生，而是软件在设定值与炉腔热惯性之间博弈的结果——这正是后文实测温度"超温/欠温"偏差（5–13 °C 与 20–30 °C）的来源：PID 只能控制热电偶所在点的温度，而炉腔空间各处的温度由流场决定。</p>
 </div>
 
-<h3 id="s3b">3.2 炉腔温度</h3>
+<h3 id="s3b">3.2 炉腔温度测量</h3>
+<p>台式再流焊炉腔温度均匀性由记录温度确定。实验设计与炉腔内热分布研究设置相同，按再流焊工艺温度设定执行；再流焊工艺开始前炉腔初始温度控制在 25~28 °C 范围内。</p>
 
-<p>起始温度控制 25~28 ℃。用 <span class="key-term">K 型热电偶</span>（±2.2 ℃，长 100 cm、护套直径 1.5 mm）与温度记录仪（±0.1%）测量腔体空气本征温度。图 6 为热电偶阵列布置：每列中位放置以稳定边缘/角落波动；共 60 根，仅单侧布置（腔体对称，红外波造成非均匀加热）。同位置重复测量最大偏差 5%。数据每 4 s 采集一次。</p>
+<p>测量炉腔各处空气体温度使用 K 型热电偶（TC，精度 ±2.2 °C，长 100 cm，护套直径 1.5 mm）与温度记录仪（±0.1%）。图 6 给出实验布置：热电偶在每列中间位置排成阵列，以抑制边缘或角落区域的不利波动。由于红外波造成非均匀加热、腔体对称，钢笼内单侧共使用 60 根热电偶线。测量在一个参考位置进行并重复，最大温度偏差 5%，随后按热电偶总数扩展。数据以 4 s 间隔用 Digi Sense Scanning Thermometer 仪器（Cole-Palmer, Vernon Hills, IL, USA）记录后进行温度分析。</p>
 
 <figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/834e1be499aa34e1addc9dca5d0dc5718cd30a7287001e54d4054135619ce623.jpg" alt="Fig 6" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/f63e9c1c2fe6a913a7b70df2d1b6d8930facc39ee82b8a6ea3cb9f88f27275b6.jpg" alt="Fig 6" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 6 &mdash; (a) 钢架区热电偶布置位置示意图；(b) 实物图。共 60 根 K 型热电偶单侧阵列布置</figcaption>
+  <figcaption>图 6 &mdash; 台式再流焊炉钢笼区域热电偶布置位置（布点示意与实际照片）</figcaption>
 </figure>
 
-<h3 id="s3c">3.3 FPCB 测温</h3>
-
-<p>被测 FPCB 放置于两个特定位置：前端（距前侧 75 mm）与后端（距前侧 135 mm）。FPCB 用 Kapton 胶带固定四边；K 型热电偶用铝胶带（5×5 mm）粘贴，外覆更大 Kapton 胶带（20×10 mm）以保障热电偶珠与 FPCB 表面牢固接触。珠径 0.5 mm。各位置取平均值后与仿真对比。</p>
+<h3 id="s3c">3.3 FPCB 测试板温度测量</h3>
+<p>温度测量在 FPCB 表面进行。被测 FPCB 放置于两个特定位置：前区（距前侧 75 mm）与后区（距前侧 135 mm）。FPCB 与测试载体（test vehicle）贴合，所有边缘用 Kapton 胶带固定。随后使用 K 型热电偶线，以 (5 × 5) mm 铝胶带贴附，另用更大尺寸 (20 × 10) mm 的 Kapton 胶带覆盖（确保热电偶珠与 FPCB 被测表面牢固连接），如图 7 所示。在 FPCB 表面相同位置使用 0.5 mm 珠径热电偶，按热曲线设置运行测量温度变化。每个 FPCB 位置取平均值（考虑后者距离效应对炉加热的影响），记录值与仿真数据对比。</p>
 
 <div class="figure-row">
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/e97f0f1c337401ae732d0c06ee6eb2dad5d7b2453dbc166f051f80d0547b6205.jpg" alt="Fig 7a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/1a0bca874ca0719fdf94654bda9267859bc909af4d38face57022c7d0b7b1169.jpg" alt="Fig 7a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(a) 热电偶实际位置</figcaption>
   </figure>
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/b13a054029239d116864a1611cdbd6c061b7762c03eb28d84ca5a3e7a6d15ef8.jpg" alt="Fig 7b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/becc4b7f876e2a4569e33bb6b9cbb58b28d5621f0a09c0e7d88958ae39b150a9.jpg" alt="Fig 7b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(b) 粘贴方法</figcaption>
+    <figcaption>(b) 热电偶表面贴装方法</figcaption>
   </figure>
 </div>
-<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 7 &mdash; (a) 热电偶实际位置；(b) 热电偶在 FPCB 表面的粘贴方法（铝胶带 + Kapton 覆盖）</figcaption>
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 7 &mdash; FPCB 表面热电偶布置: (a) 热电偶实际位置; (b) 表面贴装方法</figcaption>
 
 <h3 id="s3d">3.4 FPCB 拉伸试验</h3>
-
-<p>拉伸试验用单面 FPCB（单层聚酰亚胺 + 单层铜，总厚 0.053 mm），按 <span class="key-term">ASTM D368</span> 标准评估塑料拉伸性能。重复 4 次取平均。用 INSTRON 3367 万能试验机在 50 mm/min 速度下测定<span class="key-term">杨氏模量（E）</span>与<span class="key-term">屈服强度（σ）</span>。</p>
+<p>拉伸试验使用单面型购买的 FPCB：单层聚酰亚胺 + 单层铜，总厚度 0.053 mm。试验按 ASTM D368 标准（ASTM International, 2003）进行，评估塑料拉伸性能符合性。实验重复四（4）次并仔细记录，按既定程序计算平均值。用万能试验机（INSTRON 型号 3367, Instron, Norwood, MA, USA）以 50 mm/min 的试验速度评估 FPCB 的杨氏模量（$E$）与屈服强度（$\sigma$），应力-应变曲线图将在下节进一步讨论。</p>
 
 <!-- ═══════════ 4. RESULTS ═══════════ -->
 <h2 id="s4">4. 结果与讨论</h2>
 
 <h3 id="s4a">4.1 炉腔温度分布</h3>
+<p>本节先给出 60 点热电偶阵列实测的炉腔温度分布（4.1.1），再给出仿真温度云图与 L1~L6 位置验证（4.1.2），最后以流动机理解释对称区的低温现象。</p>
 
-<p>图 8a、b、c 分别为预热（140 ℃）、均热（180 ℃）、回流（207 ℃）阶段的实测温度曲线。炉腔温度沿设置阶段呈<strong>非均匀</strong>分布：上平面温度高于下平面，因板件靠近位于炉腔顶部的红外加热器。</p>
-
-<div class="figure-row">
-  <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/1512eb8e1123ed442b1ade46582f27c9f245325fec34205546f6fa75fa461e38.jpg" alt="Fig 8a-上" loading="lazy"
-         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(a) 上平面 T1–T30（预热 140 ℃）</figcaption>
-  </figure>
-  <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/2e8c69f72e6741287fa262bb33488badf99d86cfbdbe35e8dfcc00b71e4ad1e5.jpg" alt="Fig 8a-下" loading="lazy"
-         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(a) 下平面 B1–B30（预热 140 ℃）</figcaption>
-  </figure>
-</div>
+<h3 id="s4a1">4.1.1 实测温度分布</h3>
+<p>图 8a、8c 分别给出预热、浸泡与再流阶段（140 °C、180 °C、207 °C）实测得到的温度分布。观察到炉腔温度分布随设定阶段一直不均匀：就平面而言，上平面温度高于下平面——因为基板紧邻置于炉腔顶部的红外加热器；随各阶段推进升温趋势也在增强。</p>
 
 <div class="figure-row">
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/a95064d05ed9ac66a3f44f47c2718e5ff871122161deb73a3d2705e37d50cdf6.jpg" alt="Fig 8b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/359102a25ff92ae7a5ce655f06d2aa1d4cacd73bd4ed7833dd287d9c6b408de6.jpg" alt="Fig 8a-upper" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(b) 均热阶段（180 ℃）</figcaption>
+    <figcaption>(a) 预热阶段（140 °C）上平面（T1–T30）</figcaption>
   </figure>
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/2da05629f1b0abb2787b80b07cdeb732baf4165b255d46560c9404849cd26d42.jpg" alt="Fig 8c-1" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/b1ab7ad959e9f9a6fa5b4bfc14ca6b897f48fe1deddc6c91a9c29c90aaaefb7b.jpg" alt="Fig 8a-lower" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(c) 回流阶段（207 ℃）视图一</figcaption>
+    <figcaption>(b) 预热阶段（140 °C）下平面（B1–B30）</figcaption>
   </figure>
 </div>
-
 <div class="figure-row">
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/44e65a5c358f4739b8eddab547b0101c935a04ff054b712e13bbe7b12bb16533.jpg" alt="Fig 8c-2" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/c1365d2c753f9507fa25b0a72cab70bc173dcb547352afa68103afe674c74bed.jpg" alt="Fig 8b-upper" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(c) 回流阶段（207 ℃）视图二</figcaption>
+    <figcaption>(c) 浸泡阶段（180 °C）上平面</figcaption>
   </figure>
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/3cd5b36e38931ed9c8c021445be4b7acd2c2e7dd906766d330768791ef4b9268.jpg" alt="Fig 8c-3" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/f7b35c87c411171ad366f07627f0dbbc70547c6b7c47b0f811102e1cabd94906.jpg" alt="Fig 8b-lower" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(c) 回流阶段（207 ℃）视图三</figcaption>
+    <figcaption>(d) 浸泡阶段（180 °C）下平面</figcaption>
   </figure>
 </div>
-<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 8 &mdash; 回流焊过程各阶段炉腔加热空气温度曲线：(a) 预热 140 ℃（上/下平面）；(b) 均热 180 ℃；(c) 回流 207 ℃（多视图）。注意上平面整体高于下平面</figcaption>
+<div class="figure-row">
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/8676388a00de554e3a183109097f8329fbabc9502c2ec47246e2e1d83108ad58.jpg" alt="Fig 8c-upper" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(e) 再流阶段（207 °C）上平面</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/b95dd0fbae0724e6ad3af312002504d864f33e922a433df2edf802f80cc00148.jpg" alt="Fig 8c-lower" loading="lazy"
+         onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+    <figcaption>(f) 再流阶段（207 °C）下平面</figcaption>
+  </figure>
+</div>
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 8 &mdash; 台式再流焊炉再流焊各阶段的热空气温度分布（实测）: (a) 预热阶段（140 °C）上平面（T1–T30）; (b) 预热阶段（140 °C）下平面（B1–B30）; (c) 浸泡阶段（180 °C）上平面; (d) 浸泡阶段（180 °C）下平面; (e) 再流阶段（207 °C）上平面; (f) 再流阶段（207 °C）下平面</figcaption>
 
-<p>从图 8 可归纳两个突出现象：<strong>温度超调</strong>与<strong>温度偏低</strong>。超调出现在炉腔中心靠近风扇区域；偏低出现在炉腔对称区（0 mm）。超调平均偏差 5~13 ℃，偏低约 20~30 ℃。对称区热分布比中心/后区低 <strong>1.2 倍</strong>。</p>
+<p>从图 8 可归纳出过程中的两个显著现象：温度超出与低于设定曲线值。超温偏差出现在炉腔中心靠近风扇区域，而低温出现在炉腔对称区域。设定值与观测值的平均差：超温处约 5~13 °C，欠温处约 20~30 °C。这意味着在相同再流焊条件下，炉腔对称区（0 mm）的热分布比中心区与后区低 1.2 倍。</p>
+
+<p>显著的温差归因于循环风扇转速（Najib 等 [28] 亦如此报道）。相反，紧邻循环风扇的后端区域也遭受温度偏差——这是风扇叶片旋转产生的回流效应（backflow effect）所致 [39]。极端环境温度会损伤 PCB 并促进焊点 IMC 增厚、进而降低焊点强度；而温度偏低则可能诱发未焊透（unbaked）焊点。炉腔温度分布的实验结果可用于确定再流焊工艺可接受的曲线设定 [40]。</p>
 
 <div class="insight">
   <div class="label">Note</div>
-  <p><strong>对称区为什么更冷？</strong>这是<strong>风扇背流效应（backflow effect）</strong>与<strong>出口几何</strong>共同作用的结果。风扇旋转在叶片后方诱发局部回流，使靠近风扇笼壁的对称面区域气流紊乱、热空气难以驻留；同时该区域出口排放量大，热空气被"抽走"排出炉外。两端叠加导致对称区持续低温。低温区会引发焊料未熔（unbaked soldering），高温区则促进 IMC 过度生长、削弱焊点强度--两者都损害可靠性。</p>
+  <p><strong>对称区为何"冷"：</strong>炉腔对称区（0 mm）热分布比中心与后区低 1.2 倍，机理来自几何与流动两方面：对称面正对风扇笼壁，热流沿对称面的输运被笼壁阻挡；且对称区出口排出热空气的流量高于其他区域（见 4.1.2 的图 10c）。这提醒设备设计者——"居中放置"并不等于"温度最高"，台式红外炉内的热点在中心近风扇区，冷点在对称区，工艺窗口必须按最冷点校核。</p>
 </div>
 
-<p>图 9a 为 y 轴温度等值线：炉中心温度高，对称区（0 mm）温度低。中间区向风扇笼方向空间温度相近，唯独壁面与对称区例外。前端热空气回流使温度均化；而出口设计与风扇笼壁导致对称区严重非均匀。</p>
+<h3 id="s4a2">4.1.2 温度云图对比</h3>
+<p>图 9a 显示 y 轴方向的温度云图（仿真）：中心炉温较高，而对称区（0 mm）测得低温。中心区与对称区数值差异的现象在图 8 中也可见——对称面沿程的热流受风扇笼壁限制，两侧换气被阻断。</p>
 
 <div class="figure-row">
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/f1342926cb3c3e7c61023fa38e4d3a9e23eb678f075e0003bda21bc926f024df.jpg" alt="Fig 9a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/3f2ea411c00f78ed41e0ef585eec88d41278d91f216b1f33a015eb7291cd1e32.jpg" alt="Fig 9a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(a) 仿真温度分布</figcaption>
+    <figcaption>(a) 仿真模型温度分布</figcaption>
   </figure>
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/b5a2c104269649315e27a58053b7b087b1a5593c86a3cbbe5ebab7614f7ea974.jpg" alt="Fig 9b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/69f85365c5e744972b382f167c90852d46a0a422abd4bed139d6774f1b9d2a44.jpg" alt="Fig 9b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(b) z 轴 L1~L6 验证</figcaption>
+    <figcaption>(b) z 轴 L1~L6 温度测量验证</figcaption>
   </figure>
 </div>
-<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 9 &mdash; 回流阶段仿真与实验对比：(a) 仿真温度分布；(b) z 轴 L1~L6 位置温度验证</figcaption>
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 9 &mdash; 再流阶段仿真与实验对比: (a) 仿真模型温度分布; (b) z 轴 L1~L6 温度测量验证</figcaption>
 
-<p>图 9b 验证结果：6 个位置中 <strong>L1 与 L6 温度最低</strong>，平均温差达 <strong>40 K</strong>。这些冷区会导致 FPCB 局部温度偏低，进而引发回流阶段焊料不润湿（non-wetting）。</p>
+<p>实验与仿真的验证结果见图 9b：实验与仿真模型选取六个相同位置测温。六个位置中 L1 与 L6 温度最低，平均温差高达 40 K——它们各自的冷却区可能导致 FPCB 温度分布偏低，进而在再流阶段引发钎料不润湿（nonwetting）[41]。热空气循环可由图 11 中清晰的速度矢量解释。</p>
+
+<p>仿真还揭示：中部朝风扇笼方向的区域空间温度几乎相近，仅壁面附近与对称区除外。中部区域向风扇笼的空气循环有助于该区域温度分布，部分热空气经出口排出至环境温度；前区热空气再循环使温度均匀化；相反，出口设计与风扇笼壁导致严重不均匀，在对称区得到体现；同时观察到对称区出口排出的热空气量高于其他区域——这解释了对称区向风扇笼方向温度分布偏低的现象，如图 10c 所示。</p>
 
 <div class="figure-row">
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/9ad9d54f24268548eff37167fff99f6fe252eb0a8609eafb5c6fd9d43cc4b4df.jpg" alt="Fig 10a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/7af97fbf1aacb685da0b420ac1f21d00d9355163917736959275412ce17b35e7.jpg" alt="Fig 10a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(a) 流动机理</figcaption>
+    <figcaption>(a) 炉内流动机制</figcaption>
   </figure>
   <figure>
-    <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/cd4c090afdc3fcc6ec37f39be4aeacb6889b8f186158ca19c26527fd63098650.jpg" alt="Fig 10b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/ca6293e1c2a41b8c0289f08c35ff2a8a3276ade6dbd1f8dec4cf324323f04baa.jpg" alt="Fig 10b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-    <figcaption>(b) 速度矢量</figcaption>
+    <figcaption>(b) 炉内速度矢量</figcaption>
   </figure>
 </div>
 <figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/289dd5c452b2e25fa5eb638115cd5215daf7128e673990a26a464c7ae3b2a89c.jpg" alt="Fig 10c" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/0438d2ce913416bf6648a6bd134e738902f92031f2dd0e598d3e7e09625c46ab.jpg" alt="Fig 10c" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 10 &mdash; (a) 流动机理；(b) 速度矢量；(c) 出口区放大。风扇抽吸驱动热空气循环，辐射在对流之外贡献 40~50 K 温升</figcaption>
+  <figcaption>(c) 出口区域放大</figcaption>
+</figure>
+<figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 10 &mdash; 台式再流焊炉内流动分析: (a) 流动机制; (b) 速度矢量; (c) 出口区域放大</figcaption>
+
+<p>图 10a 显示炉内辐射与非均匀空气流动机制：速度矢量描述中部区域热空气的强制循环返回风扇轴，风扇的吸力将气流引向风扇笼；旋转叶片产生的垂直气流将空气压入加热器空间，由红外加热器加热。值得注意的是，再流焊过程中炉腔内的温度分布主要由辐射传热实现，而非螺旋桨式风扇的强制对流。图 10b 从平面视角展示炉内气流的速度矢量。</p>
+
+<p>总体而言，如图 10a 所示，辐射使 FPCB 温度升高 40~50 K——在研究的各风扇转速配置下辐射对温度都有显著影响。强制对流与辐射的组合使炉体在较低温度设定下运行即可帮助无铅钎料熔化，从而降低功耗；若忽略辐射，FPCB 将因热分布不均匀而获得低于环境的板级温度。Zhang 等 [42] 报道了类似的过冲（overshoot）温度发现。</p>
+
+<h3 id="s4b">4.2 风扇转速与 PCB 放置位置的影响</h3>
+<p>数值方法用于研究风扇转速与 PCB 放置位置对炉内温度分布的影响。如 Mirade 等 [43] 所述，温度分布均匀性受多个参数影响：风扇转速、温度曲线设定与炉体设计。风扇转速对气流的影响基于雷诺数（$Re$）研究，如式 (9) 所示。实验数据的 $Re$ 计算值为 1.33 × 10⁵，表明炉腔内为湍流流动。</p>
+
+<div class="math-block">$$ Re = \frac{\rho D^2 n}{\mu} \tag{9} $$</div>
+<p class="math-note"><strong>解读：</strong>其中 $D$ 为旋转风扇直径，$n$ 为转速（RPM）。该定义以风扇直径特征化旋转雷诺数——转速越高，$Re$ 越大，流动越趋向湍流，强制对流占比越高；这正是"低速辐射主导、高速对流主导"（Khatir 等 [18] 的结论）在此定量化的依据。</p>
+
+<p>图 11 显示不同雷诺数下 FPCB 的温度。研究覆盖从低到高的 $Re$ 范围：0.43 × 10⁵ ~ 2.05 × 10⁵。低 $Re$ 时 FPCB 表面温度高达 540 K 以上——结果表明循环风扇的强制对流之外存在占主导的辐射传热。当 $Re$ 达到 1.33 × 10⁵ 时，湍流区各 FPCB 的温度变化开始变小，直到最大 $Re$ 时偏差仅为 5%。</p>
+
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/9d9f7b8a2159d5dec8a69881287fe8a7d658f7f5f70e491e63825e860f057404.jpg" alt="Fig 11" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 11 &mdash; 不同雷诺数（Re）与位置下 FPCB 的温度</figcaption>
 </figure>
 
-<p>图 10a 展示辐射与不均匀流动机制。速度矢量显示中间区热空气被强制循环回风扇轴--风扇抽吸力将气流导向风扇笼，旋转叶片产生的垂直气流将空气推入加热空间被 IR 灯加热。此时炉腔温度分布由<strong>辐射传热</strong>主导。</p>
+<p>FPCB 在钢笼上的放置位置有望在不产生过高表面温度的前提下实现合适的再流焊。图 12 显示前位（75 mm）与后位（135 mm）的 FPCB 温度不同：靠近风扇笼的后位 FPCB 表面温度更高（图 12），后位峰值温度略微偏离炉设定值。这一发现与图 10b 速度矢量一致——中部区域热流循环至后端直至风扇笼，快速循环在风扇笼附近产生涡流，因而提高后位 FPCB 表面温度。FPCB 峰值温度目标范围为 523~533 K，可通过调节 $Re$ 或仅改变炉腔中的放置位置（配循环风扇）实现：当 $Re$ = 1.33 × 10⁵ 时，前位（前炉中部区域）是达到目标温度的理想位置。该现象与 Najib 等 [24] 的发现可比——其测试的 FR-4 PCB 达到 542 K，高出炉设定 40 K。不建议将 FPCB 置于后位，因为再流焊过程中这会显著导致其他电子元件失效。</p>
+
+<figure>
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/e901f98d782bee49b0045cff7d14b053125c026a8c906602289cfabc10f743b2.jpg" alt="Fig 12" loading="lazy"
+       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
+       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
+  <figcaption>图 12 &mdash; FPCB 位于后部位置时中部区域的温度云图</figcaption>
+</figure>
 
 <div class="insight">
   <div class="label">Note</div>
-  <p><strong>辐射 vs 对流的量化对比：</strong>在所研究转速配置下，辐射使 FPCB 温度额外升高 <strong>40~50 K</strong>。强制对流 + 辐射组合使炉子在较低温度设定下即可熔化无铅焊料，降低功耗。若忽略辐射，FPCB 板级温度将因非均匀热分布而偏低。关键启示：对流 + 辐射耦合不仅提升能效，还通过辐射"补偿"了对流难以触及的死角区域，但补偿不充分处仍出现冷点（L1、L6）。</p>
+  <p><strong>风扇转速是均匀性的"双刃剑"：</strong>低 $Re$（0.43 × 10⁵ 量级）时辐射主导、FPCB 表面超过 540 K——比设定峰值还高，因为风扇不转时热空气滞留、辐射持续累积；高 $Re$（2.05 × 10⁵）时对流搅拌充分、各位置偏差仅 5%；但 1.33 × 10⁵ 已是"温度波动进入饱和区"的临界点。工程启示：把风扇转速当作均匀性旋钮时，必须同时考虑后位涡流带来的局部过热——后位 FPCB 峰值偏离设定值，是"快循环在风扇笼附近产生涡流"的直接后果，这也解释了为何后位不被推荐。</p>
 </div>
 
-<h3 id="s4b">4.2 风扇转速与 PCB 位置的影响</h3>
-
-<p>风扇转速通过<span class="key-term">雷诺数（Re）</span>表征：</p>
-<div class="math-block">$$ Re = \frac{\rho D^{2} n}{\mu} \tag{9} $$</div>
-<p class="math-note"><strong>解读：</strong>D 为旋转风扇直径，n 为转速（RPM）。实验数据 Re = 1.33×10⁵，属湍流区。研究范围 Re = 0.43×10⁵ ~ 2.05×10⁵。</p>
+<h3 id="s4c">4.3 材料性能</h3>
+<p>图 13 显示 FPCB 拉伸试验取平均后计算的应力-应变曲线。常用关系基于被测 FPCB 低应变弹性区：在线性区 0.2% 偏移处，FPCB 屈服强度为 85 MPa；此后屈服进入塑性变形行为，FPCB 材料发生永久变形——从可靠性角度看这是不利的。本研究从弹性区计算得到杨氏模量 5.3 ± 0.8 GPa。总体而言，杨氏模量数值与 Pan 和 Vatanporast [44] 的结果一致。</p>
 
 <figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/144963016cc7e7a3c5e87c48850cb8f599f254207363499cad65e4fbb9fa7033.jpg" alt="Fig 11" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/95d0748709329208f9311b3a10f5452dc720b68c1406bf362f9982084432196d.jpg" alt="Fig 13" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 11 &mdash; 不同 Re 与位置下 FPCB 的温度。低 Re 时 FPCB 表面温度 &gt;540 K，辐射主导；Re = 1.33×10⁵ 起温度变化趋缓，至最大 Re 偏差 5%</figcaption>
+  <figcaption>图 13 &mdash; FPCB 再流焊用应力-应变曲线</figcaption>
 </figure>
 
-<p>图 11 显示：低 Re 时 FPCB 表面温度 &gt;540 K，表明<strong>辐射传热主导</strong>。Re = 1.33×10⁵ 起湍流区温度变化趋小，直至最大 Re 偏差 5%。</p>
-
-<p>图 12 揭示 FPCB 前端（75 mm）与后端（135 mm）位置温度差异：<strong>后端（近风扇笼）表面温度更高</strong>，峰值略偏离炉设定。这与图 10b 速度矢量一致--中间区热流向后端循环至风扇笼，快速循环在风扇笼附近形成涡流，抬升后端 FPCB 表面温度。FPCB 峰值目标 523~533 K，可通过调 Re + 调位置实现。Re = 1.33×10⁵ 时<strong>前端（中间区）为理想位置</strong>。后端不推荐--会显著增加回流焊接中其他电子元件失效风险。</p>
-
-<figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/fe67128002c2820e547bdf9397329cb9c730ce2c4779cd7f78dc8c9b8084fa07.jpg" alt="Fig 12" loading="lazy"
-       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 12 &mdash; 后端位置 FPCB 中间区温度等值线。后端因近风扇笼涡流而温度偏高，非推荐位置</figcaption>
-</figure>
-
-<div class="insight">
-  <div class="label">Note</div>
-  <p><strong>位置选择的工程判据：</strong>FPCB 峰值温度目标 523~533 K（250~260 ℃）正好覆盖 SAC 无铅焊料熔点（约 217 ℃）之上 30~40 ℃ 的工艺窗口。后端因涡流聚热易超冲，前端中间区在 Re = 1.33×10⁵ 下恰好落入窗口。Najib 等人在 FR-4 PCB 上测得 542 K（超炉设定 40 K），与本文后端现象一致--说明该过热是炉体几何共性而非 FPCB 特有。</p>
-</div>
+<h3 id="s4d">4.4 FPCB 厚度的影响</h3>
+<p>表 3 给出仿真分析测得的不同 FPCB 厚度对应的温度差。很薄的 25 µm FPCB 与其他厚度相比表现出最低的温度差（前、后区中心之间）——这很可能是因为薄 FPCB 在实验风扇转速（$Re$ = 1.33 × 10⁵）下能更快地在表面释放热量；该发现支持薄 FPCB 上变形产生的曲率会降低表面压力（与炉压不同），从而促进气流、改善散热 [33]。该结论适用于相近的测试厚度；但其他 FPCB 厚度不存在线性温差相关性——75 µm 温差最高，其次为 125 µm。此外，100 与 125 µm 厚度 FPCB 的温差源于上下层 FPCB 之间导热系数较低，故温差较小——表现为低体积气流速度下变形行为小、温度差被促生；而且热扩散率（thermal diffusivity）在 PCB 温差中起主要作用 [45]，更好的热扩散率增强传热、从而降低 PCB 表面温度。FPCB 夹具（fixture）[46] 对抑制意外翘曲很重要——翘曲会影响对流与红外吸收（轻微阴影或角度改变），使用夹具可补偿焊接过程中较长时长的温度影响。结果还表明：FPCB 合适的刚度在 40 至 100 µm 之间，此范围可承受所施加的热载荷且温度差较低。同时注意，FPCB 表面变形对 FPCB 厚度比对相同炉设定下的温差更敏感。</p>
 
 <table>
-  <caption>风速与位置效应对比</caption>
-  <thead><tr><th>变量</th><th>低 Re / 后端</th><th>高 Re / 前端</th></tr></thead>
-  <tbody>
-    <tr><td>主导传热</td><td>辐射（FPCB &gt;540 K）</td><td>对流+辐射耦合</td></tr>
-    <tr><td>FPCB 表面温度</td><td>偏高（后端涡流聚热）</td><td>落入 523~533 K 窗口</td></tr>
-    <tr><td>推荐性</td><td>不推荐（元件失效风险）</td><td>推荐（中间区前端）</td></tr>
-  </tbody>
-</table>
-
-<h3 id="s4c">4.3 材料属性</h3>
-
-<p>图 13 为 FPCB 拉伸试验平均应力-应变曲线。低应变弹性区关系常用。在 0.2% 偏置线性区，<strong>屈服强度 85 MPa</strong>，此后进入塑性变形（永久变形，不利可靠性）。由弹性区计算得 <strong>杨氏模量 E = 5.3 ± 0.8 GPa</strong>，与 Pan & Vatanporast 结果一致。</p>
-
-<figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/914d92f6f7aed8a3edf44631b3b0e735ae77071fabeb454b9cb167bfb70f414a.jpg" alt="Fig 13" loading="lazy"
-       onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
-       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 13 &mdash; FPCB 回流用应力-应变曲线。屈服强度 85 MPa（0.2% 偏置），杨氏模量 5.3 ± 0.8 GPa</figcaption>
-</figure>
-
-<div class="insight">
-  <div class="label">Note</div>
-  <p><strong>5.3 GPa 的杨氏模量意味着什么？</strong>对比：铜 ~110 GPa、FR-4 ~17 GPa、聚酰亚胺膜 ~2.5~4 GPa。FPCB 的 5.3 GPa 介于纯 PI 膜与铜之间，因铜层贡献增强。低模量意味着 FPCB 在热载荷下易变形翘曲--这既带来"薄板散热快"的优势（4.4 节），也带来固定需求（4.5 节四边夹持）。屈服强度 85 MPa 决定了 von Mises 应力须控制在此值以下以避免永久变形。</p>
-</div>
-
-<h3 id="s4d">4.4 不同 FPCB 厚度的影响</h3>
-
-<p>表 3 显示不同 FPCB 厚度的温度差（仿真）：<strong>25 µm 最薄板温差最低（1.37 K）</strong>，因薄板散热更快（Re = 1.33×10⁵）。这支持薄 FPCB 变形产生曲率、降低表面压力（与炉压之差）、促进气流改善散热。但厚度与温差无线性关系--75 µm 温差最高（11.61 K），其次 125 µm（7.31 K）。热扩散率也起关键作用--越好热扩散率越利于传热、降低表面温度。</p>
-
-<table>
-  <caption>表 3. 不同 FPCB 厚度的温度差</caption>
-  <thead><tr><th>FPCB 厚度 (µm)</th><th>温度差 (K)</th></tr></thead>
+  <caption>表 3. 不同 FPCB 厚度的温度差（仿真）</caption>
+  <thead><tr><th>FPCB 厚度（μm）</th><th>温度差（K）</th></tr></thead>
   <tbody>
     <tr><td>25</td><td>1.37</td></tr>
     <tr><td>53</td><td>6.45</td></tr>
@@ -546,109 +514,164 @@ MathJax = {
 
 <div class="insight">
   <div class="label">Note</div>
-  <p><strong>厚度-温差非单调的物理解释：</strong>薄板（25 µm）热容小、热扩散快，但易翘曲形成曲率 → 促进气流 → 加速散热，故温差最小。75 µm 出现峰值可能因该厚度下翘曲程度与热阻的组合最不利--既不足以像薄板那样形成有利曲率，又比 100/125 µm 更易局部热点聚集。FPCB 夹具（fixture）对抑制非预期翘曲、稳定对流与红外吸收角度至关重要。综合刚度与温差，推荐厚度区间 <strong>40~100 µm</strong>。关键结论：FPCB 表面变形对厚度比对温度差更敏感。</p>
+  <p><strong>厚度效应的物理：热容与曲率的权衡。</strong>25 µm 极薄板温差仅 1.37 K——热容小、升温快且均匀，且受热弯曲形成的曲率减小了表面压力差、促进板面气流散热；但 75 µm 反而出现最高温差（11.61 K）、125 µm（7.31 K）又回落，不存在线性关系。原因有二：100/125 µm 上下层间导热系数低、温度梯度被"分层"缓冲；同时厚度增加使热容增大、升温变慢。设计启示：40–100 µm 是兼顾刚度（抗翘曲、耐热载）与温差的最佳窗口，而变形对厚度比对温差更敏感——选材时优先保证厚度一致性。</p>
 </div>
 
-<h3 id="s4e">4.5 回流焊接区域选择</h3>
-
-<p>热电偶阵列评估显示炉腔加热全程温度分布不均，可能诱发未熔焊料。流场与热效应证实<strong>低厚度 FPCB 利于吸热与散热</strong>。Re = 1.33×10⁵ 时温差 5~7 K。最优位置见图 14 红色矩形区。炉温设定维持 JSTD 标准；FPCB 峰值建议 &lt;543 K 以保持 von Mises 应力在弹性区。四边固定可保证形状均匀并维持在可接受范围。</p>
+<h3 id="s4e">4.5 再流焊炉区位选择</h3>
+<p>用一系列热电偶评估炉腔温度，揭示整个加热过程温度分布不均匀——这可能促成未焊透（unbaked）现象。流动与热效应是关键发现，证实了较低厚度的 FPCB 有利于良好的吸热与散热。试验结果还一致表明：FPCB 能在接近现行 JSTD 曲线设定的条件下运行以进行进一步焊接分析；$Re$ = 1.33 × 10⁵ 时温度差在 5 至 7 K 之间。最优位置效应的进一步分析以红色矩形区域标注于图 14。炉温设定按前文 JSTD 维持。同时，建议 FPCB 峰值温度保持在 543 K 以下，以使 von Mises 应力低于弹性区；将板四边全部固定安装可保证形状一致并保持在可接受范围内——因此这也是再流焊工艺放置 FPCB 的另一种方式。</p>
 
 <figure>
-  <img src="https://cdn-mineru.openxlab.org.cn/result/2026-07-13/c72c6bfb-d049-4d55-ba68-b3741be390da/6528c141154c51d27bc3605d6fc203fcd232e9a7c1da0042e266098ec54a79d5.jpg" alt="Fig 14" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/5625bc0c6f0e08c1e4a26994eb6d7a1d4d32a429e776a23826ccfb2ed3b6897d.jpg" alt="Fig 14" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
-  <figcaption>图 14 &mdash; FPCB 在桌面回流焊炉钢架上的定位。红色矩形区为最优放置位置（前端中间区）</figcaption>
+  <figcaption>图 14 &mdash; FPCB 在台式再流焊炉钢笼上的定位（红色矩形区域为最优位置）</figcaption>
 </figure>
 
 <!-- ═══════════ 5. CONCLUSIONS ═══════════ -->
 <h2 id="s5">5. 结论</h2>
-
+<p>本研究建立了台式再流焊炉的热学模型并经实验验证，实验与数值方法在温度测试中均表现出良好一致性。研究揭示加热全程温度不均匀，可能诱发未焊透现象。数值方法进一步揭示再流焊炉的三个有趣发现：</p>
 <ol>
-  <li><strong>温度非均匀性：</strong>炉腔对称区温度比其他区域低 <strong>1.2 倍</strong>，存在未熔焊料风险</li>
-  <li><strong>风扇效应：</strong>风扇显著影响温度分布；低速下辐射流主导、压过强制对流</li>
-  <li><strong>厚度效应：</strong>薄 FPCB 吸热散热性能优于厚板；推荐厚度区间 <strong>40~100 µm</strong></li>
-  <li><strong>最优位置：</strong>确定了 FPCB 最优放置位置，可避免未熔焊料与裂纹问题</li>
+  <li><strong>炉腔温度的不均匀</strong>：炉腔对称区温度比炉内其他区域低 1.2 倍。</li>
+  <li><strong>风扇强烈影响温度分布</strong>：低速时辐射效应相对强制对流占主导。</li>
+  <li><strong>厚度效应</strong>：薄 FPCB 因薄而具有良好的吸热与散热能力；建议 FPCB 厚度控制在 40 至 100 µm 范围内以保持合适的温度差。</li>
 </ol>
-<p>成果可为工艺工程师与研究人员提供流场与热均匀性指导。未来将扩展到对流炉、纯红外炉、红外+对流炉等其他炉型下的 FPCB 研究。</p>
+<p>研究还确定了 FPCB 的最优放置位置，可避免未焊透现象、缓解裂纹问题。总之，本研究成果可为工艺工程师与研究者提供期望的流动与热均匀性设计指导。此外，本研究有望扩展到其他类型再流焊炉（对流炉、纯红外（IR）炉、红外+对流炉）中的 FPCB 研究。</p>
 
 <!-- ═══════════ KEY TAKEAWAYS ═══════════ -->
 <h2 id="sum">核心要点总结</h2>
-
 <ol>
-  <li><strong>建模方法：</strong>DO 辐射模型 + RNG k-ε 湍流模型耦合求解，SIMPLE 算法，二阶迎风格式，674,521 单元网格，时间步 0.005 s，实验偏差 &lt;2%</li>
-  <li><strong>辐射主导性：</strong>低 Re 时辐射使 FPCB 温度额外升高 40~50 K，斯特藩-玻尔兹曼 T⁴ 律使高温区辐射通量远超对流</li>
-  <li><strong>对称区冷点：</strong>风扇背流 + 出口几何使对称区温度低 1.2 倍，L1/L6 位置温差达 40 K，易致焊料不润湿</li>
-  <li><strong>位置判据：</strong>Re = 1.33×10⁵ 时前端中间区最优（523~533 K 落入 SAC 焊料窗口），后端近风扇笼因涡流过热不推荐</li>
-  <li><strong>厚度区间：</strong>25 µm 温差最小（1.37 K），75 µm 最大（11.61 K），非线性；推荐 40~100 µm 兼顾刚度与温差</li>
-  <li><strong>材料参数：</strong>FPCB 杨氏模量 5.3 ± 0.8 GPa，屈服强度 85 MPa，密度 3839 kg/m³，导热 0.3 W/mK</li>
-  <li><strong>工程启示：</strong>四边夹持 + 前端中间区放置 + 40~100 µm 厚度 = 接近 JSTD-020E 的稳定回流工艺</li>
+  <li><strong>台式红外炉的温度天生不均</strong>：60 点热电偶实测表明预热/浸泡/再流各阶段炉腔温度均非均匀——超温 5–13 °C（中心近风扇区）、欠温 20–30 °C（对称区），对称区热分布比中心/后区低 1.2 倍。</li>
+  <li><strong>辐射 > 对流是低速工况的基本盘</strong>：低 $Re$（0.43 × 10⁵）时 FPCB 表面温度超过 540 K，辐射占主导；$Re$ = 1.33 × 10⁵ 起湍流搅拌使各位置偏差收敛至 5%。</li>
+  <li><strong>辐射使 FPCB 比空气高 40–50 K</strong>：炉壁发射率 0.1（反射）、PCB 发射率 0.9（近黑体）的边界条件组合，使板温高于炉空气——热曲线设定必须按板温而非空气温度校核。</li>
+  <li><strong>位置比转速更"便宜"的均匀性旋钮</strong>：前位（75 mm）在 $Re$ = 1.33 × 10⁵ 时可把峰值控制在目标 523–533 K；后位（135 mm）因风扇笼涡流过热且峰值偏离设定，不推荐。</li>
+  <li><strong>厚度窗口 40–100 µm</strong>：25 µm 温差最小（1.37 K）、75 µm 最大（11.61 K），无线性关系；峰值温度建议 &lt; 543 K 使 von Mises 应力保持在弹性区以下。</li>
+  <li><strong>焊点缺陷的因果链</strong>：L1/L6 位置平均温差达 40 K → FPCB 低温区 → 再流时钎料不润湿/未焊透；极端高温 → IMC 增厚、焊点强度下降——均匀性直接决定合格率。</li>
+  <li><strong>方法论可复用</strong>：DO 辐射模型 + RNG k-epsilon 湍流模型 + SIMPLE 算法（收敛判据 10⁻³/10⁻⁶、二阶迎风、0.005 s 时间步）是台式红外炉热-流耦合仿真的低成本配置，与实验偏差 &lt; 2%。</li>
 </ol>
 
-<!-- ═══════════ APPENDIX ═══════════ -->
-<h2 id="app">附录数据</h2>
+<!-- ═══════════ APPENDIX A ═══════════ -->
+<h2 id="app">附录 A：实验数据</h2>
+<p>本附录转录论文附录 A 的四张原始实验数据表，供核对正文图 2、图 9b 与图 13 的数值。</p>
 
 <table>
-  <caption>表 A1. 图 2 中炉内空气温度 (K)</caption>
-  <thead><tr><th>时间 (s)</th><th>试验1</th><th>试验2</th><th>试验3</th><th>均值</th><th>标准差</th></tr></thead>
+  <caption>表 A1. 图 2 中炉内空气温度实验数据（K）</caption>
+  <thead><tr><th>时间（s）</th><th>试验 1</th><th>试验 2</th><th>试验 3</th><th>平均值</th><th>标准差</th></tr></thead>
   <tbody>
-    <tr><td>0</td><td>300</td><td>302</td><td>297</td><td>300</td><td>2.52</td></tr>
-    <tr><td>10</td><td>300</td><td>307</td><td>297</td><td>301</td><td>5.13</td></tr>
-    <tr><td>20</td><td>307</td><td>313</td><td>300</td><td>307</td><td>6.51</td></tr>
-    <tr><td>30</td><td>322</td><td>328</td><td>322</td><td>324</td><td>3.46</td></tr>
-    <tr><td>40</td><td>345</td><td>350</td><td>342</td><td>346</td><td>4.04</td></tr>
-    <tr><td>50</td><td>357</td><td>365</td><td>359</td><td>360</td><td>4.16</td></tr>
-    <tr><td>60</td><td>374</td><td>376</td><td>371</td><td>374</td><td>2.52</td></tr>
+    <tr><td>0</td><td>300</td><td>302</td><td>297</td><td>300</td><td>2.5166</td></tr>
+    <tr><td>10</td><td>300</td><td>307</td><td>297</td><td>301</td><td>5.1316</td></tr>
+    <tr><td>20</td><td>307</td><td>313</td><td>300</td><td>307</td><td>6.5064</td></tr>
+    <tr><td>30</td><td>322</td><td>328</td><td>322</td><td>324</td><td>3.4641</td></tr>
+    <tr><td>40</td><td>345</td><td>350</td><td>342</td><td>346</td><td>4.0415</td></tr>
+    <tr><td>50</td><td>357</td><td>365</td><td>359</td><td>360</td><td>4.1633</td></tr>
+    <tr><td>60</td><td>374</td><td>376</td><td>371</td><td>374</td><td>2.5166</td></tr>
   </tbody>
 </table>
 
 <table>
-  <caption>表 A2. 图 2 中 FPCB 表面温度 (K)</caption>
-  <thead><tr><th>时间 (s)</th><th>试验1</th><th>试验2</th><th>试验3</th><th>均值</th><th>标准差</th></tr></thead>
+  <caption>表 A2. 图 2 中 FPCB 表面温度实验数据（K）</caption>
+  <thead><tr><th>时间（s）</th><th>试验 1</th><th>试验 2</th><th>试验 3</th><th>平均值</th><th>标准差</th></tr></thead>
   <tbody>
-    <tr><td>0</td><td>300</td><td>302</td><td>299</td><td>300.33</td><td>1.53</td></tr>
-    <tr><td>10</td><td>300</td><td>302</td><td>299</td><td>300.33</td><td>1.53</td></tr>
-    <tr><td>20</td><td>304</td><td>306</td><td>303</td><td>304.33</td><td>1.53</td></tr>
-    <tr><td>30</td><td>322</td><td>328</td><td>326</td><td>325.33</td><td>3.06</td></tr>
-    <tr><td>40</td><td>355</td><td>359</td><td>356</td><td>356.67</td><td>2.08</td></tr>
-    <tr><td>50</td><td>372</td><td>378</td><td>374</td><td>374.67</td><td>3.06</td></tr>
-    <tr><td>60</td><td>395</td><td>400</td><td>396</td><td>397.00</td><td>2.65</td></tr>
+    <tr><td>0</td><td>300</td><td>302</td><td>299</td><td>300.3333</td><td>1.5275</td></tr>
+    <tr><td>10</td><td>300</td><td>302</td><td>299</td><td>300.3333</td><td>1.5275</td></tr>
+    <tr><td>20</td><td>304</td><td>306</td><td>303</td><td>304.3333</td><td>1.5275</td></tr>
+    <tr><td>30</td><td>322</td><td>328</td><td>326</td><td>325.3333</td><td>3.0551</td></tr>
+    <tr><td>40</td><td>355</td><td>359</td><td>356</td><td>356.6667</td><td>2.0817</td></tr>
+    <tr><td>50</td><td>372</td><td>378</td><td>374</td><td>374.6667</td><td>3.0551</td></tr>
+    <tr><td>60</td><td>395</td><td>400</td><td>396</td><td>397.0000</td><td>2.6458</td></tr>
   </tbody>
 </table>
 
 <table>
-  <caption>表 A3. 图 9b 中 z 轴 L1~L6 温度 (K)</caption>
-  <thead><tr><th>位置</th><th>试验1</th><th>试验2</th><th>试验3</th><th>均值</th><th>标准差</th></tr></thead>
+  <caption>表 A3. 图 9b 中 z 轴 L1~L6 位置温度测量实验数据（K）</caption>
+  <thead><tr><th>位置</th><th>试验 1</th><th>试验 2</th><th>试验 3</th><th>平均值</th><th>标准差</th></tr></thead>
   <tbody>
-    <tr><td>L1</td><td>487</td><td>492</td><td>485</td><td>488.00</td><td>3.61</td></tr>
-    <tr><td>L2</td><td>484</td><td>486</td><td>480</td><td>483.33</td><td>3.06</td></tr>
-    <tr><td>L3</td><td>466</td><td>461</td><td>470</td><td>465.67</td><td>4.51</td></tr>
-    <tr><td>L4</td><td>484</td><td>482</td><td>488</td><td>484.67</td><td>3.06</td></tr>
-    <tr><td>L5</td><td>481</td><td>483</td><td>478</td><td>480.67</td><td>2.52</td></tr>
-    <tr><td>L6</td><td>456</td><td>452</td><td>462</td><td>456.67</td><td>5.03</td></tr>
+    <tr><td>L1</td><td>487</td><td>492</td><td>485</td><td>488.0000</td><td>3.6056</td></tr>
+    <tr><td>L2</td><td>484</td><td>486</td><td>480</td><td>483.3333</td><td>3.0551</td></tr>
+    <tr><td>L3</td><td>466</td><td>461</td><td>470</td><td>465.6667</td><td>4.5092</td></tr>
+    <tr><td>L4</td><td>484</td><td>482</td><td>488</td><td>484.6667</td><td>3.0551</td></tr>
+    <tr><td>L5</td><td>481</td><td>483</td><td>478</td><td>480.6667</td><td>2.5166</td></tr>
+    <tr><td>L6</td><td>456</td><td>452</td><td>462</td><td>456.6667</td><td>5.0332</td></tr>
   </tbody>
 </table>
 
 <table>
-  <caption>表 A4. 图 13 中 FPCB 应力-应变曲线（节选关键点）</caption>
-  <thead>
-    <tr><th rowspan="2">拉伸应变 (mm/mm)</th><th colspan="4">拉伸应力 (MPa)</th><th rowspan="2">均值</th><th rowspan="2">标准差</th></tr>
-    <tr><th>试验1</th><th>试验2</th><th>试验3</th><th>试验4</th></tr>
-  </thead>
+  <caption>表 A4. 图 13 中 FPCB 再流焊应力-应变曲线实验数据</caption>
+  <thead><tr><th rowspan="2">拉伸应变（mm/mm）</th><th colspan="4">拉伸应力（MPa）</th><th rowspan="2">平均值</th><th rowspan="2">标准差</th></tr>
+  <tr><th>试验 1</th><th>试验 2</th><th>试验 3</th><th>试验 4</th></tr></thead>
   <tbody>
     <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-    <tr><td>0.003</td><td>15.44</td><td>12.14</td><td>10.87</td><td>8.75</td><td>11.50</td><td>2.80</td></tr>
-    <tr><td>0.010</td><td>48.41</td><td>46.87</td><td>43.22</td><td>45.43</td><td>46.87</td><td>2.67</td></tr>
-    <tr><td>0.016</td><td>74.45</td><td>71.16</td><td>68.03</td><td>67.21</td><td>69.60</td><td>3.30</td></tr>
-    <tr><td>0.020</td><td>86.32</td><td>83.42</td><td>79.13</td><td>78.46</td><td>81.27</td><td>3.72</td></tr>
-    <tr><td>0.040</td><td>113.78</td><td>112.26</td><td>106.47</td><td>102.95</td><td>109.37</td><td>5.05</td></tr>
-    <tr><td>0.070</td><td>139.73</td><td>136.88</td><td>128.61</td><td>125.34</td><td>132.75</td><td>6.78</td></tr>
-    <tr><td>0.100</td><td>156.95</td><td>151.76</td><td>143.04</td><td>140.93</td><td>147.40</td><td>7.50</td></tr>
-    <tr><td>0.110</td><td>154.39</td><td>151.13</td><td>141.20</td><td>139.13</td><td>146.17</td><td>7.44</td></tr>
+    <tr><td>0.003</td><td>15.436</td><td>12.136</td><td>10.865</td><td>8.749</td><td>11.501</td><td>2.799</td></tr>
+    <tr><td>0.006</td><td>27.726</td><td>25.371</td><td>23.912</td><td>21.347</td><td>24.642</td><td>2.672</td></tr>
+    <tr><td>0.010</td><td>48.413</td><td>46.865</td><td>43.215</td><td>45.427</td><td>46.865</td><td>2.669</td></tr>
+    <tr><td>0.013</td><td>60.523</td><td>58.668</td><td>57.187</td><td>55.341</td><td>57.928</td><td>2.200</td></tr>
+    <tr><td>0.016</td><td>74.451</td><td>71.159</td><td>68.032</td><td>67.205</td><td>69.596</td><td>3.299</td></tr>
+    <tr><td>0.020</td><td>86.324</td><td>83.421</td><td>79.126</td><td>78.456</td><td>81.274</td><td>3.716</td></tr>
+    <tr><td>0.030</td><td>104.897</td><td>100.942</td><td>96.889</td><td>91.161</td><td>98.916</td><td>5.869</td></tr>
+    <tr><td>0.040</td><td>113.783</td><td>112.257</td><td>106.472</td><td>102.952</td><td>109.365</td><td>5.046</td></tr>
+    <tr><td>0.050</td><td>126.214</td><td>125.758</td><td>117.414</td><td>115.211</td><td>121.586</td><td>5.660</td></tr>
+    <tr><td>0.060</td><td>136.211</td><td>131.076</td><td>125.34</td><td>119.127</td><td>128.208</td><td>7.364</td></tr>
+    <tr><td>0.070</td><td>139.729</td><td>136.881</td><td>128.613</td><td>125.34</td><td>132.747</td><td>6.776</td></tr>
+    <tr><td>0.080</td><td>144.158</td><td>142.349</td><td>132.371</td><td>131.216</td><td>137.360</td><td>6.674</td></tr>
+    <tr><td>0.090</td><td>148.774</td><td>145.213</td><td>137.076</td><td>134.859</td><td>141.145</td><td>6.592</td></tr>
+    <tr><td>0.100</td><td>156.951</td><td>151.758</td><td>143.043</td><td>140.927</td><td>147.401</td><td>7.499</td></tr>
+    <tr><td>0.110</td><td>154.389</td><td>151.128</td><td>141.201</td><td>139.128</td><td>146.165</td><td>7.440</td></tr>
   </tbody>
 </table>
 
+<!-- ═══════════ REFERENCES ═══════════ -->
+<h2 id="refs">参考文献</h2>
+<ol>
+  <li>Rudajevová, A.; Dušek, K. Influence of manufacturing mechanical and thermal histories on dimensional stabilities of FR4 Laminate and FR4/Cu-plated holes. <em>Materials</em> 2018, 11, 2114. [CrossRef]</li>
+  <li>Nothdurft, P.; Riess, G.; Kern, W. Copper/epoxy joints in printed circuit boards: Manufacturing and interfacial failure mechanisms. <em>Materials</em> 2019, 12, 550. [CrossRef]</li>
+  <li>Cheng, S.; Huang, C.M.; Pecht, M. A review of lead-free solders for electronics applications. <em>Microelectron. Reliab.</em> 2017, 75, 77–95. [CrossRef]</li>
+  <li>Pan, J.; Chou, T.C.; Bath, J.; Willie, D.; Toleno, B.J. Effects of reflow profile and thermal conditioning on intermetallic compound thickness for SnAgCu soldered joints. <em>Solder. Surf. Mt. Technol.</em> 2009, 21, 32–37. [CrossRef]</li>
+  <li>Wang, X.; Li, X.; Pan, K.; Zhou, B.; Jiang, T. Effect of reflow profile parameters on shear performance of Sn3.0Ag0.5Cu/Cu solder joint. In Proceedings of the 2014 10th International Conference on Reliability, Maintainability and Safety (ICRMS), Guangzhou, China, 6–8 August 2014; pp. 691–693. [CrossRef]</li>
+  <li>Bassi, M. Estimation of the vapor pressure of PFPEs by TGA. <em>Thermochim. Acta</em> 2011, 521, 197–201. [CrossRef]</li>
+  <li>Illés, B.; Géczy, A. Investigating the dynamic changes of the vapour concentration in a Vapour Phase Soldering oven by simplified condensation modelling. <em>Appl. Therm. Eng.</em> 2013, 59, 94–100. [CrossRef]</li>
+  <li>Illés, B.; Skwarek, A.; Géczy, A.; Krammer, O.; Bušek, D. Numerical modelling of the heat and mass transport processes in a vacuum vapour phase soldering system. <em>Int. J. Heat Mass Transf.</em> 2017, 114, 613–620. [CrossRef]</li>
+  <li>Géczy, A.; Illés, B.; Illyefalvi-Vitéz, Z. Modeling method of heat transfer during Vapour Phase Soldering based on filmwise condensation theory. <em>Int. J. Heat Mass Transf.</em> 2013, 67, 1145–1150. [CrossRef]</li>
+  <li>Illés, B.; Géczy, A. Numerical simulation of condensate layer formation during vapour phase soldering. <em>Appl. Therm. Eng.</em> 2014, 70, 421–429. [CrossRef]</li>
+  <li>Yu, H.; Kivilathti, J. CFD modelling of the flow field inside a reflow oven. <em>Solder. Surf. Mt. Technol.</em> 2002, 14, 38–44. [CrossRef]</li>
+  <li>Park, S.H.; Kim, Y.H.; Kim, Y.S.; Park, Y.G.; Ha, M.Y. Numerical study on the effect of different hole locations in the fan case on the thermal performance inside a gas oven range. <em>Appl. Therm. Eng.</em> 2018, 137, 123–133. [CrossRef]</li>
+  <li>Verboven, P.; Scheerlinck, N.; De Baerdemaeker, J.; Nicolaï, B.M. Computational Fluid Dynamics modelling and validation of the temperature distribution in a forced convection oven. <em>J. Food Eng.</em> 2000, 43, 61–73. [CrossRef]</li>
+  <li>Chhanwal, N.; Anishaparvin, A.; Indrani, D.; Raghavarao, K.S.M.S.; Anandharamakrishnan, C. Computational fluid dynamics (CFD) modeling of an electrical heating oven for bread-baking process. <em>J. Food Eng.</em> 2010, 100, 452–460. [CrossRef]</li>
+  <li>Lau, C.-S.; Abdullah, M.Z. Simulation investigations on fluid/structure interaction in the reflow soldering process of board-level BGA packaging. <em>Int. J. Comput. Theory Eng.</em> 2013, 5, 645–649. [CrossRef]</li>
+  <li>Son, Y.S.; Shin, J.Y. Thermal response of electronic assemblies during forced convection-infrared reflow soldering in an oven with air injection. <em>Int. J. Ser. B Fluids Therm. Eng.</em> 2006, 48, 865–873. [CrossRef]</li>
+  <li>Verboven, P.; Datta, A.K.; Anh, N.T.; Scheerlinck, N.; Nicolä, B.M. Computation of airflow effects on heat and mass transfer in a microwave oven. <em>J. Food Eng.</em> 2003, 59, 181–190. [CrossRef]</li>
+  <li>Khatir, Z.; Paton, J.; Thompson, H.; Kapur, N.; Toropov, V.; Lawes, M.; Kirk, D. Computational fluid dynamics (CFD) investigation of air flow and temperature distribution in a small scale bread-baking oven. <em>Appl. Energy</em> 2012, 89, 89–96. [CrossRef]</li>
+  <li>Aizawa, T.; Okagawa, K.; Kashani, M. Application of magnetic pulse welding technique for flexible printed circuit boards (FPCB) lap joints. <em>J. Mater. Process. Technol.</em> 2013, 213, 1095–1102. [CrossRef]</li>
+  <li>Shin, D.; Lee, J.; Chung, Y.; Sohn, H. Laser cutting process for FPCB. In Proceedings of the 2008 International Conference on Smart Manufacturing Application, Goyangi, Korea, 9–11 April 2008; pp. 357–362. [CrossRef]</li>
+  <li>Gao, F.; Takemoto, T.; Nishikawa, H. Effects of Co and Ni Addition on Reactive Diffusion between Sn-3.5Ag Solder and Cu during Soldering and Annealing. <em>Mater. Sci. Eng. A</em> 2006, 420, 39–46. [CrossRef]</li>
+  <li>Liu, J.; Ni, H.; Wang, Z.; Yang, S.; Zhou, W. Colorless and Transparent High—Temperature-Resistant Polymer Optical Films—Current Status and Potential Applications in Optoelectronic Fabrications. In <em>Optoelectronics—Materials and Devices</em>; InTechOpen: London, UK, 2015; pp. 58–80. [CrossRef]</li>
+  <li>Yoon, J.W.; Lee, J.G.; Lee, J.B.; Noh, B.I.; Jung, S.B. Thermo-compression bonding of electrodes between FPCB and RPCB by using Pb-free solders. <em>J. Mater. Sci. Mater. Electron.</em> 2012, 23, 41–47. [CrossRef]</li>
+  <li>Yoon, J.W.; Ko, M.K.; Noh, B.I.; Jung, S.B. Joint reliability evaluation of thermo-compression bonded FPCB/RPCB joints under high temperature storage test. <em>Microelectron. Reliab.</em> 2013, 53, 2036–2042. [CrossRef]</li>
+  <li>Lee, D.Y.; Kwon, C.; Pak, H.K. Reliability of Cu-Cu direct interconnections using ultrasonic bonding process between RPCB and FPCB. <em>Proc. Symp. Ultrason. Electron.</em> 2014, 32, 590–593.</li>
+  <li>Lau, C.S.; Abdullah, M.Z.; Khor, C.Y. Optimization of the Reflow Soldering Process with Multiple Quality Characteristics in Ball Grid Array Packaging by Using the Grey-Based Taguchi Method. <em>Microelectron. Int.</em> 2013, 3, 151–168. [CrossRef]</li>
+  <li>Yamane, M.; Orita, N.; Miyazaki, K.; Zhou, W. Development of new model reflow oven for lead-free soldering. <em>Furukawa Rev.</em> 2004, 26, 31–36.</li>
+  <li>Najib, A.M.; Abdullah, M.Z.; Khor, C.Y.; Saad, A.A. Experimental and numerical investigation of 3D gas flow temperature field in infrared heating reflow oven with circulating fan. <em>Int. J. Heat Mass Transf.</em> 2015, 87, 49–58. [CrossRef]</li>
+  <li>Zhou, E.; Bayazitoglu, Y. Developing laminar natural convection of power law fluids in vertical open ended channel. <em>Int. J. Heat Mass Transf.</em> 2019, 128, 354–362. [CrossRef]</li>
+  <li>Smolka, J.; Bulinski, Z.; Nowak, A.J. The experimental validation of a CFD model for a heating oven with natural air circulation. <em>Appl. Therm. Eng.</em> 2013, 54, 387–398. [CrossRef]</li>
+  <li>Grinyaev, K.V.; Ditenberg, I.A.; Smirnov, I.V.; Tyumentsev, A.N.; Tsverova, A.S.; Chernov, V.M. ASM Ready Reference: Thermal Properties of Metals; ASM International: Geauga County, OH, USA, 2013.</li>
+  <li>Svasta, P.; Simion-Zanescu, D.; Ionescu, R. Components' emissivity in reflow soldering process. In Proceedings of the 2004 54th Electronic Components and Technology Conference (IEEE Cat. No.04CH37546), Las Vegas, NV, USA, 4 June 2004; pp. 1921–1924. [CrossRef]</li>
+  <li>Lim, C.H.; Abdullah, M.Z.; Azid, I.A.; Khor, C.Y. Heat transfer enhancement by flexible printed circuit board's deformation. <em>Int. Commun. Heat Mass Transf.</em> 2017, 84, 86–93. [CrossRef]</li>
+  <li>Abdul Aziz, M.S.; Abdullah, M.Z.; Khor, C.Y.; Che Ani, F. Influence of pin offset in PCB through-hole during wave soldering process: CFD modeling approach. <em>Int. Commun. Heat Mass Transf.</em> 2013, 48, 116–123. [CrossRef]</li>
+  <li>Abdul Aziz, M.S.; Abdullah, M.Z.; Khor, C.Y.; Jalar, A.; Che Ani, F. CFD modeling of pin shape effects on capillary flow during wave soldering. <em>Int. J. Heat Mass Transf.</em> 2014, 72, 400–410. [CrossRef]</li>
+  <li>Khor, C.Y.; Abdullah, M.Z.; Lau, C.S.; Leong, W.C.; Abdul Aziz, M.S. Influence of solder bump arrangements on molded IC encapsulation. <em>Microelectron. Reliab.</em> 2014, 54, 796–807. [CrossRef]</li>
+  <li>Ng, F.C.; Abas, A.; Ishak, M.H.H.; Abdullah, M.Z.; Aziz, A. Effect of thermocapillary action in the underfill encapsulation of multi-stack ball grid array. <em>Microelectron. Reliab.</em> 2016, 66, 143–160. [CrossRef]</li>
+  <li>Khor, C.Y.; Abdullah, M.Z. Analysis of fluid/structure interaction: Influence of silicon chip thickness in moulded packaging. <em>Microelectron. Reliab.</em> 2013, 53, 334–347. [CrossRef]</li>
+  <li>Vlaminck, V.; Pearson, J.E.; Bader, S.D.; Hoffmann, A. Dependence of spin-pumping spin Hall effect measurements on layer thicknesses and stacking order. <em>Phys. Rev. B Condens. Matter Mater. Phys.</em> 2013, 88, 1–8. [CrossRef]</li>
+  <li>Qi, H.; Osterman, M.; Pecht, M. Modeling of combined temperature cycling and vibration loading on PBGA solder joints using an incremental damage superposition approach. <em>IEEE Trans. Adv. Packag.</em> 2008, 31, 463–472. [CrossRef]</li>
+  <li>Pstruś, J.; Fima, P.; Gancarz, T. Wetting of Cu and Al by Sn-Zn and Zn-Al eutectic alloys. <em>J. Mater. Eng. Perform.</em> 2012, 21, 606–613. [CrossRef]</li>
+  <li>Zhang, Z.; Park, S.B.; Darbha, K.; Master, R.N. Impact of usage conditions on solder joint fatigue life. In Proceedings of the 2010 60th Electronic Components and Technology Conference (ECTC), Las Vegas, NV, USA, 1–4 June 2010; pp. 14–19. [CrossRef]</li>
+  <li>Mirade, P.S.; Daudin, J.D.; Ducept, F.; Trystram, G.; Clément, J. Characterization and CFD modelling of air temperature and velocity profiles in an industrial biscuit baking tunnel oven. <em>Food Res. Int.</em> 2004, 37, 1031–1039. [CrossRef]</li>
+  <li>Pan, F.; Vatanporast, R. Reliability analysis for the design of a multi-layer flexible board. In Proceedings of the Proceedings Electronic Components and Technology, Lake Buena Vista, FL, USA, 31 May–3 June 2005. [CrossRef]</li>
+  <li>Straubinger, D.; Bozsóki, I.; Bušek, D.; Illés, B.; Géczy, A. Modelling of temperature distribution along PCB thickness in different substrates during reflow. <em>Circuit World</em> 2019, 46, 85–92. [CrossRef]</li>
+  <li>Géczy, A.; Bátorfi, R.; Széles, G.; Luhály, Á.; Ruszinkó, M.; Berényi, R. Vapour phase soldering on flexible printed circuit boards. In Proceedings of the 2014 IEEE 20th International Symposium for Design and Technology in Electronic Packaging (SIITME), Bucharest, Romania, 23–26 October 2014; pp. 69–74.</li>
+</ol>
+
+<!-- ═══════════ FOOTER ═══════════ -->
 <p style="margin-top:40px;color:var(--text-secondary);font-size:.83rem;border-top:1px solid var(--border);padding-top:16px;">
-文献来源：Ahmad, M.I.; Abdul Aziz, M.S.; Abdullah, M.Z.; et al. "Investigations of Infrared Desktop Reflow Oven with FPCB Substrate during Reflow Soldering Process." <em>Metals</em> 2021, 11, 1155. https://doi.org/10.3390/met11081155. 图片由 MinerU 从原 PDF 提取。
+文献来源：Muhammad Iqbal Ahmad, Mohd Sharizal Abdul Aziz, Mohd Zulkifly Abdullah, et al. "Investigations of Infrared Desktop Reflow Oven with FPCB Substrate during Reflow Soldering Process." <em>Metals</em> 2021, 11(8), 1155. DOI: 10.3390/met11081155. MDPI 开放获取（CC BY 4.0）。图片由 MinerU 从原 PDF 提取。
 </p>
 
 </main>
