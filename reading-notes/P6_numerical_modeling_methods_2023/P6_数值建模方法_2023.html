@@ -162,7 +162,7 @@ MathJax = {
 <p><strong>红外再流焊</strong>：红外炉采用波长介于近红外（约 1 µm）与远红外（约 1000 µm）之间的红外辐射发射器。与激光加热类似，能量不仅在焊膏表面、也在体积内部被吸收（与 VPS 和 FC 炉相同）。穿透性红外辐射可在焊料颗粒之间反射，实现均匀加热。红外再流是<span class="key-term">非平衡加热过程（non-equilibrium heating process）</span>：热源温度显著高于目标件；组装件的加热梯度由其吸收特性、辐射源与组装件间距、辐射功率及周围介质的物理性质共同决定。加热腔内引入气流可改善加热的均匀性与强度（图 1）[1,2]。</p>
 
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P6_数值建模方法_2023/images/1120dcd4dd5fb65afa998ba1df5299aff9d3407989ac87a58961f0c724cdbe22.jpg" alt="Fig 1" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P6_numerical_modeling_methods_2023/images/1120dcd4dd5fb65afa998ba1df5299aff9d3407989ac87a58961f0c724cdbe22.jpg" alt="Fig 1" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 1 &mdash; 对流式红外炉内的气流与辐射机制（加热腔中气流对辐射加热均匀性及强度的改善作用）[4]</figcaption>
@@ -171,7 +171,7 @@ MathJax = {
 <p><strong>强制对流（FC）再流焊</strong>：FC 炉利用强制对流加热，配有 4 至 14 个温控区（通常分为预热、保温、峰值与冷却区），由传送带系统连接（图 2）。对流传热通过被加热气体（通常为空气或惰性气体）的运动分子实现；过程需要大流量气体以提供高效加热，气体通常由风扇驱动。流速与气体温度受控，被加热样品最终达到与热源相同的温度，故 FC 是<span class="key-term">平衡过程（equilibrium process）</span> [1,2]。</p>
 
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P6_数值建模方法_2023/images/547627d05a0efc66fa1b3fdc677aabb3d5ce86572f63aa0b15977728fa3cae2e.jpg" alt="Fig 2" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P6_numerical_modeling_methods_2023/images/547627d05a0efc66fa1b3fdc677aabb3d5ce86572f63aa0b15977728fa3cae2e.jpg" alt="Fig 2" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 2 &mdash; 传送带式强制对流再流焊系统（箭头表示各编号分区中加热（红）与冷却（蓝）气体的循环）[5]</figcaption>
@@ -180,7 +180,7 @@ MathJax = {
 <p><strong>气相钎焊（VPS）</strong>：VPS 基于瞬态膜状冷凝——传热流体被蒸发，在密闭罐内形成致密蒸气空间；组装件浸入蒸气中，冷凝在组装件表面发生（图 3），形成的冷凝液膜传递相变潜热，为焊膏再流提供能量。更先进的系统通过温度与压力测量控制蒸气产生 [6]。VPS 确保最均匀的加热，加热梯度高，最高温度被限制为流体的沸点（平衡过程）；冷凝液膜的存在还能隔绝氧气、防止再流期间氧化。直到 21 世纪初，VPS 的推广一直被缺乏环保传热流体（当时仅有危险的氟碳流体）所阻碍，惰性且环保的全氟聚醚流体（Galden 液体）的问世使其成为微电子工业的合适替代方案 [1,2]。</p>
 
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P6_数值建模方法_2023/images/c214e5afc5b67d0486e9cf9a13a3751fc3dc01319e2d0253fd91f292b8a81bf3.jpg" alt="Fig 3" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P6_numerical_modeling_methods_2023/images/c214e5afc5b67d0486e9cf9a13a3751fc3dc01319e2d0253fd91f292b8a81bf3.jpg" alt="Fig 3" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 3 &mdash; 气相钎焊腔体（组装件浸入蒸气空间，冷凝液膜传递相变潜热）[6]</figcaption>

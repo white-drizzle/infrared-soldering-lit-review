@@ -158,7 +158,7 @@ MathJax = {
 <p>热控制还与材料表征和温度均匀性相关：PBGA 封装在过模材料超过玻璃化转变温度（约 170 °C）时会发生过大翘曲导致断路或短路；红外炉内表面发射率变化与遮挡效应可造成基板内高达 10 °C 的梯度。先进的热建模与智能控制（三维瞬态热模型、模糊逻辑实时温控等）已被用于提升回流工艺的精度与可重复性。</p>
 <p>本文提出将 ADRC 控制结构用于红外光 + 光学阵列加热的电子器件焊接曲线跟踪。该问题的难点在于：缺乏精确的被控对象模型、存在时滞与未建模动态。处理传输时滞的两类经典方法——Smith 预估器与 Padé 近似——已被与 PID、模糊、滑模、内模控制等多种算法结合，ADRC 亦是其中之一。本文的假设是：<strong>将输入时滞视为有界外部扰动，利用 ADRC 的扰动估计能力进行补偿</strong>，从而避免对时滞做多项式近似，获得更优的闭环性能。图 1 给出了本文的组织结构。</p>
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/afe25d9304a86086e959e0ce126ac1f74036b1eebc7747443b42cfb79187702e.jpg" alt="Fig 1" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/afe25d9304a86086e959e0ce126ac1f74036b1eebc7747443b42cfb79187702e.jpg" alt="Fig 1" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 1 &mdash; 论文组织结构示意图</figcaption>
@@ -173,19 +173,19 @@ MathJax = {
 <p>原型的第一部分是<span class="key-term">石英钨卤灯（Quartz Tungsten Halogen, QTH）</span>白炽灯，集成了椭圆金涂层反射镜。反射镜利用椭圆几何特性将辐射汇聚到第二焦点，实现能量集中。灯泡电功率 150 W（15 V、10 A），通过调节电功率可调制光输出功率，焦点处温度最高可达 1200 °C。光学系统由准直透镜（捕获并准直辐射）与聚焦透镜（调节红外光束直径、精确递送能量到目标器件）组成，整体光学布置见图 2。</p>
 <p>加热目标为<span class="key-term">球栅阵列（Ball Grid Array, BGA）</span>器件——焊球呈阵列分布在器件一侧的 SMT 封装，尺寸 5 mm × 6 mm。部分焊球存在损伤缺陷，这正是电子焊接行业需要解决的问题之一。J 型热电偶直接接触 BGA 表面监测热曲线，配合 NI cRIO-9074 实时控制器（LabVIEW 实现控制算法）与自制功率放大器构成闭环：热电偶 → 数据采集 → 实时控制 → 功放 → 红外光源，如图 3 所示。</p>
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/4ae77c54eed1f87f4f43a4535814fbb552a374a4df119e46f43d251b9289f252.jpg" alt="Fig 2" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/4ae77c54eed1f87f4f43a4535814fbb552a374a4df119e46f43d251b9289f252.jpg" alt="Fig 2" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 2 &mdash; 加热过程的光学装置（右上角为热电偶与 BGA 接触细节）</figcaption>
 </figure>
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/97e45d2b77cc3ab6711d7f64860693696e46a1b4bda4f58b20aa8b92577bb379.jpg" alt="Fig 3" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/97e45d2b77cc3ab6711d7f64860693696e46a1b4bda4f58b20aa8b92577bb379.jpg" alt="Fig 3" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 3 &mdash; 红外加热过程温度控制系统框图</figcaption>
 </figure>
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/2ed5381663c79d7709a22bf4edd93246be325b507b1e288ca00ce10899428eff.jpg" alt="Fig 4" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/2ed5381663c79d7709a22bf4edd93246be325b507b1e288ca00ce10899428eff.jpg" alt="Fig 4" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 4 &mdash; 焊接工艺中的典型温度曲线（预热/保温/回流/冷却四阶段）</figcaption>
@@ -230,13 +230,13 @@ MathJax = {
 <p class="math-note"><strong>解读：</strong>a = 0.094339、b = 4.4838、τ = 1.603。这是一阶惯性环节 + 纯时滞（transport delay）的标准形式，e<sup>−τs</sup> 即输入时滞的频域表达。时滞来自加热过程的物理环节（热传递与传感延迟）。</p>
 <div class="figure-row">
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/9e629ed8f6700c239f272b46761c71c1e34ce7db547f9f0faba6edc903cd3fca.jpg" alt="Fig 5a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/9e629ed8f6700c239f272b46761c71c1e34ce7db547f9f0faba6edc903cd3fca.jpg" alt="Fig 5a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(a) 实测温度 y(t)</figcaption>
   </figure>
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/b2644b913076e233918871dcf303894cf969e68c7ee6ed434afdd6094196e60c.jpg" alt="Fig 5b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/b2644b913076e233918871dcf303894cf969e68c7ee6ed434afdd6094196e60c.jpg" alt="Fig 5b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(b) 起始段时滞 τ 的存在</figcaption>
@@ -244,13 +244,13 @@ MathJax = {
 </div>
 <div class="figure-row">
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/5fff4d14fd7e32598924e5e39d3b20c25f30958c2ce097e56d8d6e244250f5c4.jpg" alt="Fig 5c" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/5fff4d14fd7e32598924e5e39d3b20c25f30958c2ce097e56d8d6e244250f5c4.jpg" alt="Fig 5c" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(c) 阶跃控制输入 u(t)（幅值 3 V）</figcaption>
   </figure>
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/38dc469432110e47b9fe634c326e5bf1a62c0a01e187e40b9541cbb26c50fd28.jpg" alt="Fig 5d" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/38dc469432110e47b9fe634c326e5bf1a62c0a01e187e40b9541cbb26c50fd28.jpg" alt="Fig 5d" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(d) 时滞细节（约 1.603 s）</figcaption>
@@ -259,7 +259,7 @@ MathJax = {
 <figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 5 &mdash; 系统动态模型辨识的实验结果：(a) 实测温度 y(t)；(b) 输入时滞 τ 的存在；(c) 控制输入 u(t)（幅值 3 V）；(d) 时滞细节（约 1.603 s）</figcaption>
 <p>图 6 对比了实验温度输出（黑线）与数值温度输出（红线），验证模型 (3) 的准确性。</p>
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/c96602b0b59e37838dc83e0aab4d814fdef1f2a6f14254706b1b7fa727219765.jpg" alt="Fig 6" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/c96602b0b59e37838dc83e0aab4d814fdef1f2a6f14254706b1b7fa727219765.jpg" alt="Fig 6" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 6 &mdash; 实验温度输出（黑线）与数值温度输出（红线）对比，验证模型 (3) 的准确性</figcaption>
@@ -356,13 +356,13 @@ MathJax = {
 <p class="math-note"><strong>解读：</strong>用自整定算法选取增益 k<sub>p</sub> = 0.05099、k<sub>i</sub> = 0.00361、k<sub>d</sub> = 0.120288。PID 的三个通道分别处理当前误差、历史误差累积（消除稳态偏差）、误差变化率（抑制超调）。</p>
 <div class="figure-row">
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/a9cae443c2e537724f5929c1cb6b9c47dc63466bcc01edbd795f2390cbde029d.jpg" alt="Fig 7a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/a9cae443c2e537724f5929c1cb6b9c47dc63466bcc01edbd795f2390cbde029d.jpg" alt="Fig 7a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(a) 参考信号 y<sub>r</sub>(t) 与实测输出 y(t)</figcaption>
   </figure>
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/75ab5e2aaf20006713345dfdf5c1a1024ef2971b7af631137991734e77769eb4.jpg" alt="Fig 7b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/75ab5e2aaf20006713345dfdf5c1a1024ef2971b7af631137991734e77769eb4.jpg" alt="Fig 7b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(b) 对应的控制信号 u(t)</figcaption>
@@ -372,13 +372,13 @@ MathJax = {
 <p>PID 仿真结果（图 7）：输出（红线）不振荡，但大部分时间存在显著误差——参考信号第一阶段约 17 °C、最高温处约 22 °C，对焊接工艺而言误差过大。控制输入 u(t) 保持在 0–10 V（功放工作范围）内。</p>
 <div class="figure-row">
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/d85d47d63abebd1c5aff93e887b4f0846b85dc10235858fb3f3383fd607f105c.jpg" alt="Fig 8a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/d85d47d63abebd1c5aff93e887b4f0846b85dc10235858fb3f3383fd607f105c.jpg" alt="Fig 8a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(a) 参考信号与系统输出</figcaption>
   </figure>
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/f6a7967ab877b02356ea6e441b7124e74e3c5be45995f9a4ca8faf5d0bff02d6.jpg" alt="Fig 8b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/f6a7967ab877b02356ea6e441b7124e74e3c5be45995f9a4ca8faf5d0bff02d6.jpg" alt="Fig 8b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(b) 对应的控制信号 u(t)</figcaption>
@@ -387,20 +387,20 @@ MathJax = {
 <figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 8 &mdash; 数值结果：ADRC 控制器跟踪焊接典型参考信号的闭环性能。(a) 参考信号与系统输出; (b) 控制信号 u</figcaption>
 <div class="figure-row">
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/73de0f24c855397e9fbb34a10942efde510179388c4bd0e5416d12fb36067254.jpg" alt="Fig 9a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/73de0f24c855397e9fbb34a10942efde510179388c4bd0e5416d12fb36067254.jpg" alt="Fig 9a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(a) 观测输出 ŷ(t) 与实测输出 y(t)</figcaption>
   </figure>
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/1dcc0830fb6537efdd93c6be992ace2b56dd277828649daf57141abfb07ff950.jpg" alt="Fig 9b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/1dcc0830fb6537efdd93c6be992ace2b56dd277828649daf57141abfb07ff950.jpg" alt="Fig 9b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(b) 观测误差 ε(t)</figcaption>
   </figure>
 </div>
 <figure style="margin:0;margin-top:14px;">
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/8586267116c6f8e6b186cde24f10097ff9eb1402feb050f9a5c652017282445c.jpg" alt="Fig 9c" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/8586267116c6f8e6b186cde24f10097ff9eb1402feb050f9a5c652017282445c.jpg" alt="Fig 9c" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>(c) 估计的扰动 w(t)</figcaption>
@@ -416,13 +416,13 @@ MathJax = {
 <p>实验中因仿真增益下跟踪误差显著，PID 增益重新整定为 k<sub>p</sub> = 0.5、k<sub>i</sub> = 0.2、k<sub>d</sub> = 0.2。闭环性能见图 10：输出（红线）在参考信号起始阶段出现振荡；稳态误差先减后增，最高温度处误差约 20 °C；控制输入在实验开始阶段振荡显著。</p>
 <div class="figure-row">
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/eeeeb302dddbdb2e9af26dcee2474323ae2ab2bb0463f9ebf18975f6c419a673.jpg" alt="Fig 10a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/eeeeb302dddbdb2e9af26dcee2474323ae2ab2bb0463f9ebf18975f6c419a673.jpg" alt="Fig 10a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(a) 参考信号与实测输出</figcaption>
   </figure>
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/486be33496dd4ec0c47a4a074e8ac565b6e806760c128520f41ea7955abef238.jpg" alt="Fig 10b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/486be33496dd4ec0c47a4a074e8ac565b6e806760c128520f41ea7955abef238.jpg" alt="Fig 10b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(b) 对应的控制信号 u(t)</figcaption>
@@ -431,13 +431,13 @@ MathJax = {
 <figcaption style="text-align:center;margin-top:-4px;margin-bottom:20px;font-size:.83rem;color:var(--text-secondary);font-style:italic;">图 10 &mdash; 实验结果：PID 控制器闭环性能。(a) 参考信号与实测输出; (b) 控制信号 u</figcaption>
 <div class="figure-row">
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/1d9f938909e813611241fe40649bbab21bdc16c3c462f0cbeb01b1dee616b592.jpg" alt="Fig 11a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/1d9f938909e813611241fe40649bbab21bdc16c3c462f0cbeb01b1dee616b592.jpg" alt="Fig 11a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(a) 参考信号与实测输出</figcaption>
   </figure>
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/1ee0fb7c7e348a3de8aea1b29e22ef58d4909be4e3e38b5502c8faee9024dc38.jpg" alt="Fig 11b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/1ee0fb7c7e348a3de8aea1b29e22ef58d4909be4e3e38b5502c8faee9024dc38.jpg" alt="Fig 11b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(b) 对应的控制信号 u(t)</figcaption>
@@ -481,14 +481,14 @@ MathJax = {
 <h2 id="s6">6. 应用示例：BGA 局部返修</h2>
 <p>为展示实际应用，对带损伤焊球的 BGA 器件执行局部加热工艺。图 12 展示了多个受损焊球（红色标注）——半扁平或不规则形貌是制造中的常见失效模式（贴装时表面张力过大或搬运设备机械应力所致），此类器件常被直接报废，造成材料浪费与成本上升。</p>
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/c43a0b48e03403bfbab67fbd8a9fdb3b682111e60450d9af68964751592b6906.jpg" alt="Fig 12" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/c43a0b48e03403bfbab67fbd8a9fdb3b682111e60450d9af68964751592b6906.jpg" alt="Fig 12" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 12 &mdash; 带损伤焊球的 BGA 器件（损伤处红色标注）</figcaption>
 </figure>
 <p>按标准无铅回流温度曲线执行局部回流：预热至约 150 °C，保温区接近 180 °C，峰值 <strong>244 °C ± 2 °C</strong>，液相线以上时间（TAL）58 s。焊料达到熔点后，表面张力成为主导力——为最小化表面能而恢复焊球的球形几何；焊料的黏聚与弹性特性促进焊球快速自重构。处理后的器件见图 13：焊点恢复了规则、均匀的球形。</p>
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_ADRC%E5%8E%9F%E5%9E%8B_2025/images/d4fde53bad004012dbe8550fa661a32157c275ef1fe53c4c59cabd375d0484d8.jpg" alt="Fig 13" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P1_adrc_prototype_2025/images/d4fde53bad004012dbe8550fa661a32157c275ef1fe53c4c59cabd375d0484d8.jpg" alt="Fig 13" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 13 &mdash; 热加工后的 BGA 器件，焊球已修复</figcaption>

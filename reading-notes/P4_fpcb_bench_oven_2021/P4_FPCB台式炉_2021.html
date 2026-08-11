@@ -211,7 +211,7 @@ MathJax = {
 <p>流体域三维装配体用 ANSYS Workbench v.18（ANSYS Inc, Canonsburg, PA, USA）中的 Design Modeler 建模：生成模拟真实台式炉的半炉几何，尺寸 (310 × 195 × 190) mm，并扣除 (50 × 50) mm 的固体基板实体，如图 1 所示。选取半几何的非对称平面以节省计算时间——该平面上温度梯度与空气速度均极小，满足对称边界条件 $\frac{\partial u}{\partial x} = \frac{\partial T}{\partial x} = 0$。FLUENT 中设置不可压、瞬态与湍流黏性模型。</p>
 
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/32f423973536e08f52ad1cc466eb86db9de5624fba65a9678866366fdf5dce6f.jpg" alt="Fig 1" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/32f423973536e08f52ad1cc466eb86db9de5624fba65a9678866366fdf5dce6f.jpg" alt="Fig 1" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 1 &mdash; 带 FPCB 的台式再流焊炉三维模型总览</figcaption>
@@ -262,7 +262,7 @@ MathJax = {
 <p>图 2 给出流体域验证研究的证据：对 FPCB 与空气两个域在预热阶段（0~60 s）分别进行两种验证方法。两个域的重复实验数据均取平均并计算误差棒。注意到再流时间超过 30 s 后，实验与数值方法在炉空气与 FPCB 之间存在小间隙——这可能源于红外加热器辐射能量按介质不同吸收量相对变化。总体而言，流体域实验与仿真之间的偏差低于 2%，一致性良好。该模型验证可作为再流过程数值仿真（即预测分析）的初始验证。炉空气温度与 FPCB 表面温度的实验数据见附录 A。</p>
 
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/08864ddac046486ecda1aebfd3e8d3da993408b8e771873efa432957bee502bf.jpg" alt="Fig 2" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/08864ddac046486ecda1aebfd3e8d3da993408b8e771873efa432957bee502bf.jpg" alt="Fig 2" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 2 &mdash; 流体域分析中实验与仿真的对比（预热阶段，0–60 s，空气与 FPCB 两域）</figcaption>
@@ -276,13 +276,13 @@ MathJax = {
 
 <div class="figure-row">
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/6ab9c168377d91f440cfd8295b17fb4cd98af002bc3da3e0f789fa39a21f2e0f.jpg" alt="Fig 3a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/6ab9c168377d91f440cfd8295b17fb4cd98af002bc3da3e0f789fa39a21f2e0f.jpg" alt="Fig 3a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(a) 炉内组件</figcaption>
   </figure>
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/e495aeba88bd6c9f1d0a1e60832c928bb27acf4b43445962168efeb7e8b24342.jpg" alt="Fig 3b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/e495aeba88bd6c9f1d0a1e60832c928bb27acf4b43445962168efeb7e8b24342.jpg" alt="Fig 3b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(b) 台式再流焊炉整体布置</figcaption>
@@ -293,7 +293,7 @@ MathJax = {
 <p>实验装置如图 3b 所示，一系列热电偶测量指定位置的温度用于验证，热电偶连接数据记录仪并传送至炉软件。图 4 给出实验装置原理图：数据采集软件 Reflow Center 1.03E（Madell Technology, Ontario, CA, USA）与台式炉相连；软件内置<span class="key-term">比例-积分-微分（PID）控制器</span>，在热曲线过程中保持炉腔温度在期望水平；炉加热系统以开关（on/off）循环方式调制以维持相对温度。</p>
 
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/b4800874a05cdc627e08185a231a18a69292543804d3f947c216b63b5d4cc57d.jpg" alt="Fig 4" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/b4800874a05cdc627e08185a231a18a69292543804d3f947c216b63b5d4cc57d.jpg" alt="Fig 4" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 4 &mdash; 台式再流焊炉实验装置原理图</figcaption>
@@ -302,7 +302,7 @@ MathJax = {
 <p>实验中再流曲线按 JEDEC JSTD-020E 标准 [28] 设定，如图 5 所示。曲线由预热（preheating）、浸泡（soaking）、再流（reflow）与冷却（cooling）四段构成；浸泡与焊接阶段推荐时长分别为 60~120 s 与 60~150 s；SAC 钎料峰值温度设定在 200~220 °C；再流段升温速率与降温速率分别小于 3 °C/s 与 6 °C/s。</p>
 
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/bee9206106b40b6bfd59b06892d115922e23e63f463f3a19cc18ab7dd025d953.jpg" alt="Fig 5" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/bee9206106b40b6bfd59b06892d115922e23e63f463f3a19cc18ab7dd025d953.jpg" alt="Fig 5" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 5 &mdash; 再流焊炉中设定的热曲线（JSTD-020E，四段式）</figcaption>
@@ -319,7 +319,7 @@ MathJax = {
 <p>测量炉腔各处空气体温度使用 K 型热电偶（TC，精度 ±2.2 °C，长 100 cm，护套直径 1.5 mm）与温度记录仪（±0.1%）。图 6 给出实验布置：热电偶在每列中间位置排成阵列，以抑制边缘或角落区域的不利波动。由于红外波造成非均匀加热、腔体对称，钢笼内单侧共使用 60 根热电偶线。测量在一个参考位置进行并重复，最大温度偏差 5%，随后按热电偶总数扩展。数据以 4 s 间隔用 Digi Sense Scanning Thermometer 仪器（Cole-Palmer, Vernon Hills, IL, USA）记录后进行温度分析。</p>
 
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/f63e9c1c2fe6a913a7b70df2d1b6d8930facc39ee82b8a6ea3cb9f88f27275b6.jpg" alt="Fig 6" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/f63e9c1c2fe6a913a7b70df2d1b6d8930facc39ee82b8a6ea3cb9f88f27275b6.jpg" alt="Fig 6" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 6 &mdash; 台式再流焊炉钢笼区域热电偶布置位置（布点示意与实际照片）</figcaption>
@@ -330,13 +330,13 @@ MathJax = {
 
 <div class="figure-row">
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/1a0bca874ca0719fdf94654bda9267859bc909af4d38face57022c7d0b7b1169.jpg" alt="Fig 7a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/1a0bca874ca0719fdf94654bda9267859bc909af4d38face57022c7d0b7b1169.jpg" alt="Fig 7a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(a) 热电偶实际位置</figcaption>
   </figure>
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/becc4b7f876e2a4569e33bb6b9cbb58b28d5621f0a09c0e7d88958ae39b150a9.jpg" alt="Fig 7b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/becc4b7f876e2a4569e33bb6b9cbb58b28d5621f0a09c0e7d88958ae39b150a9.jpg" alt="Fig 7b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(b) 热电偶表面贴装方法</figcaption>
@@ -358,13 +358,13 @@ MathJax = {
 
 <div class="figure-row">
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/359102a25ff92ae7a5ce655f06d2aa1d4cacd73bd4ed7833dd287d9c6b408de6.jpg" alt="Fig 8a-upper" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/359102a25ff92ae7a5ce655f06d2aa1d4cacd73bd4ed7833dd287d9c6b408de6.jpg" alt="Fig 8a-upper" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(a) 预热阶段（140 °C）上平面（T1–T30）</figcaption>
   </figure>
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/b1ab7ad959e9f9a6fa5b4bfc14ca6b897f48fe1deddc6c91a9c29c90aaaefb7b.jpg" alt="Fig 8a-lower" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/b1ab7ad959e9f9a6fa5b4bfc14ca6b897f48fe1deddc6c91a9c29c90aaaefb7b.jpg" alt="Fig 8a-lower" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(b) 预热阶段（140 °C）下平面（B1–B30）</figcaption>
@@ -372,13 +372,13 @@ MathJax = {
 </div>
 <div class="figure-row">
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/c1365d2c753f9507fa25b0a72cab70bc173dcb547352afa68103afe674c74bed.jpg" alt="Fig 8b-upper" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/c1365d2c753f9507fa25b0a72cab70bc173dcb547352afa68103afe674c74bed.jpg" alt="Fig 8b-upper" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(c) 浸泡阶段（180 °C）上平面</figcaption>
   </figure>
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/f7b35c87c411171ad366f07627f0dbbc70547c6b7c47b0f811102e1cabd94906.jpg" alt="Fig 8b-lower" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/f7b35c87c411171ad366f07627f0dbbc70547c6b7c47b0f811102e1cabd94906.jpg" alt="Fig 8b-lower" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(d) 浸泡阶段（180 °C）下平面</figcaption>
@@ -386,13 +386,13 @@ MathJax = {
 </div>
 <div class="figure-row">
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/8676388a00de554e3a183109097f8329fbabc9502c2ec47246e2e1d83108ad58.jpg" alt="Fig 8c-upper" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/8676388a00de554e3a183109097f8329fbabc9502c2ec47246e2e1d83108ad58.jpg" alt="Fig 8c-upper" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(e) 再流阶段（207 °C）上平面</figcaption>
   </figure>
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/b95dd0fbae0724e6ad3af312002504d864f33e922a433df2edf802f80cc00148.jpg" alt="Fig 8c-lower" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/b95dd0fbae0724e6ad3af312002504d864f33e922a433df2edf802f80cc00148.jpg" alt="Fig 8c-lower" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(f) 再流阶段（207 °C）下平面</figcaption>
@@ -414,13 +414,13 @@ MathJax = {
 
 <div class="figure-row">
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/3f2ea411c00f78ed41e0ef585eec88d41278d91f216b1f33a015eb7291cd1e32.jpg" alt="Fig 9a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/3f2ea411c00f78ed41e0ef585eec88d41278d91f216b1f33a015eb7291cd1e32.jpg" alt="Fig 9a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(a) 仿真模型温度分布</figcaption>
   </figure>
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/69f85365c5e744972b382f167c90852d46a0a422abd4bed139d6774f1b9d2a44.jpg" alt="Fig 9b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/69f85365c5e744972b382f167c90852d46a0a422abd4bed139d6774f1b9d2a44.jpg" alt="Fig 9b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(b) z 轴 L1~L6 温度测量验证</figcaption>
@@ -434,20 +434,20 @@ MathJax = {
 
 <div class="figure-row">
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/7af97fbf1aacb685da0b420ac1f21d00d9355163917736959275412ce17b35e7.jpg" alt="Fig 10a" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/7af97fbf1aacb685da0b420ac1f21d00d9355163917736959275412ce17b35e7.jpg" alt="Fig 10a" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(a) 炉内流动机制</figcaption>
   </figure>
   <figure>
-    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/ca6293e1c2a41b8c0289f08c35ff2a8a3276ade6dbd1f8dec4cf324323f04baa.jpg" alt="Fig 10b" loading="lazy"
+    <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/ca6293e1c2a41b8c0289f08c35ff2a8a3276ade6dbd1f8dec4cf324323f04baa.jpg" alt="Fig 10b" loading="lazy"
          onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
     <figcaption>(b) 炉内速度矢量</figcaption>
   </figure>
 </div>
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/0438d2ce913416bf6648a6bd134e738902f92031f2dd0e598d3e7e09625c46ab.jpg" alt="Fig 10c" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/0438d2ce913416bf6648a6bd134e738902f92031f2dd0e598d3e7e09625c46ab.jpg" alt="Fig 10c" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>(c) 出口区域放大</figcaption>
@@ -467,7 +467,7 @@ MathJax = {
 <p>图 11 显示不同雷诺数下 FPCB 的温度。研究覆盖从低到高的 $Re$ 范围：0.43 × 10⁵ ~ 2.05 × 10⁵。低 $Re$ 时 FPCB 表面温度高达 540 K 以上——结果表明循环风扇的强制对流之外存在占主导的辐射传热。当 $Re$ 达到 1.33 × 10⁵ 时，湍流区各 FPCB 的温度变化开始变小，直到最大 $Re$ 时偏差仅为 5%。</p>
 
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/9d9f7b8a2159d5dec8a69881287fe8a7d658f7f5f70e491e63825e860f057404.jpg" alt="Fig 11" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/9d9f7b8a2159d5dec8a69881287fe8a7d658f7f5f70e491e63825e860f057404.jpg" alt="Fig 11" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 11 &mdash; 不同雷诺数（Re）与位置下 FPCB 的温度</figcaption>
@@ -476,7 +476,7 @@ MathJax = {
 <p>FPCB 在钢笼上的放置位置有望在不产生过高表面温度的前提下实现合适的再流焊。图 12 显示前位（75 mm）与后位（135 mm）的 FPCB 温度不同：靠近风扇笼的后位 FPCB 表面温度更高（图 12），后位峰值温度略微偏离炉设定值。这一发现与图 10b 速度矢量一致——中部区域热流循环至后端直至风扇笼，快速循环在风扇笼附近产生涡流，因而提高后位 FPCB 表面温度。FPCB 峰值温度目标范围为 523~533 K，可通过调节 $Re$ 或仅改变炉腔中的放置位置（配循环风扇）实现：当 $Re$ = 1.33 × 10⁵ 时，前位（前炉中部区域）是达到目标温度的理想位置。该现象与 Najib 等 [24] 的发现可比——其测试的 FR-4 PCB 达到 542 K，高出炉设定 40 K。不建议将 FPCB 置于后位，因为再流焊过程中这会显著导致其他电子元件失效。</p>
 
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/e901f98d782bee49b0045cff7d14b053125c026a8c906602289cfabc10f743b2.jpg" alt="Fig 12" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/e901f98d782bee49b0045cff7d14b053125c026a8c906602289cfabc10f743b2.jpg" alt="Fig 12" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 12 &mdash; FPCB 位于后部位置时中部区域的温度云图</figcaption>
@@ -491,7 +491,7 @@ MathJax = {
 <p>图 13 显示 FPCB 拉伸试验取平均后计算的应力-应变曲线。常用关系基于被测 FPCB 低应变弹性区：在线性区 0.2% 偏移处，FPCB 屈服强度为 85 MPa；此后屈服进入塑性变形行为，FPCB 材料发生永久变形——从可靠性角度看这是不利的。本研究从弹性区计算得到杨氏模量 5.3 ± 0.8 GPa。总体而言，杨氏模量数值与 Pan 和 Vatanporast [44] 的结果一致。</p>
 
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/95d0748709329208f9311b3a10f5452dc720b68c1406bf362f9982084432196d.jpg" alt="Fig 13" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/95d0748709329208f9311b3a10f5452dc720b68c1406bf362f9982084432196d.jpg" alt="Fig 13" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 13 &mdash; FPCB 再流焊用应力-应变曲线</figcaption>
@@ -521,7 +521,7 @@ MathJax = {
 <p>用一系列热电偶评估炉腔温度，揭示整个加热过程温度分布不均匀——这可能促成未焊透（unbaked）现象。流动与热效应是关键发现，证实了较低厚度的 FPCB 有利于良好的吸热与散热。试验结果还一致表明：FPCB 能在接近现行 JSTD 曲线设定的条件下运行以进行进一步焊接分析；$Re$ = 1.33 × 10⁵ 时温度差在 5 至 7 K 之间。最优位置效应的进一步分析以红色矩形区域标注于图 14。炉温设定按前文 JSTD 维持。同时，建议 FPCB 峰值温度保持在 543 K 以下，以使 von Mises 应力低于弹性区；将板四边全部固定安装可保证形状一致并保持在可接受范围内——因此这也是再流焊工艺放置 FPCB 的另一种方式。</p>
 
 <figure>
-  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_FPCB台式炉_2021/images/5625bc0c6f0e08c1e4a26994eb6d7a1d4d32a429e776a23826ccfb2ed3b6897d.jpg" alt="Fig 14" loading="lazy"
+  <img src="https://raw.githubusercontent.com/white-drizzle/infrared-soldering-lit-review/main/reading-notes/P4_fpcb_bench_oven_2021/images/5625bc0c6f0e08c1e4a26994eb6d7a1d4d32a429e776a23826ccfb2ed3b6897d.jpg" alt="Fig 14" loading="lazy"
        onclick="document.getElementById('lb-img').src=this.src;document.getElementById('lightbox').classList.add('active')"
        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23f5f2eb%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3EFigure%20unavailable%3C/text%3E%3C/svg%3E'">
   <figcaption>图 14 &mdash; FPCB 在台式再流焊炉钢笼上的定位（红色矩形区域为最优位置）</figcaption>
