@@ -64,3 +64,22 @@ P2 热源选型基石 (2017)
 
 - 2026-07-16：使用 md2github-matrix skill 重新分析全部 5 篇文献，更新矩阵内容（146个公式，9维度全覆盖）
 - 2026-07-15：初始版本，5 篇文献矩阵 + 阅读笔记
+
+
+## 🗺️ 历史 slug 映射（2026-08-11 英文化迁移）
+
+旧路径已 404，按以下映射检索：
+
+| 旧 slug（中文） | 新 slug（英文） |
+|---|---|
+| P1_ADRC原型_2025 | P1_adrc_prototype_2025 |
+| P2_红外热源对比_2017 | P2_infrared_heat_source_comparison_2017 |
+| P3_热流方向_2018 | P3_heat_flow_direction_2018 |
+| P4_FPCB台式炉_2021 | P4_fpcb_bench_oven_2021 |
+| P5_可变辐照掩模_2021 | P5_variable_irradiation_mask_2021 |
+| P6_数值建模方法_2023 | P6_numerical_modeling_methods_2023 |
+| P7_脉冲光焊_2023 | P7_pulsed_light_soldering_2023 |
+| P8_低成本电子回流焊_2025 | P8_low_cost_reflow_soldering_2025 |
+| P9_柔性混合电子焊接_2023 | P9_flexible_hybrid_electronics_2023 |
+
+HTML 笔记文件名保留中文（如 P1_ADRC原型_2025.html），位于对应英文 slug 目录内。
