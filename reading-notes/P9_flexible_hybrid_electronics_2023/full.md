@@ -1,277 +1,290 @@
-# 近红外辐射辅助焊接用于柔性混合电子 (FHE)
+# Flexible Hybrid Electronics via Near-Infrared Radiation-Assisted Soldering of Surface Mount Devices on Screen Printed Circuits
 
-Flexible Hybrid Electronics via Near-Infrared Radiation-Assisted Soldering of SMD on Screen Printed Circuits
+Venkat Kasi, Amin Zareei, Sarath Gopalakrishnan, Alejandro M. Alcaraz, Shantanu Joshi, Babak Arfaei, and Rahim Rahimi\*
 
-Kasi, Zareei, Gopalakrishnan, et al. — Adv<sub>.</sub> Electron<sub>.</sub> Mater<sub>.</sub> 2023, Purdue University / Ford Motor Company
+The development of flexible hybrid electronics (FHEs) with high-throughput integration of electrical components onto digitally printed circuits has a wide range of applications, such as asset tracking, wearable electronics, and structural health monitoring. However, one of the major challenges with FHEs is the process of soldering the electrical components onto a printed circuit while having minimal thermal damage to the printed traces and their temperaturesensitive polymeric substrates. Here, the possibility of utilizing near-infrared (NIR) technology as a nondestructive photonic approach for rapid soldering and mounting electrical components onto printed circuits while keeping the polymer substrate at a relatively low temperature during the soldering process is investigated. Results of this systematic study show that FHEs prepared with the optimized NIR processing conditions produce the desired reflow of solder with efective electrical connection and metallic bonding of electrical components onto the conductive traces with excellent mechanical stability (no failure even after 1000 cycles of bending). Furthermore, using this technique and as a proof of concept, the fabrication of a wearable FHE device that provides a remote assessment of the wound exudate absorption in dressings and notifies caregivers of the appropriate time to change the dressing is demonstrated.
 
-SCIE Q1 (JCR 2026) EI收录 中科院 3区 / 新锐 3区, IF=5.9 | CiteScore: 9.9
+## 1. Introduction
 
-## 研究摘要
+Recent advances in new printing techniques, including screen printing, ink-jet printing, flexography, and gravure printing, have facilitated afordable large-scale manufacturing processes of flexible electronics.<sup>[1–4]</sup> According to the global source market trend report published by IDTechEx, the flexible electronics market was estimated at an annual revenue of US\$29.28 billion in 2017. The forecast indicates a growth of 11.1% through 2027.<sup>[5]</sup> Significant progress has been made in the development of flexible electronics where conductive circuits and other components are printed using various functional organic and inorganic inks and materials onto flexible substrates for wearable and healthcare applications.<sup>[6–11]</sup> Although these all-printed flexible electronics have many beneficial features, including lightweight, flexibility, and stretchability, they still fall behind the traditional rigid silicon-based electronic devices in terms of performance, power consumption, and lifetime of operation.<sup>[12,13]</sup> While the traditional siliconbased integrated circuits (ICs) and their integration onto standard printed circuit boards (PCBs) have been well-established over the years, providing excellent performance at considerably low power
 
-本文报道了一种利用近红外（Near-Infrared, NIR）辐射在柔性印刷电路上选择性焊接表面贴装元件（SMD）的方法。核心思想：利用 NIR 波段（0.7–1.4 μm）下金属焊料颗粒与聚合物基板之间的吸收率差异—焊料和银浆电路强烈吸收 NIR 辐射并迅速熔化，而 PET 基板在该波段几乎透明。由此实现了：
+consumption, they are not ideal for wearable or conformable devices due to their rigid and bulky structure.<sup>[14–17]</sup> To fabricate flexible electronics of high performance, low power consumption, and long-term durability, hybrid printed circuits in combination with the use of silicon-based IC components have emerged as new opportunities in flexible hybrid electronics (FHEs) where both fields of digital printing and standard silicon-based electrical devices are assembled to achieve the desired flexibility while preserving performance.<sup>[18–20]</sup>
 
-焊料达到 ${ > } 1 4 0 ^ { \circ } \mathrm { C }$ 熔点形成可靠连接，同时PET基板保持较低温度（远低于其 $T _ { g } \approx 8 5 \mathrm { - } 8 7 ^ { \circ } \mathrm { C } )$
+In FHEs, silicon-based components in the form of surface mount devices (SMDs) with small footprints are often mounted onto digitally printed conductive traces on flexible substrates.<sup>[21,22]</sup> Nevertheless, in the fabrication process of FHEs, it is essential to obtain an efective and rapid integration of SMDs into the printed circuit while achieving the desired performance and reliability without compromising the electrical and mechanical properties of conductive traces and their substrate.<sup>[23]</sup> While convection oven reflow soldering is the most commonly used approach for interconnecting SMD components onto the traditional rigid PCBs, this high-temperature process cannot be used for digitally printed conductive circuits on temperaturesensitive substrates.<sup>[24–26]</sup> In this approach, the entire device is passed through the oven, subjecting not only solder but also all the components on the device to high temperatures, typically above 200 °C, for a considerable time (≈90–120 s). Such hightemperature processing conditions cause damage and deformation of printed conductive traces and polymers used in the fabrication of FHEs. Due to such limitations with the conventional method, developing an efective process that allows selective soldering of electrical components without damaging temperature-sensitive components is the current focus of investigation in the field of FHEs.<sup>[27,28]</sup>
 
-最优条件（4 kW, 1 m/min, MET 参数）的焊点剪切强度达 12–14 N，失效模式为银线从 PET 剥离（焊点强度 > 线路-基板附着力）
+Among various alternative approaches evaluated for soldering electrical components on FHEs, photonic-based methods with high heat intensity have been shown to provide rapid heating to solder paste minimizing the thermal efect on conductive traces and substrates.<sup>[29,30]</sup> However, these methods can still cause damage to conductive traces and substrates as the energy from photonic pulses can be absorbed in the form of heat by all the components in FHE, including conductive traces and substrates. In addition, the solder paste in these methods may not reach its melting point if the pulse time is very short to minimize the thermal efect on conductive traces and substrate. To address these issues, we introduce near-infrared (NIR) radiation-based heating technology as an efective alternative approach providing selective heating to melt particles in the solder paste. The heating mechanism of this technology depends on the diference in light absorption characteristics of various materials. In this approach, the NIR radiation selectively allows metal particles in the solder paste to absorb energy from the radiation, leading to their melting while keeping other materials relatively at lower temperatures.<sup>[29]</sup> The NIR radiation, which exhibits the characteristic feature of the highest energy density in the wavelengths between 0.7 and 1.4  µm, has minimal thermal efect on many polymers, including poly(ethylene terephthalate) (PET) and poly(ethylene naphthalate) (PEN), as they have low or negligible absorbance in this spectral wavelength range. Using this approach, several studies have reported the efectiveness of this technology for selective drying and sintering of various types of printed functional materials, such as metal nanoparticles and metal oxides, on various polymer substrates.<sup>[31–35]</sup> For instance, Cherrington et  al. demonstrated the selective sintering of Ag nanoparticle ink by using NIR radiation quickly without afecting polymer substrates.<sup>[36]</sup> Similarly, Gu et  al. reported the efectiveness of this technology for sintering silver ink printed in the roll-to-roll (R2R) process.<sup>[37]</sup>
 
-1000次弯曲循环无失效，7 天高温高湿 $( 7 0 ^ { \circ } \mathrm { C } _ { \cdot }$ , 100%RH）暴露电阻无变化
+To date, previous studies have mainly reported investigating the use of NIR technologies for sintering metal nanoparticles. In this work, we have further extended the use of this technology and demonstrated its potential in providing efective soldering of SMD electrical components onto conductive traces printed on flexible substrates such as PET. A systematic study has been performed to analyze the efect of diferent parameters of NIR technology, including power and scan speed, on the spreading and bond strength of solder connection between SMD com ponents and screen-printed conductive traces. Further, optical microscopy and scanning electron microscopy (SEM) with energy-dispersive X-ray (EDX) mapping have been used to study the microstructure of the solder connection. As per the testing standard IEC 62137-1-2:2007, the shear test has been performed to analyze the bond strength of the solder connection obtained under diferent NIR settings.
 
-原理验证：制造了无线伤口渗出液监测 FHE 传感器（FM 发射电路，3.64 $\mathrm { k H z / \mu L }$ 灵敏度）
+Figure 1 illustrates the steps in the fabrication of FHE via a nondestructive and selective thermal heating process by a NIR process. In the first step, the silver conductive traces are printed on a PET substrate using a standard screen-printing process (Figure 1a-i). After printing, the traces are dried using NIR radiation on a conveyor belt, as shown in the second step (Figure 1a-ii). In the subsequent step shown in Figure 1a-iii, solder paste is deposited using an automated dispensing system on the printed circuit, followed by the placement of the elec trical components onto the solder paste (Figure 1a-iv). The electrical components are placed in the appropriate location such that the metal parts on both sides of each component are properly immersed in the solder paste. The sticky and high viscosity characteristics of the solder paste allows temporarily holding the electrical components in place until they are securely sol dered onto the printed circuit (Figure 1a-v). For this process, the printed circuit is exposed to NIR radiation on a conveyor belt facilitating a rapid melting of metal particles in the solder paste and forming the required electrical connection and mechanical bond between electrical components and the printed circuit while also eliminating the risk of thermal damage to PET during this process (Figure 1a-vi). Figure  1b shows a simple FHE circuit lighting a 2 × 3 array of LEDs and onboard battery using the demonstrated printing and NIR-assisted drying and soldering process. The flexible circuit can withstand diferent mechanical bending while remaining functional with the same illumination intensity level in the LEDs, Figure 1b-iii,iv.
 
-## 1. 引言
+## 2. Experimental Section
 
-柔性电子市场 2017 年全球收入 292.8 亿美元（IDTechEx），预计至 2027 年以 11.1% 年增长率持续扩张。虽然全印刷柔性电子具备轻量、柔性和可拉伸等优势，但在性能、功耗和寿命方面仍落后于传统硅基 $\mathrm { I C } _ { \circ }$ 。因此，柔性混合电子（Flexible Hybrid Electronics, FHE）应运而生—将硅基 SMD元件集成到数字印刷的柔性电路上，兼顾性能与柔性的需求。
+## 2.1. Preparation of Printed Conductive Traces
 
-传统回流焊无法用于 FHE的核心矛盾：常规对流回流炉使整个器件（包括温度敏感基板和印刷线路）暴露于 ${ > } 2 0 0 ^ { \circ } \mathrm { C }$ 高温约 90–120 秒；而 PET/PEN 等常用聚合物基板的玻璃化转变温度 $( T _ { g } )$ 仅约$8 5 \mathrm { { ^ \circ C } }$ ，远超此温度将导致基板变形和印刷线路损伤。
+Commercial grade silver conductive paste (DuPont 5025) was obtained from Dupont. The conductive traces were printed using an MPS screen printer (TF-100) at an average thickness of 10  µm. The substrate on which the conductive traces were printed was a PET film purchased from DuPont. After printing the silver conductive traces on PET, an Adphos NIR system was used to dry/cure the conductive paste. As per the recommended conditions, the drying process was performed at a power of 2 kW and a speed of 1 m min<sup>−1</sup>, followed by the curing process at a power of 4  kW at a speed of 1m min<sup>−1</sup> to achieve a final sheet resistivity of 12–15 mΩ sq<sup>−1</sup> mil<sup>−1</sup>.
 
-光子焊接方法（如脉冲光）虽可快速加热但脉冲能量仍被所有材料吸收，仍存在线路/基板损伤风险。本文提出的 NIR 方法则依赖选择性吸收机制：
+![](images/90c4c6de2bfff69a64d4174d44976927196e2b9221e770abe627ad267a6033dc.jpg)  
+Figure 1. a) Fabrication process of the flexible electronic device via nondestructive NIR soldering of electrical components to printed circuits: i) screen printing of conductive paste containing silver particles, ii) NIR drying of silver conductive trace, iii) deposition of solder paste using dispenser, iv) placement of SMDs (a LED and a battery) onto solder paste, v) NIR soldering of SMDs, and vi) LED-lit after the formation of electrical connection between solder and SMDs. b) i) Image showing an array of LEDs attached to the printed circuit, ii) image showing an array of lit LEDs with flexible interconnect, and iii,iv) images showing an array of lit LEDs in diferent bending modes with no efect on the electrical connection.
 
-Note
+## 2.2. NIR Soldering of Electrical Components
 
-NIR选择性加热的物理原理：NIR 波段（0.7–1.4 μm）具有整个红外光谱中最高的能量密度。聚合物（PET/PEN）在该波段吸收率极低（几乎透明），而金属颗粒（焊料合金中的 $\mathrm { S n / B i / A g } ,$ 银浆中的 Ag）吸收率极高。因此辐射能量被选择性沉积在需要加热的材料中—焊料和银线路升温熔化，而基板通过辐射几乎不吸热。这与传统对流炉的"整体加热"有本质区别。
+Sn42/Bi57.6/Ag0.4 low-temperature solder paste commonly used in many printed circuit boards was dispensed using Nordson
 
-![](images/758dec4432c14eb224a39477bd35593773e46b7836ee0aa9639a962e3b886e53.jpg)
+3-axis automated fluid dispensing robot onto the conductive traces in a dot pattern with a diameter of 3 mm at a pressure of 10 psi. A systematic study was conducted to obtain the optimum conditions for soldering the low-temperature solder paste. A thermocouple (National Instruments NI-DMAX) connected to the computer was used to directly measure the temperature of solder paste as it was passed through NIR radiation under different processing conditions. Thermal profiles of diferent NIR settings were obtained by varying the power between 2 and 6 kW and the speed of the stage between 1 and 3 m min<sup>−1</sup>.
 
-图1—(a)全 NIR 工艺制造FHE流程:i) 丝网印刷银导电浆料，ii) NIR 干燥银线路，iii) 点胶锡膏，iv) 贴装SMD，v) NIR 焊接，vi) LED点亮；(b)柔性FHE 电路点亮2×3LED 阵列，在弯曲状态下照明强度保持不变
+## 2.3. Material and Surface Characterizations
 
-## 2. 实验方法
+Surface and cross-sectional images of the solder before and after the soldering process were obtained using a Leica M205C optical microscope with reflection mode. For this study, the samples were prepared under three diferent NIR settings selected based on the abovementioned thermal profiles experimental results. High-resolution surface and cross-sectional images of the solder connections were obtained by field emission scanning electron microscopy (FE-SEM, Hitachi-S 4800, Tokyo, Japan) at an accelerating voltage of 5  kV, current of 20  µA and a working distance of 15  mm. The samples for cross-sectional images were prepared by polishing the samples in the sequential order of 30, 15, 0.5 µm grids, and a diamond polisher at the end. For each sample, polishing was continued until a smooth and mirror-like surface was obtained.
 
-## 2.1 导电线路制备
+## 2.4. Mechanical and Environmental Stability Assessments
 
-银导电浆料（DuPont 5025）经丝网印刷至 PET 薄膜（DuPont），平均厚度 10 μm。NIR 干燥/固化参数：干燥 $2 \mathrm { k W } + 1 \mathrm { m } / \mathrm { m i n } $ 固化 $4 \mathrm { k W + 1 \mathrm { m / m i n } }$ ，最终方阻 $1 2 \mathrm { - } 1 5 \mathrm { m } \Omega / \mathrm { s q } / \mathrm { m i l } _ { \odot }$ O
+FHEs samples were prepared for these tests by soldering a 1020 Ω SMD resistor onto printed silver conductive pair traces using a process/design shown in Figure S1 (see the Supporting Information). After the conductive trace printing and drying, the solder paste was dispensed onto the conductive parallel traces. The resistor was placed on the solder paste so that the ends of the resistor were held onto the solder paste. To identify the efect of the NIR soldering process on the bond strength, diferent settings of the NIR system were used for soldering the connections between the resistor and conductive traces and characterized in terms of the bond strength (force required to disconnect the solder connection), the stability of solder connection to cyclic bending, and the environmental stability. To measure the bond strength of the soldered connection, a universal testing machine (eXpert 4000, Admet) was used to apply a controlled shear force to the SMD and determine the required shear force to disconnect the soldered SMD from the printed trace (Figure S2, Supporting Information). For stability assessment of solder joints, tension and compression cyclic bending tests were performed by applying a sinusoidal wave movement with an amplitude of 3 mm and a cycle period of $3 0 \ { \mathrm { s . } }$ To assess the environmental stability, the samples soldered with the SMD resistors were exposed to high humid conditions (100%RH) at
 
-## 2.2 NIR 焊接
+www.advelectronicmat.de
 
-采用 Sn42/Bi57.6/Ag0.4 低温焊膏（熔点 ${ \sim } 1 4 0 ^ { \circ } \mathrm { C } )$ ），Nordson 三轴自动点胶机器人直径 3 mm 点状涂布（10 psi）。热电偶（NI-DMAX）直连计算机，在 NIR 功率 2–6 kW 和传送带速度 1–3 m/min范围内系统测量焊膏表面温度曲线。
+![](images/bc1a52c2f51752f01c8e4461205f077def6889e90b3f879d7860be109c8185f1.jpg)
 
-## 2.3 材料表征
+$7 0 ~ ^ { \circ } \mathrm { C } .$ , and the resistance was recorded after each day of exposure for up to 7 days.
 
-Leica M205C 光学显微镜（反射模式）+ FE-SEM（Hitachi S-4800, 5 kV, 20 μA, WD 15 mm）+EDX 元素分布分析。截面样品依次经 30/15/0.5 μm 砂纸 + 金刚石抛光至镜面。
+## 3. Results and Discussion
 
-## 2.4 力学与环境可靠性评估
+Polyethylene derivatives such as PET and PEN are the most commonly used substrates for flexible hybrid electronics (FHEs) because of their useful properties, including low cost, optical transparency, availability in diferent thicknesses, and low surface roughness. However, one of the limitations of using these substrates for many FHEs is their low tolerance to high-temperature exposure, which is often required in soldering electrical components onto printed circuits. Although low-temperature solder paste alternatives such as tin–bis muth (Sn–Bi) alloys with melting temperatures around $1 4 0 ~ ^ { \circ } \mathrm { C }$ are available, the temperatures required to melt these solder pastes are still higher than the glass-transition temperature $( T _ { \mathrm { g } } )$ of these polymers and, therefore, can cause deformation issues in substrates limiting their applications. As shown in the diferential scanning calorimetry (DSC) curve of PET (Figure 2a), two thermal transition regions representing the $T _ { \mathrm { g } }$ around $8 5 { - } 8 7 ~ ^ { \circ } \mathrm { C }$ and the melting point with an endothermic peak at $2 5 0 ~ ^ { \circ } \mathrm { C }$ could be noticed. Also, in the DSC curve of the solder paste, one thermal transition region corresponding to the melting point of alloy solder particles could be found at 140 $^ \circ \mathrm { C } .$ Even though the melting point of PET was higher than the melting point of the solder paste, its $T _ { \mathrm { g } }$ was significantly lower compared to the melting point of the solder paste. Since it is required to heat the solder paste above 140 $^ { \circ } \mathrm { C }$ to reach its reflow and obtain proper solder connection, the soldering process in a conventional oven reflow could cause a rise in the temperature of PET above its $T _ { \mathrm { g } }$ leading to deformation of the substrate.
 
-1020 Ω SMD 电阻焊接到平行银线路（图 S1）。万能试验机（eXpert 4000, Admet）以 1 mm/s 施加剪切力。循环弯曲测试：正弦波振幅 3 mm，周期 30 s（拉伸+压缩模式）。环境测试： $70 \mathrm { ^ { o } C } / 1 0 0 \%$ RH，7 天连续监测电阻变化。
+Due to the detrimental efect on temperature-sensitive substrates and components, convection oven reflow soldering cannot be used for soldering electrical components on FHEs. To address this issue, a roll-to-roll manufacturing-friendly technology that involves selective heating of materials allowing an increase in the temperature of selected materials while keeping other materials at relatively lower temperatures is desirable. In this regard, we demonstrate that NIR technology, which utilizes the radiation with the highest energy densities in the wavelength between 0.7 and 1.4  µm, can be used as an alternative approach for soldering on temperature-sensitive substrates. As shown in Figure  2b, the transmission spectra of PET, the solder paste, and the silver trace, along with the energy spectrum of the NIR emitter on the secondary y-axis, suggest that while PET has very low absorption of NIR radiation, the solder paste and silver trace exhibit excellent absorption of NIR radiation with negligible transmission in the energy spectrum within wavelength between 0.25 and 2.5  µm. Therefore, the NIR radiation energy in this range is selectively absorbed by the metal particles incorporated in the solder paste and silver trace leading to their melting with a low thermal efect on the substrate and environment.
 
-## 3. 结果与讨论
+![](images/1ae5f77a209dd2f3e6aa1f2051a3f5af018117db635e17f636dd2d6129bf8385.jpg)  
+Figure 2. a) Diferential scanning calorimetry (DSC) curves of PET and solder paste, and b) transmission spectra of blank sample, PET, solder paste, and silver trace along with the energy spectrum of the NIR emitter on the secondary y-axis.
 
-## 3.1 基板热特性与 NIR 选择性吸收
+Based on the NIR radiation absorption results discussed above, it is important to determine the appropriate NIR conditions, including the required power and exposure to selectively heat the alloy particles in the solder paste and silver particles in the conductive traces without negatively afecting the substrate and traces. In this regard, a systematic study was performed to determine the optimum NIR conditions required to obtain efective soldering of low-temperature solder paste onto silver traces printed on a PET substrate. First, a thermocouple was used to quantify temperature profiles for the solder paste as the sample was exposed to diferent NIR conditions, as shown in Figure 3a. In this process, the temperature profiles of the solder paste on the printed circuit was recorded as a function of
 
-![](images/a49d36555004fd0215fba3fdaff0b1a71782ee0cc9085e138596736fc1a4ceaa.jpg)
+![](images/4ab014b34cc65a9e8ff329d64f4e43437ec9f904adbe445a3dca60cd37ae5ee6.jpg)
 
-![](images/5485c789e1ee541256149acec4880da57af1be730a78410b569b25b96a0191c9.jpg)  
-PET、焊膏、银线路的透射光谱及NIR发射器能量谱—PET在NIR波段几乎透明，焊膏和银线路几乎完全吸收  
-图 2—(a) PET和焊膏的 DSC 曲线: PET的 $T _ { g } \approx 8 5 - 8 7 ^ { o } C ,$ 熔融吸热峰250℃；焊膏熔融峰 $1 4 0 ^ { o } C ;$ (b) PET、焊膏、银线路的透射光谱及NIR发射器能量谱—PET在NIR波段几乎透明，焊膏和银线路几乎完全吸收
+![](images/93226056354c644cdb0ac6e1caabafe50258aa1cd128e69db5a3cb1906873b6d.jpg)
 
-Note
+(c)  
+![](images/dcc0b92ee34219873b8aab3bd676e8dd88c285cc768f31b67765540f3cad4a81.jpg)
 
-DSC 数据揭示的工艺窗口矛盾：焊膏熔点 $( 1 4 0 ^ { \circ } \mathrm { C } )$ 高于 PET 的 $T _ { g } ~ ( 8 5 \mathrm { - } 8 7 ^ { \circ } \mathrm { C } )$ 。在传统对流炉中，焊膏达到 $1 4 0 ^ { \circ } \mathrm { C }$ 回流的过程中，PET 基板早已超过 $T _ { g }$ 进入橡胶态，必然发生变形。但 PET的熔融温度 $( 2 5 0 ^ { \circ } \mathrm { C } )$ 远高于焊膏熔点，这意味着如果热输入是选择性的（仅加热金属不加热聚合物），理论上存在一个"焊料熔化但基板不软化"的工艺窗口。NIR 的选择性吸收正是利用了这一点。
+![](images/d6b680c0000343466cdeebed53f796f3cf4ff700c56dfb96dd2bb8c861f57b53.jpg)
 
-## 3.2 NIR 温度曲线与最佳工艺窗口筛选
+(e)  
+![](images/6250df5b4eab30f64a85c2988dfba02bf693213acc90f82ed61fc353c3590589.jpg)
 
-![](images/a782d2357d3d59bc8ea415e5e53e7afe105b1815111e09a0aec46e2151f3564b.jpg)  
-图3a一热电偶测温示意图
+(f)  
+![](images/2bc44c32de0cef36901bec88b892fbd89ee2ef8496ba2af0f33a26da9a497055.jpg)
 
-![](images/1aafe3ef0a29d9302b2434a996fd3243825688f8958345e1ad4920ac0cb8f05c.jpg)  
-(b) 1.0 m/min
+![](images/8d917ba925193a759531a60f35c67e0be4e1eb643c688ca0f14368968954ccc3.jpg)
 
-![](images/85aa81446bbcfc3c17351b07e6eff0e1b9b082aa3b15c2f07ecbdadf43d2e3cd.jpg)  
-(c) 1.5 m/min
+(h)  
+![](images/516f9fa69924e3cd3e22d5f1375428731b728ff619132047e9f342d549b9ac16.jpg)  
+Figure 3. a) Schematic image of temperature measurement using a thermocouple. b–f) Thermal profiles on the sample surface at diferent NIR lamp powers (2, 3, 4, 5, and 6 kW) and scanning speeds (1, 1.5, 2. 2.5, and 3 m min<sup>−1</sup>), g) summary of maximum temperature on sample surface under diferent processing conditions (NIR power and scanning speed), and h) NIR processing conditions that provided thermal profiles with maximum temperatures more than 140 °C with diferent exposure times. Low exposure time, medium exposure time, and high exposure time are denoted as LET, MET, and HET, respectively.
 
-![](images/d3777b012124053c7ec3c13c6feb99c4bb8ffc6ef62bb8cbed50c3847b0c2998.jpg)
+NIR lamp power (kW) and conveyor scanning speed (m min<sup>−1</sup>). Figure  3b–e shows these temperature profiles obtained from operating NIR at diferent powers and speeds. The temperature profiles obtained using diferent powers (2–6  kW) at a fixed speed were compared in each of these figures. At any specific speed, the maximum temperature measured for the solder paste increases with the increase in power. However, as the scanning speed of the stage increases, the duration of NIR exposure for the solder paste decreases, leading to a lower maximum temperature, as noticed in Figure 3b–e. Figure 3g summarizes the maximum temperatures obtained as a function of NIR light source power and scanning speed of the conveyor.
 
-![](images/59515b0e71dc39056a6e8a8622492d9bc7b3dd7b6e4c3d3a1cd18fd1586d3134.jpg)
+From the summary of the maximum temperatures obtained in each condition shown in Figure 3g, five NIR processing conditions of P4S1 (power 4  kW, speed 1 m min<sup>−1</sup>), P5S1 (power 5 kW, speed 1 m min<sup>−1</sup>), P6S1 (power 6 kW, speed 1 m min<sup>−1</sup>), P5S1.5 (power 5  kW, speed 1.5 m min<sup>−1</sup>), and P6S1.5 (power 6 kW, speed 1.5 m min<sup>−1</sup>)) were selected as these were the only conditions that resulted in peek temperatures on the sample’s surface that were equal to or higher than 140 °C, which is required to melt the solder paste. In Figure 3h, these five conditions were presented in terms of their corresponding exposure times during which the sample was exposed to a temperature above 140 °C. As shown in this figure, the exposure times calculated for P4S1, P5S1, P6S1, P5S1.5, and P6S1.5 were 25, 40, 40, 5, and 5 s, respectively. Among these five conditions, three of them with diferent exposure times (P6S1.5 with 5 s, P4S1 with 25 s, and P6S1 with 40 s) were selected for further investigation and labeled as low exposure time (LET), medium expo sure time (MET), and high exposure time (HET), respectively.
 
-![](images/759bc9f40bec9bd9b272870f647ecd5f844a1be7f344bd69ffe1f33d511c4cc1.jpg)  
-(f) 3.0 m/min
+One of the critical factors that can afect the quality of solder connection is the degree of spreading of molten solder on the surface of the substrate. The solder paste’s spreading degree onto the printed silver trace was analyzed for the selected three settings (LET, MET, and HET) using an optical microscope. The optical microscopy images of the surfaces of the solder paste deposited on the silver trace before and after the soldering process, as well as the corresponding cross-sectional images of the LET, MET, and HET samples after the soldering process, were presented in Figure 4. As observed in Figure 4d, the exposure time was inadequate in the case of LET resulting in incomplete melting of the solder particles. In this case, the heat supplied from the NIR radiation was insuficient as no sign of the solder reflow and solidification could be noticed, whereas for MET shown in Figure  4e, the solder particles melted and fused to form a continuous solid metallic interface, which exhibited improved spreading on the trace and pushed the remaining flux away from the sample area.
 
-![](images/978ae9f717e55fc178fd0c7ed5b54fc4defe89aa40733c3470b58be9bed823f8.jpg)  
-(g) 峰值温度汇总热图
+![](images/d6cc2ff963ed7f53c2db4d571130305ec86920885ebb868861d65785bc2a1b3a.jpg)  
+Figure 4. a–c) Optical microscopy images of surfaces of solder paste deposited on the silver trace before the NIR soldering process using LET, MET, and HET settings, d–f) optical microscopy images of surfaces of solder deposited on silver trace after soldering process for NIR settings LET, MET, and HET, and g–i) cross-sectional images of solder on silver trace after soldering process for NIR settings LET, MET, and HET. Excess heat in the HET setting caused the silver trace dissolution into the solder.
 
-![](images/c98a304e64c9a4cb164619ea264f00507c4ec49f559918fa202f6ed06a5bb4b8.jpg)  
-图 3—(a)热电偶测温示意；(b-f) 不同功率和扫描速度下的温升曲线（2-6 kW×1-3 m/min)；(g)峰值温度汇总热图；(h)筛选出的五个>140℃工艺条件及其在熔点以上的暴露时间(LET=5 s,MET=25 s,HET=40s)
+On the other hand, with longer exposure time, as in the case of HET shown in Figure 4f, the dissolution of silver trace into the solder occurred as the sample absorbed excess heat from the NIR radiation leading to the formation of holes in the middle, of the printed area. To further validate the spreading of solder for these 3 settings, the cross-sectional images of the LET, MET, and HET samples were compared, as shown in Figure 4g–i. As shown in Figure 4g of the sample LET, the solder paste did not spread due to insuficient heat absorption. In contrast, both samples MET, and HET exhibited excellent solder spreading. However, the silver trace in the sample HET was damaged due to the excess dissolution of silver metal into the solder.
 
-在功率 2–6 kW 和速度 1–3 m/min 的矩阵实验中，仅有 5个条件的峰值温度达到或超过焊膏熔点$1 4 0 ^ { \circ } \mathrm { C }$ ：
+The intermetallic region at the interface between the solder and conductive trace plays an important role in achieving proper bonding and electrical connection between the solder and conductive trace after the soldering process. To understand the efect of the selected three settings (LET, MET, and HET) on the formation of an intermetallic connection between the solder and silver traces, the cross-sectional analysis of these samples was further performed by obtaining SEM and EDX images.
 
-<table><tr><td>编号</td><td>功率(kW)</td><td>速度(m/min)</td><td>&gt;140℃ 暴露时间 (s) 分类</td></tr><tr><td>P4S1</td><td>4</td><td>1</td><td>25 MET (中暴露)</td></tr><tr><td>P5S1</td><td>5</td><td>1 40</td><td>选中 (未深入测试)</td></tr><tr><td>P6S1</td><td>6</td><td>1</td><td>40 HET（高暴露）</td></tr><tr><td>P5S1.5</td><td>5</td><td>1.5</td><td>5 选中 (未深入测试)</td></tr><tr><td>P6S1.5</td><td>6</td><td>1.5</td><td>5 LET（低暴露）</td></tr></table>
+Figure 5a–c shows the cross-sectional SEM images of the solder interface with silver printed trace after NIR processing with LET, MET, and HET settings. The formation of the intermetallic region between the solder and silver trace with diferent NIR processing conditions was determined using the information obtained from EDX elemental distribution analysis of carbon (Figure 5d–f), silver (Figure 5g–i), and tin (Figure  5j–l). As observed for LET, the majority of the upper region was covered with carbon (red in EDX image; Figure 5d) resulting from the organic-based flux in the solder, and the
 
-从 5 个达标条件中选取 3 个不同暴露时间的代表：LET（P6S1.5, 5 s）→ MET（P4S1, 25 s）→ HET（P6S1, 40 s），覆盖"刚好熔化"到"过量加热"的范围，用于后续系统研究。
+![](images/ee11c095b126e9eb6dd1f1cb197c13743f97565b35e5aeda13f5fcac6d98397d.jpg)  
+Figure 5. a–c) Cross-sectional SEM images of NIR settings LET, MET, and HET, d–f) EDX mapping of carbon (C Kα) for NIR settings LET, MET, and HET, g–i) EDX mapping of silver (Ag Lα) for NIR settings LET, MET, and HET, j–l) EDX mapping of tin (Sn Lα) for NIR settings LET, MET, and HET.
 
-Note
+www.advelectronicmat.de
 
-## 温度曲线的两个关键规律：
+spherical regions corresponding to alloy particles containing tin (green in EDX image; Figure 5j) confirming that the solder did not melt and reflow with this NIR processing condition. Whereas for MET, the majority of the upper region was covered with tin (green in EDX image; Figure 5d) resulting from alloy particles, and no red region corresponding to carbon could be found (red in EDX image; Figure 5e), indicating that the solder alloy particles efectively displaced the flux during their melting and fusing process. In this case, most of the silver trace remains intact while some of it dissolves in the solder to form a few microns thick interfacial region with tin, as noticed in Figure 5h. In contrast, for HET, the region on top of the PET was entirely covered with tin, displacing and dissolving a significant amount of the silver trace, as shown in Figure 5i,l. The results from the optical microscopy and SEM/EDX analysis suggest that the optimum bonding between the solder and silver trace without causing dissolution and damage to the printed silver trace could be achieved with the MET processing conditions (medium exposure time condition at a power of 4 kW NIR radiation and with a speed of 1 m min<sup>−1</sup>).
 
-1. 功率↑ → 峰值温度↑（在固定速度下）—这反映辐射通量密度与热输入的直接关系
+LET
 
-2. 速度↑→ 峰值温度↓—曝光时间减短，总吸收能量减少
+The bond strength of the soldered connection is often considered essential to achieve a reliable and long-term performance of a flexible electronic device. Shear tests were performed using international standards to evaluate the bond strength of the twoterminal SMD resistor soldered to the printed circuit on the FHE under the selected three settings (LET, MET, and HET). In this test, a cylindrical rod was used to apply force on the soldered component until the solder joints of both terminals were completely disconnected (the dimensions of the SMD resistor and the test setup can be referred to in Figures S1 and S2 in the Supporting Information). The rod displacement rate was kept con stant at 1 mm s<sup>−1</sup> using a universal testing machine. The printed conductive traces were connected to the multimeter to continuously record the resistance while the shear force was applied to the SMD resistor. The change in the resistance determines the electrical failure point of the circuit during the applied force.
 
-注意：MET 使用的功率（4 kW）反而低于 LET 和 HET（6 kW），但速度更慢（1vs 1.5$\mathrm { m } / \mathrm { m i n } )$ ），使得 ${ > } 1 4 0 ^ { \circ } \mathrm { C }$ 暴露时间（25 s）介于 LET（5 s）和 HET（40 s）之间。这表明暴露时间的控制比功率密度更关键—它直接决定了焊料在液态停留的时间，从而影响铺展和 IMC 生长。
+Figure 6a–f shows the images taken before and after applying the shear force to the SMD resistor soldered onto printed silver traces using diferent NIR processing conditions (LET, MET, and HET). As noticed in these figures, the failure mode of the connection during the test was diferent for LET compared to
 
-## 3.3 焊料铺展与银线路损伤
+MET  
+HET  
+![](images/4a841a4d8285b5fd4ba5c58eaf71a21d3489d8d445c670aa450a1ecdd5df8519.jpg)
 
-![](images/e09c4f3b65f7fe020a59684a281a59616caf1ceeee40f1268d0e0868a23b36c7.jpg)
+![](images/788b76a878390f27174b02e0398ee512ea8659135a59da7d12eaddaedb0e0357.jpg)
 
-![](images/768b38f518f309366075f4a28e3799ec70cbb1c7c675696b6e9121c88e77aedd.jpg)
+![](images/c8ddd93ef688ccb4682314dca12f93612c11a7ed1387d6ef5de6d11e35181b30.jpg)  
+Figure 6. a–f) Images of 1020 Ω SMD resistor soldered onto printed silver traces using diferent NIR settings (LET, MET, and HET) before (a–c) and after (d–f) shear force applied onto SMD resistor; g) shear force profile measurements and h) peak shear force required to detach SMD resistor from printer traces that were soldered using diferent NIR processing conditions.
 
-![](images/c89d83f76b9020caf4a41765a729602d7e0988ca9666fa5f59d3f7b80102a39c.jpg)
+www.advelectronicmat.de
 
-![](images/f15e90d0110eccc1a4037d70517641a2d20ec8849287e4bcf8536a39a5910cfa.jpg)
+MET and HET. For LET, since the solder alloy particles did not completely melt and fuse to form the proper connection, the failure occurred within the solder material (Figure 6d). This is consistent with the optical microscopy results discussed above. When compared between MET and HET, significant silver trace dissolution into the solder paste was noticed for the HET sample (Figure  6f), which led to weaker connections on both sides of the SMD. In contrast, the silver trace was intact for the MET sample (Figure  6b) with well-connected solder joints to the silver trace. Shear test results using MET NIR processing conditions showed the silver printed trace detachment from the PET substrate, confirming the solder joints’ strong mechanical bonding that exceeds the printed trace’s mechanical strength and adhesion to the substrate (Figure 6e).
 
-![](images/0f52018e1fdcc64e7679f19e75626c082b5330fd89878a6e1a13f7d5f28fefc8.jpg)
+Figures 6g,h show the results obtained from the shear force measurements performed for the LET, MET, and HET samples. The shear forces required to break the connections for the LET, MET, and HET samples were $1 . 8 1 \pm 0 . 2 , 1 2 . 1 \pm 1 . 2$ , and $1 . 2 \pm 0 . 6$ N, respectively. The sample MET with the optimum NIR processing conditions exhibited the maximum shear force between 12 and 14 N, which is in good agreement with the results obtained for the standard convection oven reflow soldering reported in previous studies. <sup>[26]</sup> However, it is important to note that in our work, the actual force required to disconnect the soldered joints for the sample MET would be higher than the measured force (14 N) as the disconnection occurred between PET and silver trace, which could be observed in Figure 6e.
 
-![](images/d621d18cb1ade8a6816263f4ec8c3f2db9b6ce465769b9d587ff1e394b574fbe.jpg)
+In addition to mechanical bond strength evaluation, it is important to assess the long-term environmental stability of the solder connections of FHEs used in health monitoring applications as they are often exposed to high humid and temperature conditions. Figure S3 in the Supporting Information presents the recorded changes in resistance for the LET, MET, and HET samples evaluated under accelerated test conditions at elevated temperature of $7 0 ~ ^ { \circ } \mathrm { C }$ and high humidity (100% RH). As shown in Figure S3 (Supporting Information), the samples prepared using LET settings exhibited increased resistance after 3 days of exposure in this test due to failure at the soldered electrical connections. Since the solder particles did not completely melt and fuse in this case, the solder paste containing flux became brittle over time of exposure and eventually lost the connection with the surface mount resistor. On the other hand, since the solder particles melted and fused to form a good ohmic connection in the samples prepared using MET and HET settings, they exhibited no change in resistance over 7 days of exposure demonstrating excellent environmental stability.
 
-![](images/7f670074825f40fd2356c0783b7299fa45e82b7e4298c4facb4f96ac9a7d2855.jpg)
+![](images/a621a74ca60e67b5817b0ef90058289c5aea2a56a9af52d34f72e546f98adc04.jpg)
 
-![](images/5cb3c27075b2146dc772b4a892a040fd32ad97d30673ed124424fc1063d5d616.jpg)
+![](images/8f6120a8dd290f89a2d6e39103a9a5261a7f57df446792aa495adeeec00a3b8c.jpg)
 
-![](images/815b552af7a24b28cc9386d7e1d29ac2a50dc7b8adb1769981cadf7ef38e72b3.jpg)  
-图 4 — 光学显微镜图像：a-c) 焊接前 LET/MET/HET 的锡膏表面，d-f) 焊接后对应表面，g-i) 焊接后截面。LET=未熔化，MET=完全熔化铺展且银线完整，HET=银线过量溶解形成中心孔洞
+![](images/d8e6d3c27f0cb4651c3800230f28f9620471956680fe119c0f01256c7073b2f2.jpg)
 
-<table><tr><td>条件</td><td>焊料熔化状态</td><td>银线路状态</td><td>综合评价</td></tr><tr><td>LET (5 s)</td><td>未完全熔化，球形颗粒残留，无助焊剂 排出</td><td>完整</td><td>热输入不足，未形成有 效连接</td></tr><tr><td>MET (25 s)</td><td>完全熔化、融合，形成连续金属界面， 助焊剂被挤出</td><td>完整，仅微量溶解于焊料 中</td><td>最优</td></tr><tr><td>HET (40 s)</td><td>过度熔化，银线路大量溶解进入焊料</td><td>严重溶解损伤，中央区域 形成孔洞</td><td>过度加热，线路破坏</td></tr></table>
+Cyclic mechanical bending was performed to evaluate the reliability of the solder joints using diferent NIR processing conditions (LET, MET, and HET). For this test, the previously described simple, flexible circuit with the SMD resistor was subjected to cyclic bending at a curvature radius of 50  mm within the resistor connection section of the circuit. The bendability of the conductive trace with solder connections and resistor was assessed in two configurations, tension mode when the resistor moves in the upward direction and compression mode when the resistor moves in the downward direction. Figure $\mathsf { 7 a - c }$ shows images of the mechanical bending cycles applied during tension and compression bending modes. Figure $\mathrm { 7 d , e }$ shows the recorded change in resistance measured across the two printed circuit terminals during cyclic tension and compression modes of bending, respectively. As observed in both cases, MET exhibited excellent stability upon bending over 1000 cycles in both tension and compression modes of bending. However, the disconnection at the solder joint between the SMD resistor and the printed circuit occurred in the case of both LET and HET after relatively fewer bending cycles (<100). This resulted in a drastic increase in resistance for LET and HET during both tension and compression bending cycle modes, as shown in Figure 7d,e.
 
-## Note
+The proposed nondestructive all-NIR processing platform can be used to fabricate a variety of cost-efective mass-producible FHEs for diferent wearable personalized healthcare monitoring systems.<sup>[38–41]</sup> To demonstrate the applicability of this manufacturing platform, as a proof of concept, we have designed and fabricated a wearable wireless wound monitoring system that can be used to track the volumetric exudate absorption into a wound dressing in real-time. The frequency required for changing the wound dressing highly depends on the amount of exudate and choice of dressings. Frequent and excessive replacement of dressings can be laborintensive and interfere with wound epithelialization. Underhand delayed replacement of dressings can lead to delayed wound healing and risks of infection. <sup>[42,43]</sup> There is a critical need for low-cost wearable systems that could provide real-time information about the wound dressing status and time point that it needs to be changed to the healthcare providers.<sup>[44,45]</sup> It is envisioned that this FHE system could be used as an add-on platform that can be integrated with many currently used wound dressings.
 
-银线路溶解的机制：HET 条件下过量的 NIR 能量不仅使焊料熔化，还使熔融 Sn-Bi 合金有足够长的时间与 Ag 线路发生溶解反应。Ag 在液态 Sn 中的溶解度较高，长时间高温暴露导致 Ag 从线路大量扩散进入焊料形成 Ag-Sn IMC，留下孔洞。这提示 NIR 工艺的优化核心是"刚好够"的热量—既充分熔化焊料形成铺展和连接，又不超过线路材料的热损伤阈值。
+![](images/671d49b14a8ca0ffbe22d8a6072e4df645c7b9f7f374f0c3aa5854ef9c2de5ee.jpg)
 
-## 3.4 IMC 界面形成（SEM/EDX 分析）
+![](images/cb1bf4e09a54f2152e5975f89707930b4f9c09f1331ac7f01486712b74ccdd2c.jpg)  
+Figure 7. Mechanical reliability assessment of NIR soldered electrical components on printed silver traces under diferent modes of cyclic bending: a) no bending, b) bending upward (tension), and c) bending downward (compression). d,e) Relative in electrical resistance across the printed circuit with soldered 1020 Ω SMD resistor using LET, MET, and HET NIR processing condition during cyclic tension (d) and compression (e) bending.
 
-## 术语速览
+![](images/683ff827179166e48e169c413113d4c8166c772e63ce1e3e23f529bbc4d1730a.jpg)  
+(i)
 
-## 本节涉及的三个核心术语：
+![](images/0e5d7ae5fe7f584d0175a27faf5ef5e321d2f4a7b840e0be52ad540d6973e1c4.jpg)  
+(ii)
 
-IMC（Intermetallic Compound，金属间化合物）：两种金属在界面处通过扩散反应形成的化合物相，具有固定的化学计量比和晶体结构。在电子封装中，IMC 是焊接可靠性的核心指标—太薄说明焊料未充分反应、连接弱；太厚说明过度反应、界面变脆。本文关注的IMC 主要是 Ag₃Sn（银线与 Sn-Bi 焊料反应生成），厚度数微米为最优。
+![](images/27f7c5865317db5d203d5a9dbcc2859616afd158c3fbd1a00bbb18329956584b.jpg)
 
-SEM（Scanning Electron Microscopy，扫描电子显微镜）：用聚焦电子束在样品表面逐点扫描，通过收集二次电子信号成像。相比光学显微镜，SEM 的景深大两个数量级，能清晰分辨焊料截面中微米级分层的三维结构。本文使用 Hitachi S-4800 冷场发射 SEM，5 kV 低加速电压以减少 PET 基板充电效应。
+![](images/702f21cda01596192558efb6f16aefc3fe8057a07d15e97477aba3f19fcfd0e5.jpg)
 
-EDX（Energy-Dispersive X-ray Spectroscopy，能量色散 X 射线光谱）：SEM 的配套技术—电子束轰击样品时，原子内层电子被激发，外层电子跃迁回落时发射特征 X射线（每种元素的特征能量不同）。EDX 探测器按能量分选这些 X 射线，即可绘制元素分布图。本文中EDX 用于区分 C（助焊剂有机物）、Ag（银线路）、Sn（焊料），三种元素的分布直接揭示界面质量。
+![](images/73a1cdbb5f55ba1daeeaba2a2d5b55588740a376de457dd92bb78b8ff5013df1.jpg)
 
-阅读提示：下文图 5 的 d–l 子图是 EDX 元素分布图，每种颜色代表一种元素。核心读图线索：C（红色）还在→助焊剂残留在界面；Sn（绿色）完全覆盖界面 + C消失 → 焊接成功；Ag（绿色）断开→线路溶解损坏。
+![](images/da2dc9f4efcca409224e24a4c0d5044786a28ebf1d4b6521f78a85662db3efd8.jpg)
 
-![](images/0383e4b5647700dfe4be755f1ab3f93042ddc9302b9d080629ad87d02be5cea2.jpg)  
-图 5 — 焊料-银线路界面的截面 SEM 与 EDX 元素分布：a-c) SEM 图像(LET/MET/HET)；d-f) C Kα(红色=助焊剂有机物)；g-i) Ag Lα(绿色=银)；j-1) Sn Lα(绿色=锡)
+(f)  
+![](images/90347845e055fe2be0dd5b9b81bc0721539767446229019006ef349f2930cb0a.jpg)  
+Figure 8. Wearable wireless wound dressing monitoring sensor: a) i) Sensor configuration with circuit components and connections and ii) expected to change in the resonant frequency of the circuit as a function of change in exudate uptake within the wound dressing, b) image of printed wearable FHE circuit with all soldered electrical components, c) resonant frequency of sensor during normal and bending mode, d) image of wireless sensor applied onto a wound dressing that is attached to plastic mannequin foot where the level of mock exudate in the dressing is adjusted through an external syringe containing food coloring dye, e) change in RF signal captured from the wireless sensor on wound dressing before and after soaking up 140 µL of mock exudate, and f) resonant frequency have a wireless sensor as a function of wound dressing exudate uptake.
 
-EDX揭示的三组微结构差异：
-
-LET：上层区域大部分被 C（红色，来自有机助焊剂）覆盖；Sn（绿色）以球形颗粒存在—焊料未熔化，助焊剂未被排出
-
-MET：上层区域全部被 Sn 覆盖，无助焊剂残留（C 消失）；银线路大部分完好，仅少量银溶解形成数微米厚的界面 IMC 层—实现了有效的冶金结合
-
-HET：PET 上方区域几乎全部被 Sn 占据，大部分银线路被溶解置换—线路结构破坏
-
-Note
-
-助焊剂排出的关键信号：从 LET → MET 的转变中，EDX 的 C 信号从"大量覆盖"变为"完全消失"，这表明焊料熔化过程中产生了两个效应：(1) 助焊剂的体积排除—熔融合金液滴的表面张力将较轻的有机相挤出；(2) 清洁金属界面—助焊剂去除氧化物后，洁净的 Ag 表面与熔融 Sn直接接触，形成可靠的冶金结合。LET 条件下这些过程均未发生，因此剪切测试中失效发生在焊料内部。
-
-## 3.5 剪切强度—MET 超越线路附着力
-
-![](images/88382363081f3ead49fbabcd3cb110fd8d82c2d7e6c972ed168dbade7283d7f2.jpg)
-
-![](images/f22aef80b3220e830f43fa966437ce3e198c3d5a6c727848cc947e990bd6b5e2.jpg)  
-(g) 剪切力轮廓测量
-
-![](images/2f76c502b41379aea2d9cd2b00062c5ff023439c3b304b45cf268dbfb4b2614b.jpg)  
-(h) 峰值剪切力对比
-
-图6—剪切强度测试（按IEC62137-1-2:2007)：a-c)剪切前LET/MET/HET样品；d-f)剪切后—LET:焊料内聚破坏，MET:银线路从PET剥离(焊点完好)，HET:银线路溶解导致弱连接；(g)剪切力轮廓测量；(h)峰值剪切力对比
-<table><tr><td>条件</td><td>峰值剪切力 (N) 失效模式</td><td></td></tr><tr><td>LET</td><td> $1 . 8 1 \pm 0 . 2$ </td><td>焊料内部断裂(未形成有效连接）</td></tr><tr><td>MET</td><td> $1 2 . 1 \pm 1 . 2$ </td><td>银线路从PET剥离（焊点强度&gt;线路-基板附着力）</td></tr><tr><td>HET</td><td> $1 . 2 \pm 0 . 6$ </td><td>银线路溶解导致的弱连接</td></tr></table>
-
-## Note
-
-MET失效模式的关键含义：剪切测试中 MET 的失效模式是银线路从 PET 剥离，而非焊点断裂。这意味着NIR 焊接形成的冶金连接强度超过了印刷银线路与 PET 基板之间的附着力。实际焊点强度应 >14 N（测量值受限于线路附着力），这一数值与传统对流回流焊文献报道结果（Liet al., 2018 [26]）相当。换句话说，NIR 焊接在机械强度上不低于传统回流焊，同时保护了基板—这是 NIR 替代对流焊的强有力证据。
-
-## 3.6 环境稳定性与弯曲可靠性
-
-![](images/9b20ca4333bea462c2748e39a2e5ab57001a905e2a57b17b25810cba5b790fb9.jpg)  
-(a-c) 弯曲模式示意
-
-![](images/ef5efb9922881bf87b29af7c6893fb23e34064de90bf100a8cae040977fa8be9.jpg)  
-(d)拉伸模式电阻-循环
-
-![](images/252158b4ac43dc1c852c3bad1d2146229b2da3cf671c0146119f7e9ecbe0dc01.jpg)  
-(e) 压缩模式电阻-循环
-
-![](images/07706996a955e6407dfd8461489add994ac0adef1290d194e41f3f901107d5c2.jpg)  
-测试装置照片
-
-![](images/26223293297b6ce9242c82a73094e8aa7b76d244f50f8efa58b5a5b2156e0c77.jpg)  
-(c) 向下弯曲照片
-
-(a-ii) 预期频率响应
-
-图7—循环弯曲可靠性测试:a)无弯曲，b)向上弯曲(拉伸)，c)向下弯曲(压缩)，d)拉伸模式电阻变化vs循环，e)压缩模式电阻变化 VS循环—MET在两种模式下1000次后电阻几乎不变，LET/HET<100次即失效
-
-测试条件：弯曲曲率半径 50 mm，拉伸/压缩两种模式各 1000 次循环。关键结果：
-
-MET：拉伸和压缩模式下均 1000次无失效，电阻几乎无变化
-
-LET：两种模式下均 <100次焊点断开，电阻急剧上升—焊料未形成有效冶金结合
-
-HET：同样 <100次失效—银线路溶解导致连接脆弱
-
-环境稳定性： $7 0 ^ { \circ } \mathrm { C } / 1 0 0 \% \mathrm { R H }$ 加速老化测试—LET 在 3 天后因助焊剂脆化导致连接断开（电阻突变）；MET 和 HET 7天无变化—焊料的冶金结合具有良好的环境耐受性。
-
-3.7 概念验证：无线伤口渗出液监测传感器
-
-![](images/362471c49592885486916a0032f5963a044af6eae79dbffa514fc1a7a52dfbf7.jpg)  
-(a-i) 传感器配置
-
-![](images/7fcd880df7cdc8d2706be88ca7266594194582a6626837aa934563e5bb7d6ca7.jpg)
-
-![](images/5a2a62057236c36551453c899776ce76e6a2396758014b2231e85c17ab623173.jpg)  
-(b) 印刷 FHE 电路与焊接元件
-
-![](images/d7103616e4a3e0cb69285d17a173f4c2410ef51244e55a4ba4c799ac597c3ba8.jpg)
-
-(d)  
-![](images/d2ef1f2376e537489849150f2ec315dbe974b9f44f4ab2828e5528e900a43548.jpg)  
-(d) 人体模型脚踝测试
-
-(c) 正常/弯曲模式谐振频率  
-![](images/6aba88af57f34fa6172558c6c1afca66e5ff8d62ce63dc8f689314d031dddf64.jpg)  
-(e) 注入 140 $\mu L$ 后的RF频移
-
-![](images/042282b8c1833d7e21727e930b3050c23ecf73b7abeccd105447d5e435288291.jpg)  
-(f) 谐振频率-渗出液体积  
-图8一无线伤口敷料监测传感器：(a-i)传感器配置与电路连接，(a-ii)预期谐振频率随渗出液吸收的变化，(b)印刷FHE电路与焊接元件，(c)正常/弯曲模式下的谐振频率(28.18MHz无偏移)， (d)传感器贴于伤口敷料的人体模型脚踝测试(模拟渗出液为含食用色素的水)，(e)注入140μL前后的RF信号频移(0.51MHz)，(f)谐振频率与渗出液体积(0-180μL 总范围， ${ \leqslant } I { \leqslant } O \mu L$ 线性，灵敏度3.64kHz/μL, ${ > } I 4 O \mu L$ 饱和)
-
-传感器方案是一个 FM 发射器电路，电路拓扑如下：
-
-双极结晶体管（BJT）Q1 — 有源放大元件
-
-偏置电阻 $R _ { b 1 } , \ R _ { e } +$ 电容 $C _ { b 1 } , \ C _ { c e }$ — 设置直流工作点，实现 MHz 范围内的频率调制
-
-LC 槽路（Tank Circuit）：固定电感 $L _ { c } +$ 印刷叉指电极电容（Interdigitated Capacitor） $C _ { c }$ — 决定发射频率， $C _ { c }$ 同时也是传感元件
-
-印刷 Meander 天线（Ant1） — 无线发射已调 FM 信号
-
-接收端通过 $\mathrm { F F T }$ 频谱峰值追踪 $f _ { t }$ 的变化。其谐振频率由 LC 槽路决定：
+The platform consists of an FM transmitter circuit designed to operate as a capacitive sensing-based frequency modulator (Figure 8a). The FM transmitter circuit illustrated in Figure 8a-i consists of a bipolar junction transistor (Q1) biased using two resistors $( R _ { \mathrm { b 1 } }$ and $R _ { \mathrm { e } } )$ and two capacitors $( C _ { \mathrm { b 1 } }$ and $C _ { \mathrm { c e } } )$ to achieve frequency modulation in the MHz range. The transmitting frequency of the circuit is tuned using a tank circuit formed by an inductor, $L _ { \mathrm { c } }$ and a frequency modulating capacitor, $C _ { \mathrm { c } } .$ The $C _ { \mathrm { c } }$ capacitor is printed as an interdigitated electrode structure on the substrate where its capacitance is sensitive to its surrounding efective dielectric constant. The printed interdigitated electrodes can detect volumetric exudate absorption into wound dressings by placing the sensor directly onto the backside of the wound dressing. As shown in Figure 8a-ii, when the volumetric exudate level in the wound dressing increases, the efective capacitance across the interdigitated sensing electrodes increases, leading to an increase in the overall resonant frequency (f) of the FM circuit based on the following equation:
 
 $$
-f _ { t } = \frac { 1 } { \sqrt { L _ { c } C _ { c } } }\tag{1}
+f _ { \mathrm { t } } = \frac { 1 } { \sqrt { L _ { \mathrm { c } } C _ { \mathrm { c } } } }\tag{1}
 $$
 
-解读：当伤口敷料中的渗出液体积增加→叉指电极周围有效介电常数增大→电容 $C _ { c }$ 增大→谐振频率 $f _ { t }$ 降低。接收端通过 FFT 频谱峰值追踪 $f _ { t }$ 的下降，反算出渗出液体积。线性灵敏度 $3 . 6 4 \mathrm { k H z / \mu L } ,$ ，检测范围 $0 { - } 1 8 0 ~ \mu \mathrm { L }$ $( 0 - 1 4 0 ~ \mu \mathrm { L }$ 内呈线性响应，超过 $1 4 0 ~ \mu \mathrm { L }$ 后频率偏移趋于饱和，表明此设计的检测上限约 $1 4 0 \mu \mathrm { L } )$
+The FM signal, tuned with the help of the interdigitated sensing electrodes, is wirelessly transmitted to the receiver using a printed meander antenna (Ant1). On the receiver side, $f _ { \mathrm { t } }$ of the transmitting circuit can be obtained from the peak of the fast Fourier transform (FFT) spectrum. Using the equation above, $C _ { \mathrm { c } }$ can be extracted from $f _ { \mathrm { t } }$ and the volumetric exudate level can be estimated. After designing the circuit, the circuit was screen printed, and the electrical components were soldered using the identified optimal NIR processing conditions (MET) (Figure 8b).
 
-Note
+To investigate the mechanical reliability, FFT analysis of the sensor was conducted in diferent bending configurations using a wireless reader. As shown in Figure  8c, the FFT peak was obtained at 28.18 MHz both before and after bending the device without observing noticeable shifts in $f _ { \mathrm { t } }$ thereby demonstrating the flexibility of the printed circuit. Furthermore, the resilience of the manufactured device to bending efects confirms perfect adhesion induced by NIR soldering of the components to the silver trace at optimum settings.
 
-工程参数还原：初始 $f _ { t } = 2 8 . 1 8 \ : \mathrm { M H z }$ ；注入 $1 4 0 \mu \mathrm { L }$ 后频移 0.51 MHz；线性灵敏度 3.64 kHz/$\mu \mathrm { L } _ { \circ }$ 此传感器在弯曲状态下 $f _ { t }$ 无偏移—再次证实 NIR 焊接点具有良好的抗弯可靠性。该设计本质上是一个 LC压控振荡器（VCO），叉指电容作为频率调制元件，通过 meander 天线无线发射 FM 信号。该方案的精妙之处在于传感和发射功能共享同一个电容 $( C _ { c }$ 既是 LC 振荡元件又是传感元件），实现了最小化的柔性平台。
+Next, to investigate the sensor’s performance in real-time, the manufactured device was attached to a wounded mannequin leg covered with a wound dressing. The artificial exudate uptaken by the dressing was progressively increased from 0 to 180 µL by injecting water into the dressing through an external syringe (Figure 8d). The spread of the injected water increased the volumetric exudate level in the dressing, causing a gradual increase in capacitance of the printed interdigitated electrode (C ) of the circuit which subsequently led to a decrease in f. For instance, Figure 8e shows that injecting 140 µL of water into the dressing led to a discernable frequency shift of 0.51 MHz in f . The shift in f demonstrates a linear correlation with the volumetric exudate level with a linear sensitivity of 3.64  kHz µL<sup>−1</sup> over the detection range of 0–140 µL (Figure 8f). However, the frequency shift saturated beyond 140  µL, indicating that the detection for this particular design has reached the maximum limit. The developed platform using NIR technology has been found to provide an accurate estimation of the level of exudate uptake into the wound dressing and could potentially help healthcare providers with accurate time point needed for changing patients’ wound dressings.
 
-## 4. 结论
+## 4. Conclusions
 
-NIR选择性加热机制得到充分验证：在 0.7–1.4 μm 波段，焊膏和银线路吸收率高而 PET 吸收率极低，实现了"焊料熔化 + 基板低温"的选择性效果
+We present an eficient approach that involves the use of nearinfrared (NIR) soldering of electrical components onto flexible digitally printed circuits allowing the fabrication process of flexible hybrid electronic devices in a rapid and scalable manner appropriate for roll-to-roll manufacturing. The NIR technology delivers high energy density in the wavelength range between 0.7 and 1.4  µm, in which the solder pastes and polymer substrates have high and low absorption, respectively. The unique light absorption diference in the materials provides selective heating and melting of the solder paste while causing minimal thermal damage to the polymeric substrate. The thermal profiles of various NIR settings were obtained to determine the processing conditions suitable for the efective soldering of SMD electrical components onto screen-printed circuits that provided both optimal electrical and mechanical properties. Among various NIR settings, low exposure time (LET), medium exposure time (MET), and high exposure time (HET) above the melting point temperature were selected to study the efect of exposure as a part of the optimization process. Based on the optical microscopy, SEM/EDX, and mechanical characterization, the medium exposure conditions with a NIR power of 4  kW and conveyer scan speed of 1m min<sup>−1</sup> provided the optimal solder joint performance. This setting resulted in selective heating of the solder paste on the surface printed circuit for 25 seconds above the melting temperature of the solder paste (>140 °C) without causing thermal damage to the printed traces and polymeric substrate. The solder joints exhibited excellent electrical stability in mechanical bending tests with no failure for 1000 bending cycles. Finally, as a proof of concept, the NIRassisted soldering process was utilized in the assembly and integration of a flexible wearable system to monitor the levels of exudate uptake in the wound dressing to help healthcare providers determine the appropriate time point for changing the patient dressing.
 
-MET参数 $( 4 \mathrm { k W } , 1 \mathrm { m / m i n } , > 1 4 0 ^ { \circ } \mathrm { C }$ 暴露 25 s）是最优工艺窗口：提供足够的能量和时间让焊料完全熔化铺展、排出助焊剂、形成致密 IMC 界面，同时避免银线路因过量加热发生溶解
+## Supporting Information
 
-NIR焊接的力学性能不亚于传统对流回流焊：MET 剪切力 12–14 N，失效发生在银线-PET 界面而非焊点，焊点真实强度超过该值
+Supporting Information is available from the Wiley Online Library or from the author.
 
-可靠性和环境稳定性优异：1000 次弯曲无失效， $7 0 ^ { \circ } \mathrm { C } / 1 0 0 \% \mathrm { R H }$ 下 7 天无退化
+## Acknowledgements
 
-R2R（卷对卷）兼容性：NIR 传送带式工艺适合高通量连续制造，演示了从印刷→干燥→点胶→贴装→焊接的全流水线方案
+V.K. and A.Z. contributed equally to this work. The authors thank the staf of the Birck Nanotechnology Center for their support. Funding for this project was provided by Ford Motor Company through the Ford/ Purdue alliance program. R.R., V.K., and A.Z. acknowledge the support from the School of Materials Engineering at Purdue University.
 
-概念验证成功：无线伤口渗出液监测 FHE 传感器（FM 发射 + 叉指电容传感），线性灵敏度 3.64 kHz/μL， $0 { - } 1 4 0 ~ \mu \mathrm { L }$ 检测范围
+## Conflict of Interest
 
-## 核心要点总结
+The authors declare no conflict of interest.
 
-NIR选择性加热是解决 FHE 焊接困境的关键—传统对流炉因整体加热损害基板，NIR 利用金属/聚合物的吸收率差异实现"局部熔化、整体低温"
+## Data Availability Statement
 
-暴露时间（而非功率密度）是主控参数—5 s 不足（未熔化）、25 s 恰好、 $4 0 \ : \mathrm { s }$ 过度（银线路溶解）
+The data that support the findings of this study are available from the corresponding author upon reasonable request.
+
+## Keywords
+
+conductive paste, electrical soldering, flexible hybrid electronics, near-infrared, printed circuits
+
+Received: September 2, 2022   
+Revised: November 7, 2022   
+Published online: February 7, 2023
+
+[1] Z. Zhou, H. Zhang, J. Liu, W. Huang, Giant 2021, 6, 100051.
+
+[2] Q.  Li, J.  Zhang, Q.  Li, G.  Li, X.  Tian, Z.  Luo, F.  Qiao, X.  Wu, J. Zhang, Front. Mater. 2019, 5, 77.
+
+[3] Y.  Ma, Y.  Zhang, S.  Cai, Z.  Han, X.  Liu, F.  Wang, Y.  Cao, Z.  Wang, H. Li, Y. Chen, X. Feng, Adv. Mater. 2020, 32, 1902062.
+
+[4] S. Cai, Z. Han, F. Wang, K. Zheng, Y. Cao, Y. Ma, X. Feng, Sci. China Life Sci. 2018, 61, 60410.
+
+[5] S.  Gupta, W. T.  Navaraj, L.  Lorenzelli, R.  Dahiya, npj Flexible Electron. 2018, 2, 8.
+
+[6] U.  Heredia Rivera, S.  Kadian, S.  Nejati, J.  White, S.  Sedaghat, Z. Mutlu, R. Rahimi, ACS Sens. 2022.
+
+[7] V.  Kasi, S.  Sedaghat, A. M.  Alcaraz, M. K.  Maruthamuthu, U. Heredia-Rivera, S. Nejati, J. Nguyen, R. Rahimi, ACS Appl. Mater. Interfaces 2022, 14, 9697.
+
+[8] S. Gopalakrishnan, S. Sedaghat, A. Krishnakumar, Z. He, H. Wang, R. Rahimi, Adv. Electron. Mater. 2022, 8, 2101149.
+
+[9] A.  Zareei, V.  Selvamani, S.  Gopalakrishnan, S.  Kadian, M. K. Maruthamuthu, Z. He, J. Nguyen, H. Wang, R. Rahimi, Adv. Mater. Technol. 2022, 7, 2101722.
+
+[10] S. Sedaghat, V. Kasi, S. Nejati, A. Krishnakumar, R. Rahimi, J. Mater. Chem. C 2022, 10, 10562.
+
+[11] S. Logothetidis, Mater. Sci. Eng., B 2008, 152, 96.
+
+[12] J. Chang, T. Ge, E. Sanchez-Sinencio, in 2012 IEEE 55th Int. Midwest Symp. on Circuits and Systems (MWSCAS), IEEE, Piscataway, NJ, USA, 2012, pp. 582–585.
+
+[13] J.  Wiklund, A.  Karakoç, T.  Palko, H.  Yigitler, K.  Ruttik, R.  Jäntti, J. Paltakari, J. Manuf. Mater. Process. 2021, 5, 89.
+
+[14] G. L. Goh, H. Zhang, T. H. Chong, W. Y. Yeong, Adv. Electron. Mater. 2021, 7, 2100445.
+
+[15] N. D. Sankir, R. O. Claus, J. Mater. Process. Technol. 2008, 196, 155.
+
+[16] U. Heredia-Rivera, S. Gopalakrishnan, S. Kadian, S. Nejati, V. Kasi, R. Rahimi, J. Mater. Chem. C 2022, 10, 9813.
+
+[17] A.  Krishnakumar, R. K.  Mishra, S.  Kadian, A.  Zareei, U. H.  Rivera, R. Rahimi, Anal. Chim. Acta 2022, 1229, 340332.
+
+[18] Y.  Khan, A.  Thielens, S.  Muin, J.  Ting, C.  Baumbauer, A. C.  Arias, Adv. Mater. 2020, 32, 1905279.
+
+[19] X.  Chen, J. A.  Rogers, S. P.  Lacour, W.  Hu, D.-H.  Kim, Chem. Soc. Rev. 2019, 48, 1431.
+
+[20] A. Zareei, S. Gopalakrishnan, Z. Mutlu, Z. He, S. Peana, H. Wang, R. Rahimi, ACS Appl. Electron. Mater. 2021, 3, 3352.
+
+[21] G.  Tong, Z.  Jia, J.  Chang, in 2018 IEEE Int. Symp. on Circuits and Systems (ISCAS), IEEE, Piscataway, NJ, USA, 2018, https://doi. org/10.1109/ISCAS.2018.8351806.
+
+[22] R.  Rahimi, M.  Ochoa, A.  Tamayol, S.  Khalili, A.  Khademhosseini, B. Ziaie, ACS Appl. Mater. Interfaces 2017, 9, 9015.
+
+[23] J. A. Rogers, X. Chen, X. Feng, Adv. Mater. 2020, 32, 1905590.
+
+[24] P. T. Vianco, Jom 2019, 71, 158.
+
+[25] K. A.  Gray, J. J.  Paschkewitz, Next Generation HALT and HASS: Robust Design of Electronics and Systems (Quality and Reliability Engineering Series), Wiley, Hoboken, NJ, USA, 2016.
+
+[26] X.  Li, H.  Andersson, J.  Sidén, T.  Schön, Flexible Printed Electron. 2018, 3, 015003.
+
+[27] N.  Palavesam, S.  Marin, D.  Hemmetzberger, C.  Landesberger, K. Bock, C. Kutter, Flexible Printed Electron. 2018, 3, 014002.
+
+[28] P.  Mostafalu, A.  Tamayol, R.  Rahimi, M.  Ochoa, A.  Khalilpour, G.  Kiaee, I. K.  Yazdi, S.  Bagherifard, M. R.  Dokmeci, B.  Ziaie, S. R. Sonkusale, A. Khademhosseini, Small 2018, 14, 1703509.
+
+[29] H. J. Hwang, K. H. Oh, H. S. Kim, Sci. Rep. 2016, 6, 19696.
+
+[30] H.  Jiang, N. M.  Carter, A.  Zareei, S.  Nejati, J. F.  Waimin, S.  Chittiboyina, E. E.  Niedert, T.  Soleimani, S. A.  Lelièvre, C. J. Goergen, R. Rahimi, ACS Appl Bio Mater 2020, 3, 4012.
+
+www.advelectronicmat.de
+
+[31] M. Cherrington, T. C. Claypole, D. Deganello, I. Mabbett, T. Watson, D. Worsley, J. Mater. Chem. 2011, 21, 7562.
+
+[32] K.  Hooper, M.  Carnie, C.  Charbonneau, T.  Watson, Int. J. Photoenergy 2014, 2014.
+
+[33] D. J.  Keller, K. S.  Jochem, W. J.  Suszynski, L. F.  Francis, J. Coat. Technol. Res. 2019, 16, 1699.
+
+[34] D.  Bryant, I.  Mabbett, P.  Greenwood, T.  Watson, M.  Wijdekop, D. Worsley, Org. Electron. 2014, 15, 1126.
+
+[35] P. Salvo, B. Melai, N. Calisi, C. Paoletti, F. Bellagambi, A. Kirchhain, M. G.  Trivella, R.  Fuoco, F.  Di Francesco, Sens. Actuators, B 2018, 256, 976.
+
+[36] M.  Cherrington, T. C.  Claypole, D. T.  Gethin, D. A.  Worsley, D. Deganello, Thin Solid Films 2012, 522, 412.
+
+[37] W. Gu, W. Yuan, T. Zhong, X. Wu, C. Zhou, J. Lin, Z. Cui, RSC Adv. 2018, 8, 30215.
+
+[38] T. R.  Dargaville, B. L.  Farrugia, J. A.  Broadbent, S.  Pace, Z.  Upton, N. H. Voelcker, Biosens. Bioelectron. 2013, 41, 30.
+
+[39] R. Dong, B. Guo, Nano Today 2021, 41, 101290.
+
+[40] R. Rahimi, U. Brener, M. Ochoa, B. Ziaie, in 2017 IEEE 30th Int. Conf. on Micro Electro Mechanical Systems (MEMS), IEEE, Piscataway, NJ, USA, 2017, pp. 125–128.
+
+[41] M. Sharifuzzaman, A. Chhetry, M. A. Zahed, S. H. Yoon, C. I. Park, S. Zhang, S. Chandra Barman, S. Sharma, H. Yoon, J. Y. Park, Biosens. Bioelectron. 2020, 169, 112637.
+
+[42] G.  Xu, Y.  Lu, C.  Cheng, X.  Li, J.  Xu, Z.  Liu, J.  Liu, G.  Liu, Z.  Shi, Z.  Chen, F.  Zhang, Y.  Jia, D.  Xu, W.  Yuan, Z.  Cui, S. S.  Low, Q.  Liu, Adv. Funct. Mater. 2021, 31, 2100852.
+
+[43] R. Xu, G. Luo, H. Xia, W. He, J. Zhao, B. Liu, J. Tan, J. Zhou, D. Liu, Y. Wang, Z. Yao, R. Zhan, S. Yang, J. Wu, Biomaterials 2015, 40, 1.
+
+[44] C.  Wang, E.  Shirzaei Sani, W.  Gao, Adv. Funct. Mater. 2022, 32, 2111022.
+
+[45] R.  Rahimi, M.  Ochoa, T.  Parupudi, X.  Zhao, I. K.  Yazdi, M. R.  Dokmeci, A.  Tamayol, A.  Khademhosseini, B.  Ziaie, Sens. Actuators, B 2016, 229, 609.
